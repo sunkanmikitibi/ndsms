@@ -41,8 +41,10 @@
     <header
         class="docked full-width top-0 sticky z-50 bg-background/80 backdrop-blur-md shadow-[0px_20px_40px_rgba(11,38,25,0.06)]">
         <div class="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
-            <a href="/"
-                class="text-2xl font-black text-primary-container tracking-tighter font-headline">NDSMS</a>
+            <a href="/" class="flex items-center gap-3">
+                <img src="{{ asset('logo.jpeg') }}" alt="NDSMS Logo" class="h-10 w-auto">
+                <span class="text-xl font-black text-primary-container tracking-tighter font-headline">NDSMS</span>
+            </a>
             <nav class="hidden md:flex items-center space-x-8">
                 <a class="text-primary-container border-b-2 border-tertiary-fixed-dim pb-1 uppercase text-[12px] tracking-wider font-semibold font-headline"
                     href="#features">Features</a>
