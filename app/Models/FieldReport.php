@@ -13,6 +13,9 @@ class FieldReport extends Model
     protected $fillable = [
         'user_id',
         'type',
+        'title',
+        'description',
+        'location',
         'data',
         'status',
         'admin_note',

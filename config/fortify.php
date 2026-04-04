@@ -71,9 +71,11 @@ return [
     | authentication or password reset when the operations are successful
     | and the user is authenticated. You are free to change this value.
     |
+    | This redirects to /dashboard which uses HomeRedirectController to
+    | automatically route users to their respective dashboards based on role.
     */
 
-    'home' => '/admin',
+    'home' => '/dashboard',
 
     /*
     |--------------------------------------------------------------------------

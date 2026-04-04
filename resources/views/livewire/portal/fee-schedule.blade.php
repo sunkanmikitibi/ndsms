@@ -2,106 +2,65 @@
     <div class="page-header">
         <div>
             <h2><i class="fas fa-receipt" style="color:var(--accent);margin-right:10px;"></i>Fee Schedule</h2>
-            <p>Official fee schedule for NDSMS services in Njikoka LGA</p>
+            <p>Official fee schedule for NDSMS services</p>
         </div>
     </div>
 
-    <div class="fee-grid">
-        <!-- Address Registration -->
-        <div class="fee-card">
-            <div class="fee-card-header">
-                <i class="fas fa-map-marker-alt"></i>
-                <h4>Address Registration</h4>
-            </div>
-            <div class="fee-item">
-                <span>New Address Registration</span>
-                <span class="fee-amount">₦2,000</span>
-            </div>
-            <div class="fee-item">
-                <span>Address Verification Certificate</span>
-                <span class="fee-amount">₦1,500</span>
-            </div>
-            <div class="fee-item">
-                <span>QR Code Plate (Standard)</span>
-                <span class="fee-amount">₦3,000</span>
-            </div>
-            <div class="fee-item">
-                <span>QR Code Plate (Express)</span>
-                <span class="fee-amount">₦5,000</span>
-            </div>
-            <div class="fee-item">
-                <span>Address Amendment</span>
-                <span class="fee-amount">₦1,000</span>
-            </div>
+    @if ($fees->isEmpty())
+        <div
+            style="margin-top:20px;padding:30px 20px;background:var(--bg-secondary);border-radius:var(--radius-sm);text-align:center;">
+            <i class="fas fa-info-circle"
+                style="font-size:28px;color:var(--accent);margin-bottom:10px;display:block;"></i>
+            <h4>No Active Fees</h4>
+            <p style="color:var(--text-secondary);margin-top:8px;">Fee schedules will be available soon.</p>
+        </div>
+    @else
+        <div class="fee-grid">
+            @foreach ($groupedFees as $serviceType => $serviceFeess)
+                <!-- Service Type Card -->
+                <div class="fee-card">
+                    <div class="fee-card-header">
+                        <i
+                            class="fas fa-{{ app(\App\Services\FeeService::class)->getIconForServiceType($serviceType) }}"></i>
+                        <h4>{{ $services[$serviceType] ?? ucfirst(str_replace('_', ' ', $serviceType)) }}</h4>
+                    </div>
+
+                    @foreach ($serviceFeess as $fee)
+                        <div class="fee-item">
+                            <div style="flex:1;">
+                                <div style="font-weight:500;">{{ $fee->service_name }}</div>
+                                @if ($fee->description)
+                                    <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">
+                                        {{ $fee->description }}</div>
+                                @endif
+                            </div>
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                @if (!$fee->isActive())
+                                    <span
+                                        style="font-size:11px;color:var(--warning);font-weight:600;text-transform:uppercase;">Inactive</span>
+                                @endif
+                                <span class="fee-amount"
+                                    style="color:var(--accent);font-weight:700;">{{ $fee->getFormattedAmount() }}</span>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endforeach
         </div>
 
-        <!-- Street Registration -->
-        <div class="fee-card">
-            <div class="fee-card-header">
-                <i class="fas fa-road"></i>
-                <h4>Street Registration</h4>
+        @if ($fees->contains(fn($f) => !$f->isActive()))
+            <div
+                style="margin-top:20px;padding:16px 20px;background:var(--warning-light);border:1px solid var(--warning);border-radius:var(--radius-sm);font-size:13px;color:var(--warning);font-weight:600;">
+                <i class="fas fa-info-circle" style="margin-right:8px;"></i>
+                Some fee schedules are currently inactive. Contact support for details.
             </div>
-            <div class="fee-item">
-                <span>Street Naming Application</span>
-                <span class="fee-amount">₦5,000</span>
-            </div>
-            <div class="fee-item">
-                <span>Street Certificate</span>
-                <span class="fee-amount">₦3,000</span>
-            </div>
-            <div class="fee-item">
-                <span>Street Sign Installation</span>
-                <span class="fee-amount">₦8,000</span>
-            </div>
-            <div class="fee-item">
-                <span>Street Re-naming</span>
-                <span class="fee-amount">₦7,500</span>
-            </div>
-        </div>
+        @endif
 
-        <!-- Verification Services -->
-        <div class="fee-card">
-            <div class="fee-card-header">
-                <i class="fas fa-shield-check"></i>
-                <h4>Verification Services</h4>
-            </div>
-            <div class="fee-item">
-                <span>Address Verification (Online)</span>
-                <span class="fee-amount">Free</span>
-            </div>
-            <div class="fee-item">
-                <span>Official Verification Letter</span>
-                <span class="fee-amount">₦2,500</span>
-            </div>
-            <div class="fee-item">
-                <span>Bulk Verification (per address)</span>
-                <span class="fee-amount">₦500</span>
-            </div>
+        <div
+            style="margin-top:20px;padding:16px 20px;background:var(--accent-gold-light);border:1px solid var(--accent-gold);border-radius:var(--radius-sm);font-size:13px;color:var(--accent-gold);font-weight:600;">
+            <i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i>
+            All fees shown are current and subject to change. Prices are in Nigerian Naira (₦). Payment is made via the
+            NDSMS payment portal.
         </div>
-
-        <!-- Other Services -->
-        <div class="fee-card">
-            <div class="fee-card-header">
-                <i class="fas fa-cogs"></i>
-                <h4>Other Services</h4>
-            </div>
-            <div class="fee-item">
-                <span>Complaint Filing</span>
-                <span class="fee-amount">Free</span>
-            </div>
-            <div class="fee-item">
-                <span>Appeals Processing</span>
-                <span class="fee-amount">₦1,000</span>
-            </div>
-            <div class="fee-item">
-                <span>Urgent Processing (any)</span>
-                <span class="fee-amount">+₦2,000</span>
-            </div>
-        </div>
-    </div>
-
-    <div style="margin-top:20px;padding:16px 20px;background:var(--accent-gold-light);border:1px solid var(--accent-gold);border-radius:var(--radius-sm);font-size:13px;color:var(--accent-gold);font-weight:600;">
-        <i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i>
-        All fees are subject to change. Prices are in Nigerian Naira (₦). Payment is made at the Njikoka LGA Treasury or via the NDSMS payment portal.
-    </div>
+    @endif
 </div>

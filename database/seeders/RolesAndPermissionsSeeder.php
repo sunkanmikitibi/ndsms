@@ -14,75 +14,166 @@ class RolesAndPermissionsSeeder extends Seeder
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Create permissions grouped by resource
+        // Create permissions grouped by resource with descriptions
         $permissions = [
-            // Address management
-            'view addresses',
-            'manage addresses',
-            // Street management
-            'view streets',
-            'manage streets',
-            // Approvals
-            'view approvals',
-            'manage approvals',
-            // Payments
-            'view payments',
-            'manage payments',
+            // User Management
+            'view users' => 'View list of users',
+            'create users' => 'Create new users',
+            'edit users' => 'Edit existing users',
+            'delete users' => 'Delete users',
+            'manage users' => 'Legacy: Full user management',
+
+            // Role Management
+            'view roles' => 'View list of roles',
+            'create roles' => 'Create new roles',
+            'edit roles' => 'Edit existing roles',
+            'delete roles' => 'Delete roles',
+            'manage roles' => 'Legacy: Full role management',
+
+            // Permission Management
+            'view permissions' => 'View list of permissions',
+            'create permissions' => 'Create new permissions',
+            'edit permissions' => 'Edit existing permissions',
+            'delete permissions' => 'Delete permissions',
+
+            // Street Management
+            'view streets' => 'View street records',
+            'create streets' => 'Create new street records',
+            'edit streets' => 'Edit street records',
+            'delete streets' => 'Delete street records',
+            'manage streets' => 'Legacy: Full street management',
+            'approve streets' => 'Approve street applications',
+
+            // Address Management
+            'view addresses' => 'View address records',
+            'create addresses' => 'Create new address records',
+            'edit addresses' => 'Edit address records',
+            'delete addresses' => 'Delete address records',
+            'manage addresses' => 'Legacy: Full address management',
+            'approve addresses' => 'Approve address registrations',
+
+            // Approval Workflow
+            'view approvals' => 'View pending approvals',
+            'approve applications' => 'Approve applications',
+            'reject applications' => 'Reject applications',
+            'manage approvals' => 'Legacy: Full approval management',
+            'manage street applications' => 'Manage street applications',
+            'manage field reports' => 'Manage field reports',
+
+            // Payment Management
+            'view payments' => 'View payment records',
+            'refund payments' => 'Process payment refunds',
+            'manage payments' => 'Legacy: Full payment management',
+
             // Reports
-            'view reports',
-            // Users (super-admin only)
-            'view users',
-            'manage users',
-            // Roles (super-admin only)
-            'view roles',
-            'manage roles',
+            'view reports' => 'View reports and analytics',
+            'export reports' => 'Export report data',
+
+            // Fee Schedule Management
+            'view fee schedules' => 'View fee schedule rates',
+            'create fee schedules' => 'Create new fee schedules',
+            'edit fee schedules' => 'Edit existing fee schedules',
+            'delete fee schedules' => 'Delete fee schedules',
+            'manage fee schedules' => 'Full fee schedule management',
+
             // Settings
-            'view settings',
-            'manage settings',
+            'view settings' => 'View system settings',
+            'manage settings' => 'Manage system settings',
+
+            // Field Officer Actions
+            'submit street applications' => 'Submit new street applications',
+            'submit address registrations' => 'Submit address registrations',
+            'perform address indexing' => 'Request Google Maps address indexing',
+            'request street revalidation' => 'Request street revalidation',
         ];
 
-        foreach ($permissions as $perm) {
-            Permission::firstOrCreate(['name' => $perm, 'guard_name' => 'web']);
+        foreach ($permissions as $name => $description) {
+            Permission::firstOrCreate(
+                ['name' => $name, 'guard_name' => 'web'],
+                ['description' => $description]
+            );
         }
 
         // Field Officer — can view and register addresses/streets, submit applications
-        $fieldOfficer = Role::firstOrCreate(['name' => 'field-officer', 'guard_name' => 'web']);
+        $fieldOfficer = Role::firstOrCreate(
+            ['name' => 'field-officer', 'guard_name' => 'web'],
+            ['description' => 'Field officer role. Can submit applications and perform indexing/revalidation requests.']
+        );
         $fieldOfficer->syncPermissions([
             'view addresses',
             'view streets',
+            'submit street applications',
+            'submit address registrations',
+            'perform address indexing',
+            'request street revalidation',
+            'view reports',
+            'view fee schedules',
         ]);
 
         // Registry Officer — can manage addresses and streets
-        $registryOfficer = Role::firstOrCreate(['name' => 'registry-officer', 'guard_name' => 'web']);
+        $registryOfficer = Role::firstOrCreate(
+            ['name' => 'registry-officer', 'guard_name' => 'web'],
+            ['description' => 'Registry officer role. Can manage street and address records.']
+        );
         $registryOfficer->syncPermissions([
             'view addresses',
-            'manage addresses',
+            'edit addresses',
             'view streets',
-            'manage streets',
+            'edit streets',
             'view reports',
+            'view fee schedules',
         ]);
 
         // Approvals Officer — can review and manage applications
-        $approvalsOfficer = Role::firstOrCreate(['name' => 'approvals-officer', 'guard_name' => 'web']);
+        $approvalsOfficer = Role::firstOrCreate(
+            ['name' => 'approvals-officer', 'guard_name' => 'web'],
+            ['description' => 'Approvals officer role. Can review and approve street and address applications.']
+        );
         $approvalsOfficer->syncPermissions([
             'view addresses',
             'view streets',
             'view approvals',
-            'manage approvals',
+            'approve applications',
+            'reject applications',
+            'manage street applications',
+            'manage field reports',
             'view payments',
             'view reports',
+            'view fee schedules',
         ]);
 
         // Admin — all operational permissions
-        $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        $admin = Role::firstOrCreate(
+            ['name' => 'admin', 'guard_name' => 'web'],
+            ['description' => 'Administrative access. Can manage streets, addresses, approvals, and view reports.']
+        );
         $admin->syncPermissions(Permission::where('name', 'not like', '%users%')
             ->where('name', 'not like', '%roles%')
+            ->where('name', 'not like', '%permissions%')
             ->where('name', 'not like', '%settings%')
+            ->where('name', 'not like', 'manage%')
             ->get());
 
         // Super Admin — all permissions
-        $superAdmin = Role::firstOrCreate(['name' => 'super-admin', 'guard_name' => 'web']);
+        $superAdmin = Role::firstOrCreate(
+            ['name' => 'super-admin', 'guard_name' => 'web'],
+            ['description' => 'Full system access. Can manage users, roles, permissions, and all resources.']
+        );
         $superAdmin->syncPermissions(Permission::all());
+
+        // Citizen role
+        $citizen = Role::firstOrCreate(
+            ['name' => 'citizen', 'guard_name' => 'web'],
+            ['description' => 'Citizen role. Can submit applications and perform indexing/revalidation requests.']
+        );
+        $citizen->syncPermissions([
+            'view streets',
+            'submit street applications',
+            'submit address registrations',
+            'perform address indexing',
+            'request street revalidation',
+            'view fee schedules',
+        ]);
 
         // Create default super-admin user (if not exists)
         $user = User::firstOrCreate(
@@ -96,5 +187,6 @@ class RolesAndPermissionsSeeder extends Seeder
 
         $this->command->info('✓ Roles, permissions, and super-admin user seeded successfully.');
         $this->command->info('  Email: superadmin@ndsms.gov.ng | Password: Admin@1234');
+        $this->command->info('  Available roles: super-admin, admin, approvals-officer, registry-officer, field-officer, citizen');
     }
 }
