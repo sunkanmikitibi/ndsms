@@ -1,0 +1,84 @@
+@import 'tailwindcss';
+@import '../../vendor/livewire/flux/dist/flux.css';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
+@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: 'Public Sans', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-headline: 'Outfit', 'Public Sans', sans-serif;
+
+    --color-background: #faf9f6;
+    --color-surface-dim: #dadad7;
+    --color-surface-bright: #faf9f6;
+    --color-surface-container-lowest: #ffffff;
+    --color-surface-container-low: #f4f3f1;
+    --color-surface-container: #eeeeeb;
+    --color-surface-container-high: #e9e8e5;
+    --color-surface-container-highest: #e3e2e0;
+
+    --color-on-surface: #1a1c1a;
+    --color-on-surface-variant: #424843;
+    --color-outline: #727973;
+    --color-outline-variant: #c2c8c2;
+
+    --color-primary: #000d06;
+    --color-on-primary: #ffffff;
+    --color-primary-container: #0b2619;
+    --color-on-primary-container: #728f7d;
+
+    --color-secondary: #016d39;
+    --color-on-secondary: #ffffff;
+    --color-secondary-container: #99f3b1;
+    --color-on-secondary-container: #0c723d;
+
+    --color-tertiary: #100900;
+    --color-on-tertiary: #ffffff;
+    --color-tertiary-container: #2d1f00;
+    --color-on-tertiary-container: #ae8100;
+
+    --color-accent: var(--color-secondary);
+    --color-accent-content: var(--color-on-secondary);
+    --color-accent-foreground: var(--color-white);
+}
+
+@layer theme {
+    .dark {
+        --color-accent: var(--color-white);
+        --color-accent-content: var(--color-white);
+        --color-accent-foreground: var(--color-neutral-800);
+    }
+}
+
+@layer base {
+
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+[data-flux-field]:not(ui-radio, ui-checkbox) {
+    @apply grid gap-2;
+}
+
+[data-flux-label] {
+    @apply  !mb-0 !leading-tight;
+}
+
+input:focus[data-flux-control],
+textarea:focus[data-flux-control],
+select:focus[data-flux-control] {
+    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+}
+
+/* \[:where(&)\]:size-4 {
+    @apply size-4;
+} */
