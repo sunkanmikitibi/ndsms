@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeRedirectController;
+use App\Http\Controllers\PaymentController;
 use App\Livewire\Admin\Addresses\Index as AddressesIndex;
 use App\Livewire\Admin\Approvals\Index as ApprovalsIndex;
 use App\Livewire\Admin\Dashboard;
@@ -9,6 +10,8 @@ use App\Livewire\Admin\Streets\Index as StreetsIndex;
 use App\Livewire\Admin\Users\Index as UsersIndex;
 use App\Livewire\Portal\Dashboard as PortalDashboard;
 use App\Livewire\Portal\RegisterStreet;
+use App\Livewire\Portal\RegisterAddressIndexing;
+use App\Livewire\Portal\StreetRevalidationForm;
 use App\Livewire\Portal\Verification;
 use App\Livewire\Portal\QrScanner;
 use App\Livewire\Portal\StreetDirectory;
@@ -30,6 +33,8 @@ Route::middleware(['auth', 'verified'])->prefix('portal')->name('portal.')->grou
     Route::get('/', PortalDashboard::class)->name('dashboard');
     Route::get('/register-street', RegisterStreet::class)->name('register-street');
     Route::get('/register-address', RegisterAddress::class)->name('register-address');
+    Route::get('/register-address-indexing', RegisterAddressIndexing::class)->name('register-address-indexing');
+    Route::get('/street-revalidation', StreetRevalidationForm::class)->name('street-revalidation');
     Route::get('/verification', Verification::class)->name('verification');
     Route::get('/qr-scanner', QrScanner::class)->name('qr-scanner');
     Route::get('/street-directory', StreetDirectory::class)->name('street-directory');
@@ -79,5 +84,21 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         Route::get('/settings', fn() => view('livewire.admin.placeholder', ['title' => 'Settings', 'icon' => 'fa-cog']))->name('settings.index');
     });
 });
+
+// Payment Routes
+Route::middleware('auth')->prefix('payment')->name('payment.')->group(function () {
+    // Generic payment initialization (supports all types)
+    Route::post('/initialize', [PaymentController::class, 'initializeTransaction'])->name('initialize');
+    
+    // Backward compatibility endpoints
+    Route::post('/address/initialize', [PaymentController::class, 'initializeAddressPayment'])->name('address.initialize');
+    
+    // Verification & Status
+    Route::post('/verify', [PaymentController::class, 'verifyTransaction'])->name('verify');
+    Route::get('/status/{reference}', [PaymentController::class, 'getPaymentStatus'])->name('status');
+});
+
+// Paystack Webhook
+Route::post('/webhook/paystack', [PaymentController::class, 'webhook'])->name('webhook.paystack');
 
 require __DIR__ . '/settings.php';

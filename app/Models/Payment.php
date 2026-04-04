@@ -14,6 +14,8 @@ class Payment extends Model
         'address_id',
         'street_application_id',
         'user_id',
+        'payable_id',
+        'payable_type',
         'amount',
         'currency',
         'payment_method',
@@ -43,6 +45,14 @@ class Payment extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the payable model (polymorphic)
+     */
+    public function payable()
+    {
+        return $this->morphTo();
     }
 
     /**

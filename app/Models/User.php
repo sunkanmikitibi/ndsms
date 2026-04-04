@@ -44,4 +44,28 @@ class User extends Authenticatable
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
+
+    /**
+     * Get user's address indexing requests
+     */
+    public function addressIndexingRequests()
+    {
+        return $this->hasMany(AddressIndexingRequest::class);
+    }
+
+    /**
+     * Get user's street revalidation requests
+     */
+    public function streetRevalidations()
+    {
+        return $this->hasMany(StreetRevalidation::class);
+    }
+
+    /**
+     * Get user's payments
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }
