@@ -25,8 +25,14 @@ use App\Livewire\Portal\AiLookup;
 use App\Livewire\Portal\RegisterAddress;
 use App\Livewire\Portal\Complaints;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 Route::view('/', 'welcome')->name('home');
+
+// Storage Link Route
+Route::get('/storage/{path}', function ($path) {
+    return Storage::disk('public')->download($path);
+})->where('path', '.*')->name('storage');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', HomeRedirectController::class)->name('dashboard');

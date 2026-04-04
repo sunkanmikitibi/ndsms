@@ -18,9 +18,9 @@
             <!-- Logo Section -->
             <div class="flex flex-col items-center gap-3 mb-2">
                 <a href="{{ route('home') }}"
-                    class="inline-flex items-center justify-center transition-all duration-300"
-                    wire:navigate>
-                    <img src="{{ asset('logo.jpeg') }}" alt="NDSMS Logo" class="h-14 w-auto rounded-lg shadow-lg hover:shadow-emerald-500/25">
+                    class="inline-flex items-center justify-center transition-all duration-300" wire:navigate>
+                    <img src="{{ asset('logo.jpeg') }}" alt="NDSMS Logo"
+                        class="h-14 w-auto rounded-lg shadow-lg hover:shadow-emerald-500/25">
                 </a>
                 <span class="sr-only">{{ config('app.name', 'Laravel') }}</span>
             </div>
