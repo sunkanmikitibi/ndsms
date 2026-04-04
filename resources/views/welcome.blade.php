@@ -348,7 +348,7 @@
                 <p class="text-surface-container-low leading-relaxed font-headline text-sm">Empowering Njikoka with
                     precise digital governance and spatial administrative excellence.</p>
             </div>
-            <div class="grid grid-cols-2 gap-12">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 flex-1">
                 <div class="flex flex-col gap-4">
                     <span
                         class="text-tertiary-fixed-dim uppercase font-bold text-xs tracking-widest font-headline">Quick
@@ -372,9 +372,59 @@
                             href="#">Citizen Services</a>
                     </nav>
                 </div>
+                <div class="flex flex-col gap-4">
+                    <span
+                        class="text-tertiary-fixed-dim uppercase font-bold text-xs tracking-widest font-headline">Contact</span>
+                    <div class="flex flex-col gap-3">
+                        <a href="mailto:info@njikokadsms.online"
+                            class="text-outline-variant hover:text-white transition-colors font-headline text-sm">
+                            info@njikokadsms.online
+                        </a>
+                        <a href="tel:+2348036052303"
+                            class="text-outline-variant hover:text-white transition-colors font-headline text-sm">
+                            +234 803 605 2303
+                        </a>
+                        <a href="tel:+2348025796226"
+                            class="text-outline-variant hover:text-white transition-colors font-headline text-sm">
+                            +234 802 579 6226
+                        </a>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <span
+                        class="text-tertiary-fixed-dim uppercase font-bold text-xs tracking-widest font-headline">Follow</span>
+                    <div class="flex flex-col gap-2">
+                        <a class="text-outline-variant hover:text-white transition-colors font-headline text-sm flex items-center gap-2"
+                            href="https://facebook.com/njikokadsms" target="_blank">
+                            <span class="material-symbols-outlined text-base">facebook</span>
+                            Facebook
+                        </a>
+                        <a class="text-outline-variant hover:text-white transition-colors font-headline text-sm flex items-center gap-2"
+                            href="https://instagram.com/njikokadsms" target="_blank">
+                            <span class="material-symbols-outlined text-base">photo_camera</span>
+                            Instagram
+                        </a>
+                        <a class="text-outline-variant hover:text-white transition-colors font-headline text-sm flex items-center gap-2"
+                            href="https://youtube.com/@njikokadsms" target="_blank">
+                            <span class="material-symbols-outlined text-base">video_library</span>
+                            YouTube
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="w-full px-12 max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10">
+
+        <!-- Address Section -->
+        <div class="w-full px-12 max-w-7xl mx-auto mt-12 pt-8 border-t border-white/10">
+            <div class="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4 mb-8">
+                <span class="material-symbols-outlined text-2xl text-tertiary-fixed-dim">location_on</span>
+                <div class="flex flex-col gap-1">
+                    <h3 class="text-tertiary-fixed-dim uppercase font-bold text-xs tracking-widest font-headline">
+                        Address</h3>
+                    <p class="text-surface-container-low font-headline text-sm">Njikoka Local Government Head Quarters,
+                        Abagana</p>
+                </div>
+            </div>
             <p class="text-surface-container-low text-[12px] font-headline opacity-60">© 2024 Njikoka Digital Street
                 Management System. An Official Civic Estate Initiative.</p>
         </div>
