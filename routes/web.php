@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\SuperAdminRegistrationController;
 use App\Http\Controllers\HomeRedirectController;
 use App\Http\Controllers\PaymentController;
 use App\Livewire\Admin\Addresses\Index as AddressesIndex;
@@ -28,6 +29,10 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 Route::view('/', 'welcome')->name('home');
+
+// Super Admin Registration Routes
+Route::get('/auth/register-super-admin', [SuperAdminRegistrationController::class, 'show'])->name('auth.register-super-admin');
+Route::post('/auth/register-super-admin', [SuperAdminRegistrationController::class, 'store'])->name('auth.register-super-admin.store');
 
 // Storage Link Route
 Route::get('/storage/{path}', function ($path) {

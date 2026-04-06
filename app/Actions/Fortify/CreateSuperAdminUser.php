@@ -8,19 +8,19 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
-class CreateNewUser implements CreatesNewUsers
+class CreateSuperAdminUser implements CreatesNewUsers
 {
     use PasswordValidationRules, ProfileValidationRules;
 
     /**
-     * Validate and create a newly registered user.
+     * Validate and create a newly registered super admin user.
      *
      * @param  array<string, string>  $input
      */
     public function create(array $input): User
     {
         Validator::make($input, [
-            ...$this->extendedProfileRules(),
+            ...$this->superAdminRegistrationRules(),
             'password' => $this->passwordRules(),
         ])->validate();
 
@@ -28,18 +28,19 @@ class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => $input['password'],
-            'phone' => $input['phone'] ?? null,
-            'town' => $input['town'] ?? null,
+            'phone' => $input['phone'],
             'address' => $input['address'] ?? null,
-            'organization' => $input['organization'] ?? null,
-            'position' => $input['position'] ?? null,
+            'town' => $input['town'],
+            'organization' => $input['organization'],
+            'position' => $input['position'],
             'department' => $input['department'] ?? null,
             'state' => $input['state'] ?? null,
             'country' => $input['country'] ?? null,
+            'is_super_admin' => true,
         ]);
 
-        // Automatically assign field-officer role to newly registered users
-        $user->assignRole('field-officer');
+        // Automatically assign super-admin role
+        $user->assignRole('super-admin');
 
         return $user;
     }

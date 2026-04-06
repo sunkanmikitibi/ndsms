@@ -36,6 +36,32 @@
                 @enderror
             </div>
 
+            <!-- Phone (Optional) -->
+            <div class="flex flex-col gap-2">
+                <label for="phone" class="block text-sm font-medium text-neutral-300">
+                    {{ __('Phone number') }} <span class="text-neutral-500">(Optional)</span>
+                </label>
+                <input id="phone" name="phone" type="tel" value="{{ old('phone') }}"
+                    placeholder="+234 XXX XXX XXXX"
+                    class="w-full px-4 py-3 bg-neutral-800/50 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-all duration-200" />
+                @error('phone')
+                    <span class="text-xs text-red-400">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <!-- Town (Optional) -->
+            <div class="flex flex-col gap-2">
+                <label for="town" class="block text-sm font-medium text-neutral-300">
+                    {{ __('Town/City') }} <span class="text-neutral-500">(Optional)</span>
+                </label>
+                <input id="town" name="town" type="text" value="{{ old('town') }}"
+                    placeholder="Your town or city"
+                    class="w-full px-4 py-3 bg-neutral-800/50 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-all duration-200" />
+                @error('town')
+                    <span class="text-xs text-red-400">{{ $message }}</span>
+                @enderror
+            </div>
+
             <!-- Password -->
             <div class="flex flex-col gap-2">
                 <label for="password" class="block text-sm font-medium text-neutral-300">
