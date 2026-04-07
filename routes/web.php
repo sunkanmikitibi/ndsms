@@ -8,11 +8,15 @@ use App\Livewire\Admin\Approvals\Index as ApprovalsIndex;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Fees\Index as FeesIndex;
 use App\Livewire\Admin\FieldReports\Index as FieldReportsIndex;
+use App\Livewire\Admin\Payments\Index as PaymentsIndex;
 use App\Livewire\Admin\Permissions\Index as PermissionsIndex;
+use App\Livewire\Admin\Reports\Index as ReportsIndex;
 use App\Livewire\Admin\Roles\Index as RolesIndex;
+use App\Livewire\Admin\Settings\Index as SettingsIndex;
 use App\Livewire\Admin\Streets\Index as StreetsIndex;
 use App\Livewire\Admin\StreetApplications\Index as StreetApplicationsIndex;
 use App\Livewire\Admin\Users\Index as UsersIndex;
+use App\Livewire\Admin\WardMap\Index as WardMapIndex;
 use App\Livewire\Portal\Dashboard as PortalDashboard;
 use App\Livewire\Portal\RegisterStreet;
 use App\Livewire\Portal\RegisterAddressIndexing;
@@ -89,13 +93,13 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     // Payments
     Route::middleware('can:view payments')->group(function () {
-        Route::get('/payments', fn() => view('livewire.admin.placeholder', ['title' => 'Payments', 'icon' => 'fa-credit-card']))->name('payments.index');
+        Route::get('/payments', PaymentsIndex::class)->name('payments.index');
     });
 
     // Reports
     Route::middleware('can:view reports')->group(function () {
-        Route::get('/reports', fn() => view('livewire.admin.placeholder', ['title' => 'Reports', 'icon' => 'fa-chart-bar']))->name('reports.index');
-        Route::get('/map', fn() => view('livewire.admin.placeholder', ['title' => 'Ward Map', 'icon' => 'fa-map']))->name('map.index');
+        Route::get('/reports', ReportsIndex::class)->name('reports.index');
+        Route::get('/map', WardMapIndex::class)->name('map.index');
     });
 
     // Fee Management (View for all with permission, or super-admin)
@@ -108,7 +112,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         Route::get('/users', UsersIndex::class)->name('users.index');
         Route::get('/roles', RolesIndex::class)->name('roles.index');
         Route::get('/permissions', PermissionsIndex::class)->name('permissions.index');
-        Route::get('/settings', fn() => view('livewire.admin.placeholder', ['title' => 'Settings', 'icon' => 'fa-cog']))->name('settings.index');
+        Route::get('/settings', SettingsIndex::class)->name('settings.index');
     });
 });
 
