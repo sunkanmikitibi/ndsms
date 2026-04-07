@@ -5,7 +5,9 @@ namespace App\Providers;
 use App\Models\StreetNumberingPlate;
 use App\Models\AddressIndexingRequest;
 use App\Models\StreetApplication;
-use App\Observers\StreetNumberingPlateRequestObserver;use App\Observers\StreetNumberingPlateRequestEmailObserver;use App\Observers\AddressIndexingRequestObserver;
+use App\Observers\StreetNumberingPlateRequestObserver;
+use App\Observers\StreetNumberingPlateRequestEmailObserver;
+use App\Observers\AddressIndexingRequestObserver;
 use App\Observers\StreetApplicationObserver;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
@@ -38,12 +40,12 @@ class AppServiceProvider extends ServiceProvider
     protected function registerObservers(): void
     {
         // SMS Notifications
-        StreetNumberingPlateRequest::observe(StreetNumberingPlateRequestObserver::class);
+        StreetNumberingPlate::observe(StreetNumberingPlateRequestObserver::class);
         AddressIndexingRequest::observe(AddressIndexingRequestObserver::class);
         StreetApplication::observe(StreetApplicationObserver::class);
 
         // Email Notifications
-        StreetNumberingPlateRequest::observe(StreetNumberingPlateRequestEmailObserver::class);
+        StreetNumberingPlate::observe(StreetNumberingPlateRequestEmailObserver::class);
     }
 
     /**
