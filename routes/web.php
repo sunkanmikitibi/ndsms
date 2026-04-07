@@ -98,8 +98,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         Route::get('/map', fn() => view('livewire.admin.placeholder', ['title' => 'Ward Map', 'icon' => 'fa-map']))->name('map.index');
     });
 
-    // Fee Management (View for all with permission, manage for super-admin only)
-    Route::middleware('can:view fee schedules')->group(function () {
+    // Fee Management (View for all with permission, or super-admin)
+    Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/fee-schedules', FeesIndex::class)->name('fee-schedules.index');
     });
 

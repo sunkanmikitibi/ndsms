@@ -50,8 +50,10 @@ class Index extends Component
 
     public function mount()
     {
-        // Require view permission to access the page
-        $this->authorize('view', auth()->user());
+        // Allow access to super-admin or users with view fee schedules permission
+        if (!auth()->user()->hasRole('super-admin') && !auth()->user()->hasPermissionTo('view fee schedules')) {
+            abort(403, 'Unauthorized access to fee schedules.');
+        }
     }
 
     public function updatingSearch()
@@ -89,8 +91,8 @@ class Index extends Component
 
     public function openCreate()
     {
-        // Check permission to manage fee schedules
-        if (!auth()->user()->hasPermissionTo('manage fee schedules')) {
+        // Check permission to manage fee schedules (super-admin and those with manage permission)
+        if (!auth()->user()->hasRole('super-admin') && !auth()->user()->hasPermissionTo('manage fee schedules')) {
             $this->dispatch('notify', [
                 'type' => 'error',
                 'message' => 'You do not have permission to create fee schedules.',
@@ -116,8 +118,8 @@ class Index extends Component
 
     public function openEdit(int $id)
     {
-        // Check permission to manage fee schedules
-        if (!auth()->user()->hasPermissionTo('manage fee schedules')) {
+        // Check permission to manage fee schedules (super-admin and those with manage permission)
+        if (!auth()->user()->hasRole('super-admin') && !auth()->user()->hasPermissionTo('manage fee schedules')) {
             $this->dispatch('notify', [
                 'type' => 'error',
                 'message' => 'You do not have permission to edit fee schedules.',
@@ -157,8 +159,8 @@ class Index extends Component
 
     public function save()
     {
-        // Check permission to manage fee schedules
-        if (!auth()->user()->hasPermissionTo('manage fee schedules')) {
+        // Check permission to manage fee schedules (super-admin and those with manage permission)
+        if (!auth()->user()->hasRole('super-admin') && !auth()->user()->hasPermissionTo('manage fee schedules')) {
             $this->dispatch('notify', [
                 'type' => 'error',
                 'message' => 'You do not have permission to save fee schedules.',
@@ -203,8 +205,8 @@ class Index extends Component
 
     public function confirmDelete(int $id)
     {
-        // Check permission to manage fee schedules
-        if (!auth()->user()->hasPermissionTo('manage fee schedules')) {
+        // Check permission to manage fee schedules (super-admin and those with manage permission)
+        if (!auth()->user()->hasRole('super-admin') && !auth()->user()->hasPermissionTo('manage fee schedules')) {
             $this->dispatch('notify', [
                 'type' => 'error',
                 'message' => 'You do not have permission to delete fee schedules.',
@@ -218,8 +220,8 @@ class Index extends Component
 
     public function deleteFee()
     {
-        // Double-check permission before deleting
-        if (!auth()->user()->hasPermissionTo('manage fee schedules')) {
+        // Double-check permission before deleting (super-admin and those with manage permission)
+        if (!auth()->user()->hasRole('super-admin') && !auth()->user()->hasPermissionTo('manage fee schedules')) {
             $this->dispatch('notify', [
                 'type' => 'error',
                 'message' => 'You do not have permission to delete fee schedules.',
