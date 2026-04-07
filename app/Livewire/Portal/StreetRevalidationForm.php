@@ -49,7 +49,7 @@ class StreetRevalidationForm extends Component
 
     public function mount()
     {
-        $this->streets = Street::where('status', 'active')->get();
+        $this->streets = Street::where('status', 'active')->get()->toArray();
     }
 
     public function setTab($tabName)
