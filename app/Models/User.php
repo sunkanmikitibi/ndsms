@@ -82,4 +82,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Payment::class);
     }
+
+    /**
+     * Get user's complaints
+     */
+    public function complaints()
+    {
+        return $this->hasMany(Complaint::class);
+    }
 }

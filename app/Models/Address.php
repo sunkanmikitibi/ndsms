@@ -25,14 +25,38 @@ class Address extends Model
         'reviewed_at',
         'latitude',
         'longitude',
+        'qr_code',
+        'code',
+        'last_verified_at',
+        'verified_by_id',
+        'description',
+        'approval_status',
+        'user_id',
     ];
 
     protected $casts = [
         'reviewed_at' => 'datetime',
+        'last_verified_at' => 'datetime',
     ];
 
     public function street(): BelongsTo
     {
         return $this->belongsTo(Street::class);
+    }
+
+    /**
+     * Get the user who verified this address
+     */
+    public function verifiedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'verified_by_id');
+    }
+
+    /**
+     * Get the user who created this address
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
