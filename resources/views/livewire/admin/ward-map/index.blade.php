@@ -1,19 +1,23 @@
-<div class="p-4 md:p-8">
-    <!-- Header -->
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Ward Map</h1>
-        <p class="text-gray-600 dark:text-gray-400 mt-2">Geographic distribution of streets and addresses across wards
-        </p>
+<div>
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h2><i class="fas fa-map" style="color:var(--accent);margin-right:10px;"></i>Ward Map</h2>
+            <p>Geographic distribution of streets and addresses across wards</p>
+        </div>
     </div>
 
-    <!-- Filters -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow mb-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <!-- Filters Card -->
+    <div class="card" style="margin-bottom:24px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;">
             <!-- Ward Select -->
             <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select Ward</label>
+                <label
+                    style="display:block;font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:8px;">Select
+                    Ward</label>
                 <select wire:model.live="selectedWard"
-                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-input);color:var(--text-primary);font-size:14px;transition:border-color var(--transition);"
+                    class="focus:outline-none focus:ring-2" onchange="this.style.borderColor='var(--accent)'">
                     <option value="">-- All Wards --</option>
                     @foreach ($wards as $ward)
                         <option value="{{ $ward }}">{{ $ward }}</option>
@@ -23,9 +27,12 @@
 
             <!-- Street Type Filter -->
             <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Street Type</label>
+                <label
+                    style="display:block;font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:8px;">Street
+                    Type</label>
                 <select wire:model.live="filterType"
-                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-input);color:var(--text-primary);font-size:14px;transition:border-color var(--transition);"
+                    class="focus:outline-none focus:ring-2" onchange="this.style.borderColor='var(--accent)'">
                     <option value="all">All Types</option>
                     @foreach ($streetTypes as $type)
                         <option value="{{ $type }}">{{ $type }}</option>
@@ -34,9 +41,8 @@
             </div>
 
             <!-- Export Button -->
-            <div class="flex items-end">
-                <button wire:click="exportWardData"
-                    class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition flex items-center justify-center gap-2">
+            <div style="display:flex;align-items:flex-end;">
+                <button wire:click="exportWardData" class="btn btn-primary" style="width:100%;">
                     <i class="fas fa-download"></i> Export Data
                 </button>
             </div>
@@ -44,40 +50,59 @@
     </div>
 
     <!-- Coverage Statistics -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
-            <div class="text-gray-600 dark:text-gray-400 text-sm font-medium">Selected Ward</div>
-            <div class="text-2xl font-bold text-gray-900 dark:text-white mt-2">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px;">
+        <!-- Ward Card -->
+        <div class="card">
+            <div
+                style="font-size:11px;text-transform:uppercase;color:var(--text-secondary);font-weight:700;letter-spacing:0.5px;margin-bottom:8px;">
+                Selected Ward</div>
+            <div style="font-size:24px;font-weight:800;color:var(--accent);margin-top:8px;">
                 {{ $selectedWard ?: 'All Wards' }}
             </div>
         </div>
-        <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6 shadow">
-            <div class="text-blue-600 dark:text-blue-400 text-sm font-medium">Streets</div>
-            <div class="text-3xl font-bold text-blue-600 dark:text-blue-400 mt-2">{{ $mapData['street_count'] }}</div>
+
+        <!-- Streets Card -->
+        <div class="card" style="background:var(--accent-light);border:1px solid var(--accent);">
+            <div
+                style="font-size:11px;text-transform:uppercase;color:var(--accent);font-weight:700;letter-spacing:0.5px;margin-bottom:8px;">
+                Streets</div>
+            <div style="font-size:28px;font-weight:800;color:var(--accent);margin-top:8px;">
+                {{ $mapData['street_count'] }}</div>
         </div>
-        <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-6 shadow">
-            <div class="text-green-600 dark:text-green-400 text-sm font-medium">Addresses</div>
-            <div class="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{{ $mapData['address_count'] }}
-            </div>
+
+        <!-- Addresses Card -->
+        <div class="card" style="background:var(--info-light);border:1px solid var(--info);">
+            <div
+                style="font-size:11px;text-transform:uppercase;color:var(--info);font-weight:700;letter-spacing:0.5px;margin-bottom:8px;">
+                Addresses</div>
+            <div style="font-size:28px;font-weight:800;color:var(--info);margin-top:8px;">
+                {{ $mapData['address_count'] }}</div>
         </div>
-        <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-6 shadow">
-            <div class="text-purple-600 dark:text-purple-400 text-sm font-medium">Coverage</div>
-            <div class="text-3xl font-bold text-purple-600 dark:text-purple-400 mt-2">{{ $mapData['coverage'] }}%</div>
+
+        <!-- Coverage Card -->
+        <div class="card" style="background:var(--accent-gold-light);border:1px solid var(--accent-gold);">
+            <div
+                style="font-size:11px;text-transform:uppercase;color:var(--accent-gold);font-weight:700;letter-spacing:0.5px;margin-bottom:8px;">
+                Coverage</div>
+            <div style="font-size:28px;font-weight:800;color:var(--accent-gold);margin-top:8px;">
+                {{ $mapData['coverage'] }}%</div>
         </div>
     </div>
 
     <!-- Map Placeholder -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow mb-6 overflow-hidden">
-        <div class="w-full h-96 bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-            <div class="text-center">
-                <i class="fas fa-map text-6xl text-gray-400 dark:text-gray-600 mb-4"></i>
-                <p class="text-gray-600 dark:text-gray-400">Interactive map view (requires Google Maps API integration)
-                </p>
+    <div class="card" style="margin-bottom:24px;padding:0;overflow:hidden;">
+        <div
+            style="width:100%;height:400px;background:var(--bg-input);display:flex;align-items:center;justify-content:center;">
+            <div style="text-align:center;">
+                <i class="fas fa-map"
+                    style="font-size:48px;color:var(--text-secondary);margin-bottom:16px;display:block;"></i>
+                <p style="color:var(--text-secondary);margin-bottom:12px;">Interactive map view (requires Google Maps
+                    API integration)</p>
                 @if ($selectedWard)
-                    <p class="text-sm text-gray-500 dark:text-gray-500 mt-2">Ward: <span
-                            class="font-semibold">{{ $selectedWard }}</span></p>
+                    <p style="font-size:12px;color:var(--text-secondary);margin-top:8px;">Ward: <span
+                            style="font-weight:700;">{{ $selectedWard }}</span></p>
                 @endif
-                <p class="text-sm text-gray-500 dark:text-gray-500 mt-2">
+                <p style="font-size:12px;color:var(--text-secondary);margin-top:8px;">
                     Showing {{ $mapData['street_count'] }} streets and {{ $mapData['address_count'] }} addresses
                 </p>
             </div>
@@ -85,36 +110,41 @@
     </div>
 
     <!-- Streets & Addresses List -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;">
         <!-- Streets -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
-            <div class="bg-gray-50 dark:bg-gray-700 px-6 py-4 border-b border-gray-200 dark:border-gray-600">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    <i class="fas fa-road mr-2"></i> Streets
-                </h3>
+        <div class="card" style="padding:0;overflow:hidden;">
+            <div
+                style="background:var(--bg-input);padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+                <i class="fas fa-road" style="color:var(--accent);"></i>
+                <h3 style="font-size:14px;font-weight:700;color:var(--text-primary);margin:0;">Streets</h3>
             </div>
-            <div class="divide-y divide-gray-200 dark:divide-gray-700 max-h-96 overflow-y-auto">
+            <div style="max-height:400px;overflow-y:auto;border-top:1px solid var(--border);">
                 @forelse($streets as $street)
-                    <div class="px-6 py-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
-                        <div class="font-medium text-gray-900 dark:text-white">{{ $street->name }}</div>
-                        <div class="text-sm text-gray-600 dark:text-gray-400">
-                            <span class="inline-block mr-2"><i class="fas fa-tag"></i> {{ $street->code }}</span>
-                            <span class="inline-block"><i class="fas fa-map-marker"></i> {{ $street->ward }}</span>
+                    <div style="padding:12px 16px;border-bottom:1px solid var(--border);transition:background-color var(--transition);cursor:pointer;"
+                        onmouseover="this.style.backgroundColor='var(--accent-light)'"
+                        onmouseout="this.style.backgroundColor='transparent'">
+                        <div style="font-weight:600;color:var(--text-primary);margin-bottom:4px;">{{ $street->name }}
                         </div>
-                        <div class="text-xs mt-1">
+                        <div style="font-size:12px;color:var(--text-secondary);">
+                            <span style="display:inline-block;margin-right:12px;"><i class="fas fa-tag"></i>
+                                {{ $street->code }}</span>
+                            <span style="display:inline-block;"><i class="fas fa-map-marker"></i>
+                                {{ $street->ward }}</span>
+                        </div>
+                        <div style="font-size:11px;margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
                             <span
-                                class="inline-flex items-center px-2 py-1 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400">
+                                style="display:inline-flex;align-items:center;padding:4px 8px;border-radius:12px;background:var(--info-light);color:var(--info);font-weight:600;">
                                 {{ $street->type }}
                             </span>
                             <span
-                                class="inline-flex items-center px-2 py-1 rounded-full ml-2 {{ $street->status === 'active' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400' }}">
+                                style="display:inline-flex;align-items:center;padding:4px 8px;border-radius:12px;{{ $street->status === 'active' ? 'background:var(--accent-light);color:var(--accent);' : 'background:var(--border);color:var(--text-secondary);' }}font-weight:600;">
                                 {{ $street->status }}
                             </span>
                         </div>
                     </div>
                 @empty
-                    <div class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
-                        <i class="fas fa-inbox text-2xl mb-2"></i>
+                    <div style="padding:40px 16px;text-align:center;color:var(--text-secondary);">
+                        <i class="fas fa-inbox" style="font-size:24px;margin-bottom:8px;display:block;"></i>
                         <p>No streets found</p>
                     </div>
                 @endforelse
@@ -122,32 +152,35 @@
         </div>
 
         <!-- Addresses -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
-            <div class="bg-gray-50 dark:bg-gray-700 px-6 py-4 border-b border-gray-200 dark:border-gray-600">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    <i class="fas fa-home mr-2"></i> Addresses
-                </h3>
+        <div class="card" style="padding:0;overflow:hidden;">
+            <div
+                style="background:var(--bg-input);padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+                <i class="fas fa-home" style="color:var(--accent);"></i>
+                <h3 style="font-size:14px;font-weight:700;color:var(--text-primary);margin:0;">Addresses</h3>
             </div>
-            <div class="divide-y divide-gray-200 dark:divide-gray-700 max-h-96 overflow-y-auto">
+            <div style="max-height:400px;overflow-y:auto;border-top:1px solid var(--border);">
                 @forelse($addresses as $address)
-                    <div class="px-6 py-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
-                        <div class="font-medium text-gray-900 dark:text-white">{{ $address->house_number }}</div>
-                        <div class="text-sm text-gray-600 dark:text-gray-400">
-                            <span><i class="fas fa-road mr-1"></i> {{ $address->street?->name }}</span>
+                    <div style="padding:12px 16px;border-bottom:1px solid var(--border);transition:background-color var(--transition);cursor:pointer;"
+                        onmouseover="this.style.backgroundColor='var(--accent-light)'"
+                        onmouseout="this.style.backgroundColor='transparent'">
+                        <div style="font-weight:600;color:var(--text-primary);margin-bottom:4px;">
+                            {{ $address->house_number }}</div>
+                        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;">
+                            <i class="fas fa-road mr-1"></i> {{ $address->street?->name }}
                         </div>
-                        <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                            <span><i class="fas fa-user"></i> {{ $address->owner_name }}</span>
+                        <div style="font-size:11px;color:var(--text-secondary);margin-bottom:8px;">
+                            <i class="fas fa-user"></i> {{ $address->owner_name }}
                         </div>
-                        <div class="text-xs mt-1">
+                        <div style="font-size:11px;">
                             <span
-                                class="inline-flex items-center px-2 py-1 rounded-full {{ $address->status === 'verified' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400' }}">
+                                style="display:inline-flex;align-items:center;padding:4px 8px;border-radius:12px;{{ $address->status === 'verified' ? 'background:var(--accent-light);color:var(--accent);' : 'background:var(--info-light);color:var(--info);' }}font-weight:600;">
                                 {{ $address->status }}
                             </span>
                         </div>
                     </div>
                 @empty
-                    <div class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
-                        <i class="fas fa-inbox text-2xl mb-2"></i>
+                    <div style="padding:40px 16px;text-align:center;color:var(--text-secondary);">
+                        <i class="fas fa-inbox" style="font-size:24px;margin-bottom:8px;display:block;"></i>
                         <p>No addresses found</p>
                     </div>
                 @endforelse
