@@ -2,6 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\StreetNumberingPlate;
+use App\Models\AddressIndexingRequest;
+use App\Models\StreetApplication;
+use App\Observers\StreetNumberingPlateRequestObserver;use App\Observers\StreetNumberingPlateRequestEmailObserver;use App\Observers\AddressIndexingRequestObserver;
+use App\Observers\StreetApplicationObserver;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +29,21 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+        $this->registerObservers();
+    }
+
+    /**
+     * Register model observers for SMS notifications
+     */
+    protected function registerObservers(): void
+    {
+        // SMS Notifications
+        StreetNumberingPlateRequest::observe(StreetNumberingPlateRequestObserver::class);
+        AddressIndexingRequest::observe(AddressIndexingRequestObserver::class);
+        StreetApplication::observe(StreetApplicationObserver::class);
+
+        // Email Notifications
+        StreetNumberingPlateRequest::observe(StreetNumberingPlateRequestEmailObserver::class);
     }
 
     /**
