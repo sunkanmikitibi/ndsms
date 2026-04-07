@@ -102,12 +102,12 @@ document.documentElement.classList.toggle('dark', darkMode)"
                 </a>
             @endcan
 
-            @canany(['manage settings', 'view settings'])
+            @can('view fee schedules')
                 <a href="{{ route('admin.fee-schedules.index') }}"
                     class="nav-item {{ request()->routeIs('admin.fee-schedules.*') ? 'active' : '' }}">
                     <i class="fas fa-receipt"></i> Fee Schedules
                 </a>
-            @endcanany
+            @endcan
 
             @can('view reports')
                 <div class="nav-section-title">Analytics</div>
