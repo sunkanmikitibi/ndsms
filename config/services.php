@@ -41,4 +41,13 @@ return [
         'merchant_id' => env('PAYSTACK_MERCHANT_ID'),
     ],
 
+    'sms' => [
+        'provider' => env('SMS_PROVIDER', 'mock'), // twilio, infobip, mock
+        'api_key' => env('SMS_API_KEY'),
+        'sender_id' => env('SMS_SENDER_ID', 'NDSMS'),
+        'twilio_account_sid' => env('TWILIO_ACCOUNT_SID'),
+        'twilio_auth_token' => env('TWILIO_AUTH_TOKEN'),
+        'twilio_from_number' => env('TWILIO_FROM_NUMBER'),
+    ],
+
 ];

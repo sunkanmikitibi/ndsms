@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\SuperAdminRegistrationController;
 use App\Http\Controllers\HomeRedirectController;
 use App\Http\Controllers\PaymentController;
 use App\Livewire\Admin\Addresses\Index as AddressesIndex;
+use App\Livewire\Admin\AddressIndexing\Index as AddressIndexingIndex;
 use App\Livewire\Admin\Approvals\Index as ApprovalsIndex;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Fees\Index as FeesIndex;
@@ -15,6 +16,7 @@ use App\Livewire\Admin\Roles\Index as RolesIndex;
 use App\Livewire\Admin\Settings\Index as SettingsIndex;
 use App\Livewire\Admin\Streets\Index as StreetsIndex;
 use App\Livewire\Admin\StreetApplications\Index as StreetApplicationsIndex;
+use App\Livewire\Admin\StreetNumberingPlates\Index as StreetNumberingPlatesIndex;
 use App\Livewire\Admin\Users\Index as UsersIndex;
 use App\Livewire\Admin\WardMap\Index as WardMapIndex;
 use App\Livewire\Portal\Dashboard as PortalDashboard;
@@ -79,6 +81,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // Address & Street management
     Route::middleware('can:view addresses')->group(function () {
         Route::get('/addresses', AddressesIndex::class)->name('addresses.index');
+        Route::get('/address-indexing', AddressIndexingIndex::class)->name('address-indexing.index');
         Route::get('/streets', StreetsIndex::class)->name('streets.index');
     });
 
@@ -91,6 +94,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::middleware('can:view approvals')->group(function () {
         Route::get('/street-applications', StreetApplicationsIndex::class)->name('street-applications.index');
         Route::get('/field-reports', FieldReportsIndex::class)->name('field-reports.index');
+        Route::get('/street-numbering-plates', StreetNumberingPlatesIndex::class)->name('street-numbering-plates.index');
     });
 
     // Payments
