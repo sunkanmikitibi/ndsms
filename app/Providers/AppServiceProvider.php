@@ -5,10 +5,14 @@ namespace App\Providers;
 use App\Models\StreetNumberingPlate;
 use App\Models\AddressIndexingRequest;
 use App\Models\StreetApplication;
+use App\Models\Street;
+use App\Models\Payment;
 use App\Observers\StreetNumberingPlateRequestObserver;
 use App\Observers\StreetNumberingPlateRequestEmailObserver;
 use App\Observers\AddressIndexingRequestObserver;
 use App\Observers\StreetApplicationObserver;
+use App\Observers\StreetObserver;
+use App\Observers\PaymentObserver;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +26,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(
+            \App\Services\InAppNotificationService::class,
+            \App\Services\InAppNotificationService::class
+        );
     }
 
     /**
@@ -46,6 +53,10 @@ class AppServiceProvider extends ServiceProvider
 
         // Email Notifications
         StreetNumberingPlate::observe(StreetNumberingPlateRequestEmailObserver::class);
+
+        // In-app Notifications
+        Street::observe(StreetObserver::class);
+        Payment::observe(PaymentObserver::class);
     }
 
     /**

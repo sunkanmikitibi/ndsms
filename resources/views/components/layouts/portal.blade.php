@@ -52,10 +52,9 @@ document.documentElement.classList.toggle('dark', darkMode);"
                 </div>
             </div>
             <!-- Notification Bell -->
-            <button class="notif-bell" type="button" style="margin-left:auto;" title="Notifications">
-                <i class="fas fa-bell"></i>
-                <span class="notif-count">0</span>
-            </button>
+            <div style="margin-left:auto;">
+                @livewire('components.notification-bell')
+            </div>
         </div>
 
         <!-- Nav -->

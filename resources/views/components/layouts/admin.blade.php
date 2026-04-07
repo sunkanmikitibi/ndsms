@@ -41,6 +41,10 @@ document.documentElement.classList.toggle('dark', darkMode)"
                     <span>Admin Portal</span>
                 </div>
             </div>
+            <!-- Notification Bell -->
+            <div style="margin-left:auto;">
+                @livewire('components.notification-bell')
+            </div>
         </div>
 
         <nav class="sidebar-nav">
