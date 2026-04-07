@@ -87,7 +87,8 @@
 
                             <div style="margin-bottom:20px;">
                                 <input type="text" placeholder="Search streets..."
-                                    style="width:100%;margin-bottom:12px;" wire:model.live="search_street"
+                                    style="width:100%;margin-bottom:12px;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-input);font-size:14px;font-family:inherit;" 
+                                    wire:model.live="search_street"
                                     @if ($tab === 'existing')  @endif>
 
                                 <div style="max-height:400px;overflow-y:auto;">
