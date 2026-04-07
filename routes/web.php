@@ -21,6 +21,7 @@ use App\Livewire\Portal\Dashboard as PortalDashboard;
 use App\Livewire\Portal\RegisterStreet;
 use App\Livewire\Portal\RegisterAddressIndexing;
 use App\Livewire\Portal\StreetRevalidationForm;
+use App\Livewire\Portal\RequestNumberingPlates;
 use App\Livewire\Portal\Verification;
 use App\Livewire\Portal\QrScanner;
 use App\Livewire\Portal\StreetDirectory;
@@ -54,6 +55,7 @@ Route::middleware(['auth', 'verified'])->prefix('portal')->name('portal.')->grou
     Route::get('/register-address', RegisterAddress::class)->name('register-address');
     Route::get('/register-address-indexing', RegisterAddressIndexing::class)->name('register-address-indexing');
     Route::get('/street-revalidation', StreetRevalidationForm::class)->name('street-revalidation');
+    Route::get('/request-numbering-plates', RequestNumberingPlates::class)->name('request-numbering-plates');
     Route::get('/verification', Verification::class)->name('verification');
     Route::get('/qr-scanner', QrScanner::class)->name('qr-scanner');
     Route::get('/street-directory', StreetDirectory::class)->name('street-directory');
