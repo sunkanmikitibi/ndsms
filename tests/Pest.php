@@ -15,6 +15,10 @@ use Tests\TestCase;
 
 pest()->extend(TestCase::class)
     ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    ->beforeEach(function () {
+        // Seed roles and permissions for tests
+        $this->seed(\Database\Seeders\RolesAndPermissionsSeeder::class);
+    })
     ->in('Feature');
 
 /*
