@@ -9,11 +9,13 @@ The in-app notifications system is a comprehensive notification management solut
 ### Components
 
 #### 1. Database Layer
+
 - **Table**: `notifications`
 - **Model**: `app/Models/Notification.php`
 - **Migration**: `database/migrations/2026_04_07_000100_create_notifications_table.php`
 
 **Schema:**
+
 - `id` (Primary Key)
 - `user_id` (Foreign Key to users table)
 - `type` (string: info, success, warning, error, approval, rejection, payment, delivery)
@@ -28,14 +30,17 @@ The in-app notifications system is a comprehensive notification management solut
 - `created_at`, `updated_at` (timestamps)
 
 **Indexes:**
+
 - `(user_id, read_at)` - Query unread notifications quickly
 - `(user_id, created_at)` - Recent notifications
 - `type` - Filter by notification type
 
 #### 2. Service Layer
+
 **Class**: `app/Services/InAppNotificationService.php`
 
 **Key Methods:**
+
 ```php
 // Basic notification creation
 create(User|int $user, string $type, string $title, string $message, ...)
@@ -60,10 +65,12 @@ deleteExpiredNotifications()
 ```
 
 #### 3. Frontend Layer
+
 **Livewire Component**: `app/Livewire/Components/NotificationBell.php`
 **View**: `resources/views/livewire/components/notification-bell.blade.php`
 
 **Features:**
+
 - Real-time notification counter
 - Dropdown panel with sorting
 - Mark individual notifications as read
@@ -74,16 +81,21 @@ deleteExpiredNotifications()
 - Full notification details in dropdown
 
 #### 4. Event Observers
+
 **Street Events**: `app/Observers/StreetObserver.php`
+
 - Notifies users on street creation, approval, rejection, hold status
 - Uses accurate street names and rejection reasons
 
 **Payment Events**: `app/Observers/PaymentObserver.php`
+
 - Notifies users on payment creation, success, failure, and pending states
 - Includes formatted currency amounts
 
 #### 5. Service Provider
+
 **Provider**: `app/Providers/AppServiceProvider.php`
+
 - Registers `InAppNotificationService` as singleton
 - Observes `Street` and `Payment` models
 
@@ -116,9 +128,9 @@ class StreetController extends Controller
     public function approve(Request $request, Street $street)
     {
         $street->update(['status' => 'approved']);
-        
+
         // Automatically triggered by StreetObserver
-        
+
         return redirect()->back()->with('success', 'Street approved');
     }
 }
@@ -142,21 +154,23 @@ $notificationService->markAllAsReadForUser(auth()->id());
 
 ## Notification Types
 
-| Type | Icon | Use Case |
-|------|------|----------|
-| `info` | `fas fa-info-circle` | System updates, informational messages |
-| `success` | `fas fa-check` | Operation success, confirmations |
-| `warning` | `fas fa-exclamation-triangle` | Warnings, on-hold statuses |
-| `error` | `fas fa-exclamation-circle` | Errors, failures, problems |
-| `approval` | `fas fa-check-circle` | Approvals granted |
-| `rejection` | `fas fa-times-circle` | Rejections, denials |
-| `payment` | `fas fa-credit-card` | Payment-related actions |
-| `delivery` | `fas fa-truck` | Delivery/shipping updates |
+| Type        | Icon                          | Use Case                               |
+| ----------- | ----------------------------- | -------------------------------------- |
+| `info`      | `fas fa-info-circle`          | System updates, informational messages |
+| `success`   | `fas fa-check`                | Operation success, confirmations       |
+| `warning`   | `fas fa-exclamation-triangle` | Warnings, on-hold statuses             |
+| `error`     | `fas fa-exclamation-circle`   | Errors, failures, problems             |
+| `approval`  | `fas fa-check-circle`         | Approvals granted                      |
+| `rejection` | `fas fa-times-circle`         | Rejections, denials                    |
+| `payment`   | `fas fa-credit-card`          | Payment-related actions                |
+| `delivery`  | `fas fa-truck`                | Delivery/shipping updates              |
 
 ## Integration Points
 
 ### Portal Layout
+
 Located in `resources/views/components/layouts/portal.blade.php`
+
 ```blade
 <div style="margin-left:auto;">
     @livewire('components.notification-bell')
@@ -164,7 +178,9 @@ Located in `resources/views/components/layouts/portal.blade.php`
 ```
 
 ### Admin Layout
+
 Located in `resources/views/components/layouts/admin.blade.php`
+
 ```blade
 <div style="margin-left:auto;">
     @livewire('components.notification-bell')
@@ -174,6 +190,7 @@ Located in `resources/views/components/layouts/admin.blade.php`
 ## Styling
 
 The notification bell uses CSS variables for consistent theming:
+
 - `--accent` - Primary accent color (green)
 - `--accent-light` - Light variant for read status
 - `--bg-input` - Background for hover states
@@ -188,7 +205,9 @@ The notification bell uses CSS variables for consistent theming:
 ## Database Cleanup
 
 ### Automatic Expiration
+
 Notifications can be set to auto-expire:
+
 ```php
 $expiresAt = now()->addDays(30);
 $notificationService->create(
@@ -205,6 +224,7 @@ $notificationService->create(
 ```
 
 ### Manual Cleanup
+
 ```php
 // Delete expired notifications
 $notificationService->deleteExpiredNotifications();
@@ -246,6 +266,7 @@ $this->dispatch('notification-read', notificationId: $notificationId);
 ## Testing
 
 ### Create Test Notifications
+
 ```php
 use App\Services\InAppNotificationService;
 
@@ -262,6 +283,7 @@ $service->notifySuccess(
 ```
 
 ### Query Unread Count
+
 ```php
 $count = \App\Models\Notification::where('user_id', $user->id)
     ->whereNull('read_at')
@@ -270,16 +292,16 @@ $count = \App\Models\Notification::where('user_id', $user->id)
 
 ## Files Summary
 
-| File | Purpose |
-|------|---------|
-| `app/Models/Notification.php` | Eloquent model with relationships |
-| `app/Services/InAppNotificationService.php` | Business logic for notifications |
-| `app/Livewire/Components/NotificationBell.php` | Real-time bell component |
-| `resources/views/livewire/components/notification-bell.blade.php` | Bell UI & dropdown |
-| `app/Observers/StreetObserver.php` | Auto-notify on street events |
-| `app/Observers/PaymentObserver.php` | Auto-notify on payment events |
-| `database/migrations/2026_04_07_000100_create_notifications_table.php` | Database schema |
-| `app/Providers/AppServiceProvider.php` | Service registration & observers |
+| File                                                                   | Purpose                           |
+| ---------------------------------------------------------------------- | --------------------------------- |
+| `app/Models/Notification.php`                                          | Eloquent model with relationships |
+| `app/Services/InAppNotificationService.php`                            | Business logic for notifications  |
+| `app/Livewire/Components/NotificationBell.php`                         | Real-time bell component          |
+| `resources/views/livewire/components/notification-bell.blade.php`      | Bell UI & dropdown                |
+| `app/Observers/StreetObserver.php`                                     | Auto-notify on street events      |
+| `app/Observers/PaymentObserver.php`                                    | Auto-notify on payment events     |
+| `database/migrations/2026_04_07_000100_create_notifications_table.php` | Database schema                   |
+| `app/Providers/AppServiceProvider.php`                                 | Service registration & observers  |
 
 ## Git Commits
 
