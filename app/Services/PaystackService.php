@@ -23,7 +23,8 @@ class PaystackService
         float $amount,
         string $email,
         string $reference = '',
-        array $metadata = []
+        array $metadata = [],
+        string $callbackUrl = ''
     ): array {
         $payload = [
             'amount' => intval($amount * 100), // Convert to kobo
@@ -31,6 +32,10 @@ class PaystackService
             'reference' => $reference ?: uniqid('txn_'),
             'metadata' => $metadata,
         ];
+
+        if (!empty($callbackUrl)) {
+            $payload['callback_url'] = $callbackUrl;
+        }
 
         $response = Http::withHeaders([
             'Authorization' => "Bearer {$this->secretKey}",

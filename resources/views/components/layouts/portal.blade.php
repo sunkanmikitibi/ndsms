@@ -103,6 +103,10 @@ document.documentElement.classList.toggle('dark', darkMode);"
                 class="nav-item {{ request()->routeIs('portal.fee-schedule') ? 'active' : '' }}">
                 <i class="fas fa-receipt"></i> Fee Schedule
             </a>
+            <a href="{{ route('portal.payments.index') }}"
+                class="nav-item {{ request()->routeIs('portal.payments.*') ? 'active' : '' }}">
+                <i class="fas fa-credit-card"></i> My Payments
+            </a>
             <a href="{{ route('portal.map') }}"
                 class="nav-item {{ request()->routeIs('portal.map') ? 'active' : '' }}">
                 <i class="fas fa-map"></i> Interactive Map
@@ -156,6 +160,9 @@ document.documentElement.classList.toggle('dark', darkMode);"
     <main class="main">
         {{ $slot }}
     </main>
+
+    <!-- Payment Processor Component (hidden by default) -->
+    @livewire('portal.payment-processor')
 
     <!-- Toast container -->
     <div id="toast-container" class="toast-container"></div>

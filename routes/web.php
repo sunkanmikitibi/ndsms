@@ -132,7 +132,16 @@ Route::middleware('auth')->prefix('payment')->name('payment.')->group(function (
     
     // Verification & Status
     Route::post('/verify', [PaymentController::class, 'verifyTransaction'])->name('verify');
+    Route::get('/callback', [PaymentController::class, 'handleCallback'])->name('callback');
     Route::get('/status/{reference}', [PaymentController::class, 'getPaymentStatus'])->name('status');
+});
+
+// Portal Payment Management Routes
+Route::middleware(['auth', 'verified'])->prefix('portal/payments')->name('portal.payments.')->group(function () {
+    Route::get('/', [PaymentController::class, 'userPayments'])->name('index');
+    Route::get('/{payment}', [PaymentController::class, 'showPayment'])->name('show');
+    Route::get('/{payment}/retry', [PaymentController::class, 'showRetry'])->name('retry');
+    Route::post('/{payment}/retry', [PaymentController::class, 'processRetry'])->name('retry.process');
 });
 
 // Paystack Webhook

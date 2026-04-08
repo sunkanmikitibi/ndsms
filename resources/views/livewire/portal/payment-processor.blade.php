@@ -1,4 +1,4 @@
-<div class="payment-processor">
+<div class="payment-processor" x-show="$wire.authorization_url || $wire.error_message || $wire.loading" x-transition>
     @if ($error_message)
         <div class="alert alert-error mb-4">
             <span>{{ $error_message }}</span>

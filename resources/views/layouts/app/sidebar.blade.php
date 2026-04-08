@@ -19,6 +19,11 @@
                     wire:navigate>
                     {{ __('Dashboard') }}
                 </flux:sidebar.item>
+
+                <flux:sidebar.item icon="credit-card" :href="route('portal.payments.index')"
+                    :current="request()->routeIs('portal.payments.*')" wire:navigate>
+                    {{ __('My Payments') }}
+                </flux:sidebar.item>
             </flux:sidebar.group>
 
             @if (auth()->check() && (auth()->user()->hasRole('staff') || auth()->user()->hasRole('super-admin')))
