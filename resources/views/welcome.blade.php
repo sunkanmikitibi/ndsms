@@ -278,7 +278,7 @@
                         <div class="w-16 h-16 bg-surface-container-high rounded-2xl flex items-center justify-center">
                             <span class="material-symbols-outlined text-secondary text-3xl">location_on</span>
                         </div>
-                        <h5 class="text-xl font-bold text-primary font-headline">Address Verification</h5>
+                        <h5 class="text-xl font-bold text-primary font-headline">Register a New Street Name</h5>
                         <p class="text-on-surface-variant text-sm leading-relaxed">Instant verification of residential
                             and commercial addresses for KYC and legal documentation.</p>
                     </div>
@@ -286,7 +286,8 @@
                         <div class="w-16 h-16 bg-surface-container-high rounded-2xl flex items-center justify-center">
                             <span class="material-symbols-outlined text-secondary text-3xl">map</span>
                         </div>
-                        <h5 class="text-xl font-bold text-primary font-headline">Street Directory</h5>
+                        <h5 class="text-xl font-bold text-primary font-headline">Claim and register your House Address
+                        </h5>
                         <p class="text-on-surface-variant text-sm leading-relaxed">A comprehensive, searchable database
                             of every mapped street within the Njikoka jurisdiction.</p>
                     </div>
@@ -294,17 +295,46 @@
                         <div class="w-16 h-16 bg-surface-container-high rounded-2xl flex items-center justify-center">
                             <span class="material-symbols-outlined text-secondary text-3xl">layers</span>
                         </div>
-                        <h5 class="text-xl font-bold text-primary font-headline">Interactive Ward Map</h5>
-                        <p class="text-on-surface-variant text-sm leading-relaxed">Detailed spatial data visualization
-                            per ward, highlighting zoning and administrative boundaries.</p>
+                        <h5 class="text-xl font-bold text-primary font-headline">
+                            Upload property details and documents
+                        </h5>
+                        <p class="text-on-surface-variant text-sm leading-relaxed">
+                            Detailed spatial data visualization
+                            per ward, highlighting zoning and administrative boundaries.
+                        </p>
                     </div>
                     <div class="flex flex-col gap-6">
                         <div class="w-16 h-16 bg-surface-container-high rounded-2xl flex items-center justify-center">
                             <span class="material-symbols-outlined text-secondary text-3xl">badge</span>
                         </div>
-                        <h5 class="text-xl font-bold text-primary font-headline">Field Officer Verification</h5>
-                        <p class="text-on-surface-variant text-sm leading-relaxed">On-site authentication of physical
-                            properties by certified NDSMS agents for final certification.</p>
+                        <h5 class="text-xl font-bold text-primary font-headline">
+                            Track approval status in real-time
+                        </h5>
+                        <p class="text-on-surface-variant text-sm leading-relaxed">Monitor your approval progress in
+                            real time with instant updates as your registration moves through verification and
+                            certification.</p>
+                    </div>
+                    <div class="flex flex-col gap-6">
+                        <div class="w-16 h-16 bg-surface-container-high rounded-2xl flex items-center justify-center">
+                            <span class="material-symbols-outlined text-secondary text-3xl">verified</span>
+                        </div>
+                        <h5 class="text-xl font-bold text-primary font-headline">
+                            Download your Digital Address Certificate
+                        </h5>
+                        <p class="text-on-surface-variant text-sm leading-relaxed">Download your official digital
+                            address certificate instantly, complete with verified government approval and a unique QR
+                            code for your property.</p>
+                    </div>
+
+                    <div class="flex flex-col gap-6">
+                        <div class="w-16 h-16 bg-surface-container-high rounded-2xl flex items-center justify-center">
+                            <span class="material-symbols-outlined text-secondary text-3xl">verified</span>
+                        </div>
+                        <h5 class="text-xl font-bold text-primary font-headline">
+                            Access your QR-coded property identity
+                        </h5>
+                        <p class="text-on-surface-variant text-sm leading-relaxed">Easily access your QR-coded property
+                            identity anytime with a secure digital certificate for your registered address.</p>
                     </div>
                 </div>
             </div>
