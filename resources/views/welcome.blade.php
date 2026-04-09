@@ -367,9 +367,12 @@
         <section id="how-it-works" class="py-24 px-8 bg-surface">
             <div class="max-w-5xl mx-auto">
                 <div class="text-center mb-16">
-                    <h2 class="text-sm font-black text-secondary tracking-[0.2em] uppercase mb-4 font-headline">Process
+                    <h2 class="text-sm font-black text-secondary tracking-[0.2em] uppercase mb-4 font-headline">Simple
+                        Process
                     </h2>
-                    <h3 class="text-4xl font-bold text-primary font-headline">How it Works</h3>
+                    <h3 class="text-4xl font-bold text-primary font-headline">
+                        Powerful Impact.
+                    </h3>
                 </div>
                 <div class="space-y-4">
                     <!-- Step 1 -->
@@ -379,9 +382,11 @@
                             class="flex-shrink-0 w-16 h-16 rounded-full bg-primary-container text-on-primary flex items-center justify-center text-2xl font-black font-headline">
                             01</div>
                         <div class="flex-grow">
-                            <h4 class="text-xl font-bold text-primary font-headline mb-2">Register</h4>
-                            <p class="text-on-surface-variant">Provide your property details and contact information
-                                through our secure digital portal.</p>
+                            <h4 class="text-xl font-bold text-primary font-headline mb-2">
+                                Visit the portal
+                            </h4>
+                            <p class="text-on-surface-variant">Visit the portal to begin your journey by submitting
+                                property details and contact information through our secure digital gateway.</p>
                         </div>
                         <div class="flex-shrink-0">
                             <span class="material-symbols-outlined text-outline text-4xl">app_registration</span>
@@ -394,9 +399,9 @@
                             class="flex-shrink-0 w-16 h-16 rounded-full bg-primary-container text-on-primary flex items-center justify-center text-2xl font-black font-headline">
                             02</div>
                         <div class="flex-grow">
-                            <h4 class="text-xl font-bold text-primary font-headline mb-2">Pay</h4>
-                            <p class="text-on-surface-variant">Complete the administrative processing fee using our
-                                integrated, government-approved payment gateway.</p>
+                            <h4 class="text-xl font-bold text-primary font-headline mb-2">Create your account</h4>
+                            <p class="text-on-surface-variant">Create your account and complete the administrative
+                                processing fee using our integrated, government-approved payment gateway.</p>
                         </div>
                         <div class="flex-shrink-0">
                             <span class="material-symbols-outlined text-outline text-4xl">payments</span>
@@ -409,9 +414,11 @@
                             class="flex-shrink-0 w-16 h-16 rounded-full bg-primary-container text-on-primary flex items-center justify-center text-2xl font-black font-headline">
                             03</div>
                         <div class="flex-grow">
-                            <h4 class="text-xl font-bold text-primary font-headline mb-2">Verify</h4>
-                            <p class="text-on-surface-variant">A field officer will visit the location to confirm
-                                spatial data and street naming compliance.</p>
+                            <h4 class="text-xl font-bold text-primary font-headline mb-2">Submit your street or
+                                property details</h4>
+                            <p class="text-on-surface-variant">Submit your street or property details and a field
+                                officer will visit the location to confirm spatial data and street naming compliance.
+                            </p>
                         </div>
                         <div class="flex-shrink-0">
                             <span class="material-symbols-outlined text-outline text-4xl">fact_check</span>
@@ -424,13 +431,119 @@
                             class="flex-shrink-0 w-16 h-16 rounded-full bg-primary-container text-on-primary flex items-center justify-center text-2xl font-black font-headline">
                             04</div>
                         <div class="flex-grow">
-                            <h4 class="text-xl font-bold text-primary font-headline mb-2">Get Certificate</h4>
-                            <p class="text-on-surface-variant">Download your official Digital Address Certificate,
-                                complete with a unique QR code for verification.</p>
+                            <h4 class="text-xl font-bold text-primary font-headline mb-2">
+                                Make payment online
+                            </h4>
+                            <p class="text-on-surface-variant">Make payment online and download your official Digital
+                                Address Certificate, complete with a unique QR code for verification.</p>
                         </div>
                         <div class="flex-shrink-0">
                             <span class="material-symbols-outlined text-outline text-4xl">workspace_premium</span>
                         </div>
+                    </div>
+                    {{-- Step 5 --}}
+                    <div
+                        class="bg-surface-container-low p-8 rounded-3xl flex flex-col md:flex-row gap-8 items-center border-l-8 border-secondary">
+                        <div
+                            class="flex-shrink-0 w-16 h-16 rounded-full bg-primary-container text-on-primary flex items-center justify-center text-2xl font-black font-headline">
+                            05</div>
+                        <div class="flex-grow">
+                            <h4 class="text-xl font-bold text-primary font-headline mb-2">
+                                Access your QR-coded property identity
+                            </h4>
+                            <p class="text-on-surface-variant">Access your QR-coded property identity anytime with a
+                                secure digital certificate for your registered address.</p>
+                        </div>
+                    </div>
+
+                    {{-- Step 6 --}}
+                    <div
+                        class="bg-surface-container-low p-8 rounded-3xl flex flex-col md:flex-row gap-8 items-center border-l-8 border-tertiary-fixed-dim">
+                        <div
+                            class="flex-shrink-0 w-16 h-16 rounded-full bg-primary-container text-on-primary flex items-center justify-center text-2xl font-black font-headline">
+                            06</div>
+                        <div class="flex-grow">
+                            <h4 class="text-xl font-bold text-primary font-headline mb-2">
+                                Receive your digital address
+                            </h4>
+                            <p class="text-on-surface-variant">Receive your digital address and use your verified
+                                digital address for official documentation, deliveries, and more.</p>
+                        </div>
+                    </div>
+                </div>
+        </section>
+
+        <!-- Government-Driven Digital Transformation -->
+        <section class="py-24 px-8 bg-primary-container text-on-primary">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-16">
+                    <h2 class="text-6xl md:text-5xl font-black mb-8 font-headline leading-tight">🏛️ A
+                        Government-Driven Digital Transformation</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <div class="bg-on-primary/10 p-10 rounded-3xl border border-on-primary/20">
+                        <h4 class="text-2xl font-bold mb-4 font-headline">Modernizing Njikoka</h4>
+                        <p class="text-on-primary/80 leading-relaxed">Bringing cutting-edge technology to every corner
+                            of our community, enabling seamless digital governance and modern infrastructure management.
+                        </p>
+                    </div>
+                    <div class="bg-on-primary/10 p-10 rounded-3xl border border-on-primary/20">
+                        <h4 class="text-2xl font-bold mb-4 font-headline">Improving Governance</h4>
+                        <p class="text-on-primary/80 leading-relaxed">Establishing transparent, efficient, and
+                            accountable systems that empower citizens and strengthen institutional decision-making
+                            processes.</p>
+                    </div>
+                    <div class="bg-on-primary/10 p-10 rounded-3xl border border-on-primary/20">
+                        <h4 class="text-2xl font-bold mb-4 font-headline">Enhancing Data-Driven Planning</h4>
+                        <p class="text-on-primary/80 leading-relaxed">Leveraging comprehensive spatial data and
+                            analytics to support strategic urban development and evidence-based policy decisions.</p>
+                    </div>
+                </div>
+                <div class="mt-16 p-12 bg-on-primary/20 rounded-3xl border border-on-primary/40">
+                    <p class="text-xl font-bold text-on-primary leading-relaxed">It is not just a platform—it is a
+                        legacy infrastructure for future generations.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Secure Your Street Section -->
+        <section class="py-24 px-8 bg-surface">
+            <div class="max-w-7xl mx-auto">
+                <div
+                    class="bg-gradient-to-r from-secondary via-secondary to-tertiary-fixed rounded-[3rem] p-16 md:p-24 text-on-secondary">
+                    <div class="max-w-3xl mx-auto text-center">
+                        <h2 class="text-5xl md:text-6xl font-black mb-8 font-headline leading-tight">Secure Your
+                            Street. Register Your Property Today</h2>
+                        <p class="text-xl mb-4 text-on-secondary/80">Don't wait for others to name your street.</p>
+                        <p class="text-xl font-bold mb-12 text-on-secondary/90">Be among the pioneers shaping the
+                            digital future of Njikoka.</p>
+                        <div class="flex flex-col md:flex-row justify-center gap-6 mb-12">
+                            <div class="flex items-start gap-3">
+                                <span class="text-3xl">👉</span>
+                                <div class="text-left">
+                                    <p class="font-bold mb-1">Visit</p>
+                                    <p class="text-lg font-headline text-on-secondary font-bold">www.ndsms.gov.ng</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-3xl">👉</span>
+                                <div class="text-left">
+                                    <p class="font-bold mb-1">Register</p>
+                                    <p class="text-lg font-headline text-on-secondary font-bold">In minutes</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="text-3xl">👉</span>
+                                <div class="text-left">
+                                    <p class="font-bold mb-1">Own</p>
+                                    <p class="text-lg font-headline text-on-secondary font-bold">Your digital address
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{{ url('/portal/register-address') }}"
+                            class="px-10 py-5 bg-on-secondary text-secondary rounded-xl font-bold text-xl hover:scale-105 active:scale-95 transition-all duration-300 inline-block">Start
+                            Registration Now</a>
                     </div>
                 </div>
             </div>
