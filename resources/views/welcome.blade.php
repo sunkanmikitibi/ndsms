@@ -139,11 +139,11 @@
                             <span
                                 class="material-symbols-outlined text-4xl text-secondary mb-6 group-hover:text-tertiary-fixed-dim">verified_user</span>
                             <h4 class="text-2xl font-bold text-primary mb-4 group-hover:text-on-primary font-headline">
-                                Inherent Institutional Trust</h4>
+                                Official Street Identity & Recognition</h4>
                             <p class="text-on-surface-variant group-hover:text-on-primary/80 leading-relaxed max-w-xl">
-                                NDSMS is the official registry. Every entry undergoes rigorous validation by state field
-                                officers, ensuring that your digital address is legally binding and recognized by
-                                financial institutions and utility providers.</p>
+                                Give your street a recognized name and digital presence.
+                                No more “behind the big tree” or “after the junction”—your location becomes globally
+                                identifiable</p>
                         </div>
                         <div
                             class="mt-12 flex items-center gap-2 text-secondary font-bold group-hover:text-tertiary-fixed-dim">
@@ -153,16 +153,39 @@
                     </div>
                     <div class="bg-primary-container p-10 rounded-3xl text-on-primary">
                         <span class="material-symbols-outlined text-4xl text-tertiary-fixed-dim mb-6">bolt</span>
-                        <h4 class="text-2xl font-bold mb-4 font-headline">Efficiency Redefined</h4>
-                        <p class="text-on-primary/70 leading-relaxed">Reducing verification turnaround time from weeks
-                            to seconds through a centralized digital database accessible by authorized personnel.</p>
+                        <h4 class="text-2xl font-bold mb-4 font-headline"> Accurate Digital Address System</h4>
+                        <p class="text-on-primary/70 leading-relaxed">
+                            Every registered property is assigned a unique digital address and QR code, making it easy
+                            for:
+                        <ul>
+                            <li> Visitors</li>
+                            <li> Delivery services</li>
+                            <li> Emergency responders</li>
+                            <li> Government agencies</li>
+                        </ul>
+
+
+
+
+                        </p>
                     </div>
                     <div class="bg-tertiary-fixed p-10 rounded-3xl">
                         <span class="material-symbols-outlined text-4xl text-primary mb-6">dynamic_form</span>
-                        <h4 class="text-2xl font-bold text-on-tertiary-fixed mb-4 font-headline">Digital Transformation
+                        <h4 class="text-2xl font-bold text-on-tertiary-fixed mb-4 font-headline">
+                            Global Visibility for Ndi Njikoka
                         </h4>
-                        <p class="text-on-tertiary-fixed-variant leading-relaxed">Moving beyond paper records to a
-                            dynamic, real-time spatial management system that grows with Njikoka's expanding landscape.
+                        <p class="text-on-tertiary-fixed-variant leading-relaxed">
+                            Whether you are in Nigeria or abroad, you can:
+
+                        <ul>
+                            <li>Register your family house</li>
+                            <li>Track and manage your property</li>
+                            <li>Secure your street name</li>
+                            <li>All from anywhere in the world.</li>
+                        </ul>
+
+
+
                         </p>
                     </div>
                     <div class="md:col-span-2 relative rounded-3xl overflow-hidden min-h-[300px]">
@@ -170,10 +193,73 @@
                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDK09iKmr_SV8X4LsTeo8KWzaX_LQ4awFqPPGWQD9VPDXRyFFyrPmzePPF2CUnOdXPUFhSrHWUYTR4OtY2OHTCpycTVNWAc0kJjpmsTTnglnJtZBkaCWeE0qG7XXQnsBkPPeq6QkG447OravwrXzg9lJeg7KTUOdJSrarxR_M1Zyi7oXDkxFvtUYEpt-cumIgWXjeRNvLnyQ4xs3IN3qfXlIJY-4OmyUz2lqXUjK5JQ8QmBNf35Vck0gKiWmz1JKFfw46q--YRLvJ4" />
                         <div
                             class="absolute inset-0 bg-gradient-to-r from-primary-container via-primary-container/60 to-transparent p-10 flex flex-col justify-center">
-                            <h4 class="text-3xl font-bold text-on-primary mb-2 font-headline">Transparency First</h4>
-                            <p class="text-on-primary/80 max-w-md">Real-time tracking of registration progress and
-                                public access to validated street directories.</p>
+                            <h4 class="text-3xl font-bold text-on-primary mb-2 font-headline">Boost to Business &
+                                Economic Growth</h4>
+                            <p
+                                class="text-on-surface-variant group-hover:text-on-primary/80 leading-relaxed max-w-xl text-white">
+                                With a structured address system:
+                            <ul class="text-white">
+                                <li>Businesses become easier to locate</li>
+                                <li>Logistics and delivery improve</li>
+                                <li>Investors gain confidence in Njikoka</li>
+
+                            </ul>
+                            </p>
+                            <p class="text-white">This opens the door to economic expansion and digital commerce..</p>
                         </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </section>
+
+        <!-- More Why NDSMS -->
+        <section class="py-24 bg-surface px-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-sm font-black text-secondary tracking-[0.2em] uppercase mb-4 font-headline">More
+                        Reasons</h2>
+                    <h3 class="text-4xl font-bold text-primary font-headline">More reasons to choose NDSMS</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-surface-container-low p-10 rounded-3xl border border-outline flex flex-col gap-6">
+                        <span class="material-symbols-outlined text-4xl text-secondary">public</span>
+                        <h4 class="text-2xl font-bold text-primary font-headline">Smart Mapping & GIS Integration
+                        </h4>
+                        <p class="text-on-surface-variant leading-relaxed">The platform leverages modern GIS technology
+                            to:</p>
+                        <ul>
+                            <li>Map all streets digitally</li>
+                            <li>Track development</li>
+                            <li>Support urban planning</li>
+                        </ul>
+                        <p class="text-sm font-semibold text-secondary">Njikoka becomes a Smart Local Government Area.
+                        </p>
+                    </div>
+                    <div class="bg-surface-container-low p-10 rounded-3xl border border-outline flex flex-col gap-6">
+                        <span class="material-symbols-outlined text-4xl text-secondary">credit_card</span>
+                        <h4 class="text-2xl font-bold text-primary font-headline"> Easy Online Registration & Payment
+                        </h4>
+                        <p class="text-on-surface-variant leading-relaxed">With a few clicks, you can:</p>
+                        <ul>
+                            <li>Apply for street naming</li>
+                            <li>Register your house</li>
+                            <li>Make secure payments</li>
+                        </ul>
+                        <p class="text-sm font-semibold text-secondary">No long queues. No manual paperwork.</p>
+                    </div>
+                    <div class="bg-surface-container-low p-10 rounded-3xl border border-outline flex flex-col gap-6">
+                        <span class="material-symbols-outlined text-4xl text-secondary">document_scanner</span>
+                        <h4 class="text-2xl font-bold text-primary font-headline">🧾 Digital Certificate of
+                            Registration</h4>
+                        <p class="text-on-surface-variant leading-relaxed">Every successful registration comes with:
+                        </p>
+                        <ul>
+                            <li>A verified digital certificate</li>
+                            <li>Government-backed approval</li>
+                            <li>Permanent digital record</li>
+                        </ul>
                     </div>
                 </div>
             </div>
