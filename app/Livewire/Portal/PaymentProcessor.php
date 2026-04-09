@@ -164,8 +164,8 @@ class PaymentProcessor extends Component
             ->first();
 
         return $fee?->base_amount ?? match($type) {
-            'address_indexing' => 1500,
-            'street_revalidation' => 1000,
+            'address_indexing' => 3000,
+            'street_revalidation' => 2500,
             'street_numbering_plate' => 500,
             default => 1000
         };
