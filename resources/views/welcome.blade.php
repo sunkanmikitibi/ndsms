@@ -146,6 +146,7 @@
                         The Njikoka Digital Street Management System (NDSMS) is a revolutionary digital platform
                         designed to organize, standardize, and officially register streets, homes, and properties across
                         all communities in Njikoka Local Government.
+                    </p>
                     <div class="flex flex-col sm:flex-row gap-3 md:gap-4">
                         <a href="{{ url('/portal/register-address') }}"
                             class="px-6 md:px-8 py-3 md:py-4 bg-primary-container text-on-primary rounded-lg md:rounded-xl font-bold text-sm md:text-lg flex items-center justify-center gap-2 hover:shadow-xl transition-all duration-300 group">
@@ -153,10 +154,7 @@
                             <span
                                 class="material-symbols-outlined text-tertiary-fixed-dim group-hover:translate-x-1 transition-transform">arrow_forward</span>
                         </a>
-                        <button
-                            class="px-6 md:px-8 py-3 md:py-4 bg-surface-container-low text-primary rounded-lg md:rounded-xl font-bold text-sm md:text-lg hover:bg-surface-container-high transition-all duration-300">
-                            Explore Ward Maps
-                        </button>
+
                     </div>
                 </div>
                 <div class="lg:col-span-5 relative mt-8 lg:mt-0">
@@ -177,164 +175,11 @@
             </div>
         </section>
 
-        <!-- Why NDSMS? - Asymmetric Bento Grid -->
-        <section id="features" class="py-16 md:py-24 bg-surface-container-low px-4 md:px-8">
-            <div class="max-w-7xl mx-auto">
-                <div class="mb-12 md:mb-16">
-                    <h2 class="text-xs font-black text-secondary tracking-[0.2em] uppercase mb-2 md:mb-4 font-headline">
-                        The
-                        Vision</h2>
-                    <h3 class="text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-headline">Why NDSMS?</h3>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
-                    <div
-                        class="md:col-span-2 bg-surface-container-lowest p-6 md:p-10 rounded-2xl md:rounded-3xl flex flex-col justify-between group hover:bg-primary-container transition-colors duration-500">
-                        <div>
-                            <span
-                                class="material-symbols-outlined text-3xl md:text-4xl text-secondary mb-3 md:mb-6 group-hover:text-tertiary-fixed-dim">verified_user</span>
-                            <h4
-                                class="text-lg md:text-2xl font-bold text-primary mb-2 md:mb-4 group-hover:text-on-primary font-headline">
-                                Official Street Identity & Recognition</h4>
-                            <p
-                                class="text-sm md:text-base text-on-surface-variant group-hover:text-on-primary/80 leading-relaxed max-w-xl">
-                                Give your street a recognized name and digital presence.
-                                No more “behind the big tree” or “after the junction”—your location becomes globally
-                                identifiable</p>
-                        </div>
+        <x-why-us />
 
-                    </div>
-                    <div class="bg-primary-container p-6 md:p-10 rounded-2xl md:rounded-3xl text-on-primary">
-                        <span
-                            class="material-symbols-outlined text-3xl md:text-4xl text-tertiary-fixed-dim mb-3 md:mb-6">bolt</span>
-                        <h4 class="text-lg md:text-2xl font-bold mb-2 md:mb-4 font-headline"> Accurate Digital Address
-                            System</h4>
-                        <p class="text-on-primary/70 text-sm md:text-base leading-relaxed">
-                            Every registered property is assigned a unique digital address and QR code, making it easy
-                            for:
-                        <ul class="text-sm md:text-base">
-                            <li> Visitors</li>
-                            <li> Delivery services</li>
-                            <li> Emergency responders</li>
-                            <li> Government agencies</li>
-                        </ul>
+      
 
-
-
-
-                        </p>
-                    </div>
-                    <div class="bg-tertiary-fixed p-6 md:p-10 rounded-2xl md:rounded-3xl">
-                        <span
-                            class="material-symbols-outlined text-3xl md:text-4xl text-primary mb-3 md:mb-6">dynamic_form</span>
-                        <h4 class="text-lg md:text-2xl font-bold text-on-tertiary-fixed mb-2 md:mb-4 font-headline">
-                            Global Visibility for Ndi Njikoka
-                        </h4>
-                        <p class="text-on-tertiary-fixed-variant text-sm md:text-base leading-relaxed">
-                            Whether you are in Nigeria or abroad, you can:
-
-                        <ul class="text-sm md:text-base">
-                            <li>Register your family house</li>
-                            <li>Track and manage your property</li>
-                            <li>Secure your street name</li>
-                            <li>All from anywhere in the world.</li>
-                        </ul>
-
-
-
-                        </p>
-                    </div>
-                    <div
-                        class="md:col-span-2 relative rounded-2xl md:rounded-3xl overflow-hidden min-h-[200px] md:min-h-[300px]">
-                        <img alt="Modern Governance" class="absolute inset-0 w-full h-full object-cover"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDK09iKmr_SV8X4LsTeo8KWzaX_LQ4awFqPPGWQD9VPDXRyFFyrPmzePPF2CUnOdXPUFhSrHWUYTR4OtY2OHTCpycTVNWAc0kJjpmsTTnglnJtZBkaCWeE0qG7XXQnsBkPPeq6QkG447OravwrXzg9lJeg7KTUOdJSrarxR_M1Zyi7oXDkxFvtUYEpt-cumIgWXjeRNvLnyQ4xs3IN3qfXlIJY-4OmyUz2lqXUjK5JQ8QmBNf35Vck0gKiWmz1JKFfw46q--YRLvJ4" />
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r from-primary-container via-primary-container/60 to-transparent p-6 md:p-10 flex flex-col justify-center">
-                            <h4 class="text-xl md:text-3xl font-bold text-on-primary mb-1 md:mb-2 font-headline">Boost
-                                to Business &
-                                Economic Growth</h4>
-                            <p
-                                class="text-on-surface-variant group-hover:text-on-primary/80 leading-relaxed max-w-xl text-white text-xs md:text-base">
-                                With a structured address system:
-                            <ul class="text-white text-xs md:text-sm">
-                                <li>Businesses become easier to locate</li>
-                                <li>Logistics and delivery improve</li>
-                                <li>Investors gain confidence in Njikoka</li>
-
-                            </ul>
-                            </p>
-                            <p class="text-white">This opens the door to economic expansion and digital commerce..</p>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-        </section>
-
-        <!-- More Why NDSMS -->
-        <section class="py-16 md:py-24 bg-surface px-4 md:px-8">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-12 md:mb-16">
-                    <h2
-                        class="text-xs font-black text-secondary tracking-[0.2em] uppercase mb-2 md:mb-4 font-headline">
-                        More
-                        Reasons</h2>
-                    <h3 class="text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-headline">More reasons to
-                        choose NDSMS</h3>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
-                    <div
-                        class="bg-surface-container-low p-6 md:p-10 rounded-2xl md:rounded-3xl border border-outline flex flex-col gap-4 md:gap-6">
-                        <span class="material-symbols-outlined text-3xl md:text-4xl text-secondary">public</span>
-                        <h4 class="text-lg md:text-2xl font-bold text-primary font-headline">Smart Mapping & GIS
-                            Integration
-                        </h4>
-                        <p class="text-sm md:text-base text-on-surface-variant leading-relaxed">The platform leverages
-                            modern GIS technology
-                            to:</p>
-                        <ul class="text-sm md:text-base">
-                            <li>Map all streets digitally</li>
-                            <li>Track development</li>
-                            <li>Support urban planning</li>
-                        </ul>
-                        <p class="text-xs md:text-sm font-semibold text-secondary">Njikoka becomes a Smart Local
-                            Government Area.
-                        </p>
-                    </div>
-                    <div
-                        class="bg-surface-container-low p-6 md:p-10 rounded-2xl md:rounded-3xl border border-outline flex flex-col gap-4 md:gap-6">
-                        <span class="material-symbols-outlined text-3xl md:text-4xl text-secondary">credit_card</span>
-                        <h4 class="text-lg md:text-2xl font-bold text-primary font-headline"> Easy Online Registration
-                            & Payment
-                        </h4>
-                        <p class="text-sm md:text-base text-on-surface-variant leading-relaxed">With a few clicks, you
-                            can:</p>
-                        <ul class="text-sm md:text-base">
-                            <li>Apply for street naming</li>
-                            <li>Register your house</li>
-                            <li>Make secure payments</li>
-                        </ul>
-                        <p class="text-xs md:text-sm font-semibold text-secondary">No long queues. No manual paperwork.
-                        </p>
-                    </div>
-                    <div
-                        class="bg-surface-container-low p-6 md:p-10 rounded-2xl md:rounded-3xl border border-outline flex flex-col gap-4 md:gap-6">
-                        <span
-                            class="material-symbols-outlined text-3xl md:text-4xl text-secondary">document_scanner</span>
-                        <h4 class="text-lg md:text-2xl font-bold text-primary font-headline">🧾 Digital Certificate of
-                            Registration</h4>
-                        <p class="text-sm md:text-base text-on-surface-variant leading-relaxed">Every successful
-                            registration comes with:
-                        </p>
-                        <ul class="text-sm md:text-base">
-                            <li>A verified digital certificate</li>
-                            <li>Government-backed approval</li>
-                            <li>Permanent digital record</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
+   
 
         <!-- Core Services -->
         <section class="py-16 md:py-24 px-4 md:px-8">
@@ -353,9 +198,11 @@
                             <span
                                 class="material-symbols-outlined text-secondary text-2xl md:text-3xl">location_on</span>
                         </div>
-                        <h5 class="text-base md:text-xl font-bold text-primary font-headline">Register a New Street
+                        <h5 class="text-base md:text-xl font-bold text-primary font-headline">Register a
+                            New Street
                             Name</h5>
-                        <p class="text-on-surface-variant text-xs md:text-sm leading-relaxed">Instant verification of
+                        <p class="text-on-surface-variant text-xs md:text-sm leading-relaxed">Instant
+                            verification of
                             residential
                             and commercial addresses for KYC and legal documentation.</p>
                     </div>
@@ -364,10 +211,12 @@
                             class="w-14 md:w-16 h-14 md:h-16 bg-surface-container-high rounded-lg md:rounded-2xl flex items-center justify-center">
                             <span class="material-symbols-outlined text-secondary text-2xl md:text-3xl">map</span>
                         </div>
-                        <h5 class="text-base md:text-xl font-bold text-primary font-headline">Claim and register your
+                        <h5 class="text-base md:text-xl font-bold text-primary font-headline">Claim and
+                            register your
                             House Address
                         </h5>
-                        <p class="text-on-surface-variant text-xs md:text-sm leading-relaxed">A comprehensive,
+                        <p class="text-on-surface-variant text-xs md:text-sm leading-relaxed">A
+                            comprehensive,
                             searchable database
                             of every mapped street within the Njikoka jurisdiction.</p>
                     </div>
@@ -392,9 +241,11 @@
                         <h5 class="text-base md:text-xl font-bold text-primary font-headline">
                             Track approval status in real-time
                         </h5>
-                        <p class="text-on-surface-variant text-xs md:text-sm leading-relaxed">Monitor your approval
+                        <p class="text-on-surface-variant text-xs md:text-sm leading-relaxed">Monitor your
+                            approval
                             progress in
-                            real time with instant updates as your registration moves through verification and
+                            real time with instant updates as your registration moves through verification
+                            and
                             certification.</p>
                     </div>
                     <div class="flex flex-col gap-4 md:gap-6">
@@ -405,9 +256,11 @@
                         <h5 class="text-base md:text-xl font-bold text-primary font-headline">
                             Download your Digital Address Certificate
                         </h5>
-                        <p class="text-on-surface-variant text-xs md:text-sm leading-relaxed">Download your official
+                        <p class="text-on-surface-variant text-xs md:text-sm leading-relaxed">Download your
+                            official
                             digital
-                            address certificate instantly, complete with verified government approval and a unique QR
+                            address certificate instantly, complete with verified government approval and a
+                            unique QR
                             code for your property.</p>
                     </div>
 
@@ -419,9 +272,11 @@
                         <h5 class="text-base md:text-xl font-bold text-primary font-headline">
                             Access your QR-coded property identity
                         </h5>
-                        <p class="text-on-surface-variant text-xs md:text-sm leading-relaxed">Easily access your
+                        <p class="text-on-surface-variant text-xs md:text-sm leading-relaxed">Easily access
+                            your
                             QR-coded property
-                            identity anytime with a secure digital certificate for your registered address.</p>
+                            identity anytime with a secure digital certificate for your registered address.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -431,22 +286,26 @@
         <section id="statistics" class="py-12 md:py-20 px-4 md:px-8 bg-primary-container text-on-primary">
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 md:gap-12">
                 <div class="max-w-md">
-                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold font-headline mb-3 md:mb-4">Modernizing our
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold font-headline mb-3 md:mb-4">
+                        Modernizing our
                         Community</h2>
-                    <p class="text-sm md:text-base text-on-primary/60">Our progress in numbers. We are rapidly
+                    <p class="text-sm md:text-base text-on-primary/60">Our progress in numbers. We are
+                        rapidly
                         expanding our digital
                         footprint to cover every corner of Njikoka.</p>
                 </div>
                 <div class="grid grid-cols-2 gap-8 md:gap-16">
                     <div class="text-center">
-                        <div class="text-4xl md:text-6xl font-black text-tertiary-fixed-dim font-headline mb-2">12+
+                        <div class="text-4xl md:text-6xl font-black text-tertiary-fixed-dim font-headline mb-2">
+                            12+
                         </div>
                         <div class="text-[10px] md:text-xs uppercase tracking-widest font-bold text-on-primary/40">
                             Registered Wards
                         </div>
                     </div>
                     <div class="text-center">
-                        <div class="text-4xl md:text-6xl font-black text-tertiary-fixed-dim font-headline mb-2">1000+
+                        <div class="text-4xl md:text-6xl font-black text-tertiary-fixed-dim font-headline mb-2">
+                            1000+
                         </div>
                         <div class="text-[10px] md:text-xs uppercase tracking-widest font-bold text-on-primary/40">
                             Streets Mapped
@@ -480,9 +339,11 @@
                             <h4 class="text-base md:text-xl font-bold text-primary font-headline mb-1 md:mb-2">
                                 Visit the portal
                             </h4>
-                            <p class="text-xs md:text-base text-on-surface-variant">Visit the portal to begin your
+                            <p class="text-xs md:text-base text-on-surface-variant">Visit the portal to
+                                begin your
                                 journey by submitting
-                                property details and contact information through our secure digital gateway.</p>
+                                property details and contact information through our secure digital gateway.
+                            </p>
                         </div>
                         <div class="flex-shrink-0 hidden md:block">
                             <span
@@ -496,11 +357,14 @@
                             class="flex-shrink-0 w-12 md:w-16 h-12 md:h-16 rounded-full bg-primary-container text-on-primary flex items-center justify-center text-xl md:text-2xl font-black font-headline">
                             02</div>
                         <div class="flex-grow">
-                            <h4 class="text-base md:text-xl font-bold text-primary font-headline mb-1 md:mb-2">Create
+                            <h4 class="text-base md:text-xl font-bold text-primary font-headline mb-1 md:mb-2">
+                                Create
                                 your account</h4>
-                            <p class="text-xs md:text-base text-on-surface-variant">Create your account and complete
+                            <p class="text-xs md:text-base text-on-surface-variant">Create your account and
+                                complete
                                 the administrative
-                                processing fee using our integrated, government-approved payment gateway.</p>
+                                processing fee using our integrated, government-approved payment gateway.
+                            </p>
                         </div>
                         <div class="flex-shrink-0 hidden md:block">
                             <span class="material-symbols-outlined text-outline text-3xl md:text-4xl">payments</span>
@@ -513,12 +377,15 @@
                             class="flex-shrink-0 w-12 md:w-16 h-12 md:h-16 rounded-full bg-primary-container text-on-primary flex items-center justify-center text-xl md:text-2xl font-black font-headline">
                             03</div>
                         <div class="flex-grow">
-                            <h4 class="text-base md:text-xl font-bold text-primary font-headline mb-1 md:mb-2">Submit
+                            <h4 class="text-base md:text-xl font-bold text-primary font-headline mb-1 md:mb-2">
+                                Submit
                                 your street or
                                 property details</h4>
-                            <p class="text-xs md:text-base text-on-surface-variant">Submit your street or property
+                            <p class="text-xs md:text-base text-on-surface-variant">Submit your street or
+                                property
                                 details and a field
-                                officer will visit the location to confirm spatial data and street naming compliance.
+                                officer will visit the location to confirm spatial data and street naming
+                                compliance.
                             </p>
                         </div>
                         <div class="flex-shrink-0 hidden md:block">
@@ -535,7 +402,8 @@
                             <h4 class="text-base md:text-xl font-bold text-primary font-headline mb-1 md:mb-2">
                                 Make payment online
                             </h4>
-                            <p class="text-xs md:text-base text-on-surface-variant">Make payment online and download
+                            <p class="text-xs md:text-base text-on-surface-variant">Make payment online and
+                                download
                                 your official Digital
                                 Address Certificate, complete with a unique QR code for verification.</p>
                         </div>
@@ -554,7 +422,8 @@
                             <h4 class="text-base md:text-xl font-bold text-primary font-headline mb-1 md:mb-2">
                                 Access your QR-coded property identity
                             </h4>
-                            <p class="text-xs md:text-base text-on-surface-variant">Access your QR-coded property
+                            <p class="text-xs md:text-base text-on-surface-variant">Access your QR-coded
+                                property
                                 identity anytime with a
                                 secure digital certificate for your registered address.</p>
                         </div>
@@ -570,7 +439,8 @@
                             <h4 class="text-xl font-bold text-primary font-headline mb-2">
                                 Receive your digital address
                             </h4>
-                            <p class="text-on-surface-variant">Receive your digital address and use your verified
+                            <p class="text-on-surface-variant">Receive your digital address and use your
+                                verified
                                 digital address for official documentation, deliveries, and more.</p>
                         </div>
                     </div>
@@ -588,30 +458,40 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-12">
                     <div class="bg-on-primary/10 p-6 md:p-10 rounded-2xl md:rounded-3xl border border-on-primary/20">
-                        <h4 class="text-lg md:text-2xl font-bold mb-3 md:mb-4 font-headline">Modernizing Njikoka</h4>
-                        <p class="text-sm md:text-base text-on-primary/80 leading-relaxed">Bringing cutting-edge
+                        <h4 class="text-lg md:text-2xl font-bold mb-3 md:mb-4 font-headline">Modernizing
+                            Njikoka</h4>
+                        <p class="text-sm md:text-base text-on-primary/80 leading-relaxed">Bringing
+                            cutting-edge
                             technology to every corner
-                            of our community, enabling seamless digital governance and modern infrastructure management.
+                            of our community, enabling seamless digital governance and modern infrastructure
+                            management.
                         </p>
                     </div>
                     <div class="bg-on-primary/10 p-6 md:p-10 rounded-2xl md:rounded-3xl border border-on-primary/20">
-                        <h4 class="text-lg md:text-2xl font-bold mb-3 md:mb-4 font-headline">Improving Governance</h4>
-                        <p class="text-sm md:text-base text-on-primary/80 leading-relaxed">Establishing transparent,
+                        <h4 class="text-lg md:text-2xl font-bold mb-3 md:mb-4 font-headline">Improving
+                            Governance</h4>
+                        <p class="text-sm md:text-base text-on-primary/80 leading-relaxed">Establishing
+                            transparent,
                             efficient, and
-                            accountable systems that empower citizens and strengthen institutional decision-making
+                            accountable systems that empower citizens and strengthen institutional
+                            decision-making
                             processes.</p>
                     </div>
                     <div class="bg-on-primary/10 p-6 md:p-10 rounded-2xl md:rounded-3xl border border-on-primary/20">
-                        <h4 class="text-lg md:text-2xl font-bold mb-3 md:mb-4 font-headline">Enhancing Data-Driven
+                        <h4 class="text-lg md:text-2xl font-bold mb-3 md:mb-4 font-headline">Enhancing
+                            Data-Driven
                             Planning</h4>
-                        <p class="text-sm md:text-base text-on-primary/80 leading-relaxed">Leveraging comprehensive
+                        <p class="text-sm md:text-base text-on-primary/80 leading-relaxed">Leveraging
+                            comprehensive
                             spatial data and
-                            analytics to support strategic urban development and evidence-based policy decisions.</p>
+                            analytics to support strategic urban development and evidence-based policy
+                            decisions.</p>
                     </div>
                 </div>
                 <div
                     class="mt-8 md:mt-16 p-6 md:p-12 bg-on-primary/20 rounded-2xl md:rounded-3xl border border-on-primary/40">
-                    <p class="text-base md:text-xl font-bold text-on-primary leading-relaxed">It is not just a
+                    <p class="text-base md:text-xl font-bold text-on-primary leading-relaxed">It is not
+                        just a
                         platform—it is a
                         legacy infrastructure for future generations.</p>
                 </div>
@@ -628,9 +508,11 @@
                             class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-4 md:mb-8 font-headline leading-tight">
                             Secure Your
                             Street. Register Your Property Today</h2>
-                        <p class="text-sm md:text-base lg:text-lg mb-2 md:mb-4 text-on-secondary/80">Don't wait for
+                        <p class="text-sm md:text-base lg:text-lg mb-2 md:mb-4 text-on-secondary/80">Don't
+                            wait for
                             others to name your street.</p>
-                        <p class="text-sm md:text-base lg:text-lg font-bold mb-6 md:mb-12 text-on-secondary/90">Be
+                        <p class="text-sm md:text-base lg:text-lg font-bold mb-6 md:mb-12 text-on-secondary/90">
+                            Be
                             among the pioneers shaping the
                             digital future of Njikoka.</p>
                         <div class="flex flex-col md:flex-row justify-center gap-4 md:gap-6 mb-8 md:mb-12">
@@ -646,7 +528,8 @@
                                 <span class="text-2xl md:text-3xl">👉</span>
                                 <div class="text-left">
                                     <p class="font-bold mb-1 text-xs md:text-base">Register</p>
-                                    <p class="text-sm md:text-lg font-headline text-on-secondary font-bold">In minutes
+                                    <p class="text-sm md:text-lg font-headline text-on-secondary font-bold">
+                                        In minutes
                                     </p>
                                 </div>
                             </div>
@@ -654,7 +537,8 @@
                                 <span class="text-2xl md:text-3xl">👉</span>
                                 <div class="text-left">
                                     <p class="font-bold mb-1 text-xs md:text-base">Own</p>
-                                    <p class="text-sm md:text-lg font-headline text-on-secondary font-bold">Your
+                                    <p class="text-sm md:text-lg font-headline text-on-secondary font-bold">
+                                        Your
                                         digital address
                                     </p>
                                 </div>
@@ -681,11 +565,12 @@
                         <h2
                             class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-on-primary mb-4 md:mb-8 font-headline leading-tight">
                             Ready to verify your digital presence in Njikoka?</h2>
-                        <p class="text-on-primary/60 text-sm md:text-base lg:text-lg mb-6 md:mb-10">Join thousands of
+                        <p class="text-on-primary/60 text-sm md:text-base lg:text-lg mb-6 md:mb-10">Join
+                            thousands of
                             citizens already contributing to
                             a smarter, safer, and more organized community.</p>
                         <a href="{{ url('/portal/register-address') }}"
-                            class="px-6 md:px-10 py-3 md:py-5 bg-tertiary-fixed text-on-tertiary-fixed rounded-lg md:rounded-xl font-bold text-sm md:text-xl hover:scale-105 active:scale-95 transition-all duration-300 inline-block\">Register
+                            class="px-6 md:px-10 py-3 md:py-5 bg-tertiary-fixed text-on-tertiary-fixed rounded-lg md:rounded-xl font-bold text-sm md:text-xl hover:scale-105 active:scale-95 transition-all duration-300 inline-block">Register
                             My Address Now</a>
                     </div>
                 </div>
@@ -694,110 +579,94 @@
     </main>
 
     <!-- Footer -->
-    <footer class="full-width
-                            pt-12 md:pt-16 pb-8 bg-primary-container">
-                            <div
-                                class="flex flex-col md:flex-row justify-between items-start w-full px-4 md:px-8 lg:px-12 max-w-7xl mx-auto gap-6 md:gap-8">
-                                <div class="flex flex-col gap-3 md:gap-4 max-w-xs">
-                                    <div class="text-lg md:text-xl font-bold text-tertiary-fixed-dim font-headline">
-                                        NDSMS</div>
-                                    <p
-                                        class="text-surface-container-low leading-relaxed font-headline text-xs md:text-sm">
-                                        Empowering Njikoka with
-                                        precise digital governance and spatial administrative excellence.</p>
-                                </div>
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 lg:gap-12 flex-1">
-                                    <div class="flex flex-col gap-3 md:gap-4">
-                                        <span
-                                            class="text-tertiary-fixed-dim uppercase font-bold text-[10px] md:text-xs tracking-widest font-headline\">Quick
+    <footer class="full-width pt-12 md:pt-16 pb-8 bg-primary-container">
+        <div
+            class="flex flex-col md:flex-row justify-between items-start w-full px-4 md:px-8 lg:px-12 max-w-7xl mx-auto gap-6 md:gap-8">
+            <div class="flex flex-col gap-3 md:gap-4 max-w-xs">
+                <div class="text-lg md:text-xl font-bold text-tertiary-fixed-dim font-headline">NDSMS</div>
+                <p class="text-surface-container-low leading-relaxed font-headline text-xs md:text-sm">
+                    Empowering Njikoka with precise digital governance and spatial administrative excellence.
+                </p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 lg:gap-12 flex-1">
+                <div class="flex flex-col gap-3 md:gap-4">
+                    <span
+                        class="text-tertiary-fixed-dim uppercase font-bold text-[10px] md:text-xs tracking-widest font-headline">Quick
                         Links</span>
-                    <nav class="flex
-                                            flex-col gap-1 md:gap-2">
-                                            <a class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm"
-                                                href="#">Privacy Policy</a>
-                                            <a class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm"
-                                                href="#">Terms of Service</a>
-                                            <a class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm"
-                                                href="#">Contact Support</a>
-                                            </nav>
-                                    </div>
-                                    <div class="flex flex-col gap-3 md:gap-4">
-                                        <span
-                                            class="text-tertiary-fixed-dim uppercase font-bold text-[10px] md:text-xs tracking-widest font-headline">Official</span>
-                                        <nav class="flex flex-col gap-1 md:gap-2">
-                                            <a class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm"
-                                                href="#">Government Portal</a>
-                                            <a class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm"
-                                                href="#">Citizen Services</a>
-                                        </nav>
-                                    </div>
-                                    <div class="flex flex-col gap-3 md:gap-4">
-                                        <span
-                                            class="text-tertiary-fixed-dim uppercase font-bold text-[10px] md:text-xs tracking-widest font-headline">Contact</span>
-                                        <div class="flex flex-col gap-2 md:gap-3">
-                                            <a href="mailto:info@njikokadsms.online"
-                                                class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm">
-                                                info@njikokadsms.online
-                                            </a>
-                                            <a href="tel:+2348036052303"
-                                                class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm">
-                                                +234 803 605 2303
-                                            </a>
-                                            <a href="tel:+2348025796226"
-                                                class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm">
-                                                +234 802 579 6226
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="flex flex-col gap-3 md:gap-4">
-                                        <span
-                                            class="text-tertiary-fixed-dim uppercase font-bold text-[10px] md:text-xs tracking-widest font-headline">Follow</span>
-                                        <div class="flex flex-col gap-1 md:gap-2">
-                                            <a class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm flex items-center gap-2"
-                                                href="https://facebook.com/njikokadsms" target="_blank">
-                                                <span
-                                                    class="material-symbols-outlined text-sm md:text-base">facebook</span>
-                                                <span class="hidden md:inline">Facebook</span>
-                                            </a>
-                                            <a class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm flex items-center gap-2"
-                                                href="https://instagram.com/njikokadsms" target="_blank">
-                                                <span
-                                                    class="material-symbols-outlined text-sm md:text-base">photo_camera</span>
-                                                <span class="hidden md:inline">Instagram</span>
-                                            </a>
-                                            <a class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm flex items-center gap-2"
-                                                href="https://youtube.com/@njikokadsms" target="_blank">
-                                                <span
-                                                    class="material-symbols-outlined text-sm md:text-base">video_library</span>
-                                                <span class="hidden md:inline">YouTube</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <nav class="flex flex-col gap-1 md:gap-2">
+                        <a class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm"
+                            href="#">Privacy Policy</a>
+                        <a class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm"
+                            href="#">Terms of Service</a>
+                        <a class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm"
+                            href="#">Contact Support</a>
+                    </nav>
+                </div>
+                <div class="flex flex-col gap-3 md:gap-4">
+                    <span
+                        class="text-tertiary-fixed-dim uppercase font-bold text-[10px] md:text-xs tracking-widest font-headline">Official</span>
+                    <nav class="flex flex-col gap-1 md:gap-2">
+                        <a class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm"
+                            href="#">Government Portal</a>
+                        <a class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm"
+                            href="#">Citizen Services</a>
+                    </nav>
+                </div>
+                <div class="flex flex-col gap-3 md:gap-4">
+                    <span
+                        class="text-tertiary-fixed-dim uppercase font-bold text-[10px] md:text-xs tracking-widest font-headline">Contact</span>
+                    <div class="flex flex-col gap-2 md:gap-3">
+                        <a href="mailto:info@njikokadsms.online"
+                            class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm">info@njikokadsms.online</a>
+                        <a href="tel:+2348036052303"
+                            class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm">+234
+                            803 605 2303</a>
+                        <a href="tel:+2348025796226"
+                            class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm">+234
+                            802 579 6226</a>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-3 md:gap-4">
+                    <span
+                        class="text-tertiary-fixed-dim uppercase font-bold text-[10px] md:text-xs tracking-widest font-headline">Follow</span>
+                    <div class="flex flex-col gap-1 md:gap-2">
+                        <a class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm flex items-center gap-2"
+                            href="https://facebook.com/njikokadsms" target="_blank">
+                            <span class="material-symbols-outlined text-sm md:text-base">facebook</span>
+                            <span class="hidden md:inline">Facebook</span>
+                        </a>
+                        <a class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm flex items-center gap-2"
+                            href="https://instagram.com/njikokadsms" target="_blank">
+                            <span class="material-symbols-outlined text-sm md:text-base">photo_camera</span>
+                            <span class="hidden md:inline">Instagram</span>
+                        </a>
+                        <a class="text-outline-variant hover:text-white transition-colors font-headline text-xs md:text-sm flex items-center gap-2"
+                            href="https://youtube.com/@njikokadsms" target="_blank">
+                            <span class="material-symbols-outlined text-sm md:text-base">video_library</span>
+                            <span class="hidden md:inline">YouTube</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                            <!-- Address Section -->
-                            <div
-                                class="w-full px-4 md:px-8 lg:px-12 max-w-7xl mx-auto mt-8 md:mt-12 pt-6 md:pt-8 border-t border-white/10">
-                                <div
-                                    class="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4 mb-6 md:mb-8">
-                                    <span
-                                        class="material-symbols-outlined text-xl md:text-2xl text-tertiary-fixed-dim">location_on</span>
-                                    <div class="flex flex-col gap-1">
-                                        <h3
-                                            class="text-tertiary-fixed-dim uppercase font-bold text-[10px] md:text-xs tracking-widest font-headline">
-                                            Address</h3>
-                                        <p class="text-surface-container-low font-headline text-xs md:text-sm">Njikoka
-                                            Local Government Head Quarters,
-                                            Abagana</p>
-                                    </div>
-                                </div>
-                                <p
-                                    class="text-surface-container-low text-[10px] md:text-[12px] font-headline opacity-60">
-                                    © 2024 Njikoka Digital Street
-                                    Management System. An Official Civic Estate Initiative.</p>
-                            </div>
-                            </footer>
+        <!-- Address Section -->
+        <div
+            class="w-full px-4 md:px-8 lg:px-12 max-w-7xl mx-auto mt-8 md:mt-12 pt-6 md:pt-8 border-t border-white/10">
+            <div class="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4 mb-6 md:mb-8">
+                <span class="material-symbols-outlined text-xl md:text-2xl text-tertiary-fixed-dim">location_on</span>
+                <div class="flex flex-col gap-1">
+                    <h3
+                        class="text-tertiary-fixed-dim uppercase font-bold text-[10px] md:text-xs tracking-widest font-headline">
+                        Address</h3>
+                    <p class="text-surface-container-low font-headline text-xs md:text-sm">Njikoka Local Government
+                        Head Quarters, Abagana</p>
+                </div>
+            </div>
+            <p class="text-surface-container-low text-[10px] md:text-[12px] font-headline opacity-60">© 2024 Njikoka
+                Digital Street Management System. An Official Civic Estate Initiative.</p>
+        </div>
+    </footer>
 </body>
 
 </html>
