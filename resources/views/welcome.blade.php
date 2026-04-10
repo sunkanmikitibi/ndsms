@@ -177,9 +177,8 @@
 
         <x-why-us />
 
-      
 
-   
+
 
         <!-- Core Services -->
         <section class="py-16 md:py-24 px-4 md:px-8">
@@ -230,7 +229,7 @@
                         </h5>
                         <p class="text-on-surface-variant text-xs md:text-sm leading-relaxed">
                             Detailed spatial data visualization
-                            per ward, highlighting zoning and administrative boundaries.
+                            per town, highlighting zoning and administrative boundaries.
                         </p>
                     </div>
                     <div class="flex flex-col gap-4 md:gap-6">
@@ -297,18 +296,20 @@
                 <div class="grid grid-cols-2 gap-8 md:gap-16">
                     <div class="text-center">
                         <div class="text-4xl md:text-6xl font-black text-tertiary-fixed-dim font-headline mb-2">
-                            12+
+                            6
                         </div>
                         <div class="text-[10px] md:text-xs uppercase tracking-widest font-bold text-on-primary/40">
-                            Registered Wards
+                            Towns in Njikoka
+                            <br>
+                            Abba | Abagana | Enugwu Ukwu | Enugwu Agidi | Nimo | Nawfia
                         </div>
                     </div>
                     <div class="text-center">
                         <div class="text-4xl md:text-6xl font-black text-tertiary-fixed-dim font-headline mb-2">
-                            1000+
+                            18
                         </div>
                         <div class="text-[10px] md:text-xs uppercase tracking-widest font-bold text-on-primary/40">
-                            Streets Mapped
+                            Registered Towns
                         </div>
                     </div>
                 </div>
@@ -663,7 +664,8 @@
                         Head Quarters, Abagana</p>
                 </div>
             </div>
-            <p class="text-surface-container-low text-[10px] md:text-[12px] font-headline opacity-60">© 2024 Njikoka
+            <p class="text-surface-container-low text-[10px] md:text-[12px] font-headline opacity-60">©
+                {{ date('Y') }} Njikoka
                 Digital Street Management System. An Official Civic Estate Initiative.</p>
         </div>
     </footer>

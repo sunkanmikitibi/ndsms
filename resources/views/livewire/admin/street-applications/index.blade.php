@@ -31,7 +31,7 @@
                 <tr>
                     <th>Street Name</th>
                     <th>Applicant</th>
-                    <th>Ward</th>
+                    <th>Town</th>
                     <th>Type</th>
                     <th>Status</th>
                     <th>Submitted</th>
@@ -52,7 +52,7 @@
                             <div>{{ $app->user?->name }}</div>
                             <div style="font-size:11px;color:var(--text-secondary);">{{ $app->user?->phone }}</div>
                         </td>
-                        <td>{{ $app->ward }}</td>
+                        <td>{{ $app->town }}</td>
                         <td>
                             <span
                                 style="padding:3px 8px;background:var(--bg-input);border-radius:6px;font-size:11px;font-weight:600;">
@@ -117,8 +117,8 @@
                         </div>
                         <div>
                             <label
-                                style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;">Ward</label>
-                            <div style="font-weight:700;margin-top:4px;">{{ $application?->ward }}</div>
+                                style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;">Town</label>
+                            <div style="font-weight:700;margin-top:4px;">{{ $application?->town }}</div>
                         </div>
                     </div>
                     <div style="margin-bottom:15px;">

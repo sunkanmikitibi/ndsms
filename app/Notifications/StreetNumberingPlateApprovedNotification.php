@@ -33,7 +33,7 @@ class StreetNumberingPlateApprovedNotification extends Notification implements S
             ->line("**Request Details:**")
             ->line("Reference: {$this->request->reference_number}")
             ->line("Street: {$this->request->street_name}")
-            ->line("Ward: {$this->request->ward}")
+            ->line("Town: {$this->request->town}")
             ->line("Quantity: {$this->request->quantity_requested} plates")
             ->line("Estimated Amount: ₦" . number_format($this->request->getTotalCost(), 2))
             ->line("Status: Approved ✓")

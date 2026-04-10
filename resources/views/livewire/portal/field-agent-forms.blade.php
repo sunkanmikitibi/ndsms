@@ -820,7 +820,7 @@
           <li>Complete <strong>all fields marked with *</strong> (mandatory). Use BLOCK CAPITALS for handwritten entries.</li>
           <li>GPS coordinates are <strong>auto-captured</strong> by the mobile app. For paper forms, use a GPS device or phone.</li>
           <li>Attach photos and videos using the media log below. Number each file to match the reference column.</li>
-          <li>Submit completed forms to your Ward Supervisor within <strong>24 hours</strong> of field visit.</li>
+          <li>Submit completed forms to your Town Supervisor within <strong>24 hours</strong> of field visit.</li>
         </ul>
       </div>
 
@@ -1181,7 +1181,7 @@
             </div>
             <div class="sig-box">
               <div class="sig-line"></div>
-              <div class="sig-label">Ward Supervisor Signature</div>
+              <div class="sig-label">Town Supervisor Signature</div>
             </div>
             <div class="sig-box">
               <div class="sig-line"></div>

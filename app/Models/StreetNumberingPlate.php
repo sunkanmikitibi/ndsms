@@ -15,7 +15,7 @@ class StreetNumberingPlate extends Model
         'user_id',
         'street_id',
         'street_name',
-        'ward',
+        'town',
         'quantity_requested',
         'plate_type',
         'material',

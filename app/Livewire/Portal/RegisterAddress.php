@@ -22,7 +22,7 @@ class RegisterAddress extends Component
     // Step 2: Location (Single)
     public string $house_number = '';
     public $street_id = '';
-    public string $ward = '';
+    public string $town = '';
     public $latitude = null;
     public $longitude = null;
 
@@ -85,7 +85,7 @@ class RegisterAddress extends Component
         } elseif ($this->step === 2) {
             $rules = [
                 'street_id'    => 'required|exists:streets,id',
-                'ward'         => 'required|string|max:100',
+                'town'         => 'required|string|max:100',
             ];
 
             if ($this->registrationType === 'single') {
@@ -150,7 +150,7 @@ class RegisterAddress extends Component
             'applicant_phone' => $this->applicant_phone,
             'house_number'    => $this->house_number,
             'street_id'       => $this->street_id,
-            'ward'            => $this->ward,
+            'town'            => $this->town,
             'latitude'        => $this->latitude,
             'longitude'       => $this->longitude,
             'owner_name'      => $this->owner_name,
@@ -175,7 +175,7 @@ class RegisterAddress extends Component
                 'applicant_phone' => $this->applicant_phone,
                 'house_number'    => $row['house_number'],
                 'street_id'       => $this->street_id,
-                'ward'            => $this->ward,
+                'town'            => $this->town,
                 'latitude'        => $this->latitude, // Shared GPS for bulk
                 'longitude'       => $this->longitude, // Shared GPS for bulk
                 'owner_name'      => $this->owner_name,
@@ -202,7 +202,7 @@ class RegisterAddress extends Component
 
     public function newRegistration(): void
     {
-        $this->reset(['step', 'house_number', 'street_id', 'ward', 'owner_name', 'owner_phone', 'payment_method', 'applicant_name', 'applicant_phone', 'submitted', 'reference_code', 'reference_codes', 'bulkAddresses']);
+        $this->reset(['step', 'house_number', 'street_id', 'town', 'owner_name', 'owner_phone', 'payment_method', 'applicant_name', 'applicant_phone', 'submitted', 'reference_code', 'reference_codes', 'bulkAddresses']);
         $this->mount();
     }
 

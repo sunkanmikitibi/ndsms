@@ -15,7 +15,7 @@ class Address extends Model
         'applicant_phone',
         'house_number',
         'street_id',
-        'ward',
+        'town',
         'owner_name',
         'owner_phone',
         'payment_method',

@@ -25,7 +25,7 @@ class StreetRevalidationForm extends Component
 
     // For new revalidation details
     public string $street_name = '';
-    public string $ward = '';
+    public string $town = '';
     public string $reason = '';
     public string $current_status = 'active';
 
@@ -40,7 +40,7 @@ class StreetRevalidationForm extends Component
 
     protected $rules = [
         'street_name'      => 'required|string|max:255',
-        'ward'             => 'required|string|max:100',
+        'town'             => 'required|string|max:100',
         'reason'           => 'required|string|max:1000',
         'current_status'   => 'required|in:active,inactive,disputed,under_review',
         'supporting_documents' => 'nullable|array|max:5',
@@ -55,7 +55,7 @@ class StreetRevalidationForm extends Component
     public function setTab($tabName)
     {
         $this->tab = $tabName;
-        $this->reset(['street_id', 'street_name', 'ward', 'reason', 'step', 'submitted']);
+        $this->reset(['street_id', 'street_name', 'town', 'reason', 'step', 'submitted']);
     }
 
     public function selectStreet($streetId)
@@ -65,7 +65,7 @@ class StreetRevalidationForm extends Component
 
         if ($this->selectedStreet) {
             $this->street_name = $this->selectedStreet->name;
-            $this->ward = $this->selectedStreet->ward;
+            $this->town = $this->selectedStreet->town;
         }
     }
 
@@ -106,7 +106,7 @@ class StreetRevalidationForm extends Component
             } else {
                 $this->validate([
                     'street_name' => 'required|string|max:255',
-                    'ward'        => 'required|string|max:100',
+                    'town'        => 'required|string|max:100',
                 ]);
             }
         } elseif ($this->step === 2) {
@@ -138,7 +138,7 @@ class StreetRevalidationForm extends Component
             'user_id'                => auth()->id(),
             'street_id'              => $this->street_id,
             'street_name'            => $this->street_name,
-            'ward'                   => $this->ward,
+            'town'                   => $this->town,
             'reason'                 => $this->reason,
             'current_status'         => $this->current_status,
             'supporting_documents'   => $this->supporting_documents,

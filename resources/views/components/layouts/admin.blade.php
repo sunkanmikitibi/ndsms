@@ -86,8 +86,12 @@ document.documentElement.classList.toggle('dark', darkMode)"
                 </a>
                 @canany(['view approvals', 'manage approvals'])
                     <a href="{{ route('admin.street-applications.index') }}"
-                        class="nav-item {{ request()->routeIs('admin.street-applications.*') ? 'active' : '' }}">
+                        class="nav-item {{ request()->routeIs('admin.street-applications.index') ? 'active' : '' }}">
                         <i class="fas fa-file-alt"></i> Street Applications
+                    </a>
+                    <a href="{{ route('admin.street-applications.production-workflow') }}"
+                        class="nav-item {{ request()->routeIs('admin.street-applications.production-workflow') ? 'active' : '' }}">
+                        <i class="fas fa-cogs"></i> Production Workflow
                     </a>
                     <a href="{{ route('admin.field-reports.index') }}"
                         class="nav-item {{ request()->routeIs('admin.field-reports.*') ? 'active' : '' }}">
@@ -121,7 +125,7 @@ document.documentElement.classList.toggle('dark', darkMode)"
                 </a>
                 <a href="{{ route('admin.map.index') }}"
                     class="nav-item {{ request()->routeIs('admin.map.*') ? 'active' : '' }}">
-                    <i class="fas fa-map"></i> Ward Map
+                    <i class="fas fa-map"></i> Town Map
                 </a>
             @endcan
 

@@ -17,7 +17,7 @@
         <div style="background:var(--bg-input);border-radius:var(--radius-sm);padding:16px;margin-bottom:24px;text-align:left;">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px;">
                 <div><span style="color:var(--text-secondary);">Street Name</span><br><strong>{{ $lastApplication->street_name }}</strong></div>
-                <div><span style="color:var(--text-secondary);">Ward</span><br><strong>{{ $lastApplication->ward }}</strong></div>
+                <div><span style="color:var(--text-secondary);">Town</span><br><strong>{{ $lastApplication->town }}</strong></div>
                 <div><span style="color:var(--text-secondary);">Type</span><br><strong>{{ ucfirst($lastApplication->type) }}</strong></div>
                 <div><span style="color:var(--text-secondary);">Status</span><br><span class="status-badge pending">Pending Review</span></div>
             </div>
@@ -41,9 +41,9 @@
                         @error('street_name')<span style="color:var(--danger);font-size:12px;">{{ $message }}</span>@enderror
                     </div>
                     <div class="form-group">
-                        <label>Ward *</label>
-                        <input wire:model="ward" type="text" placeholder="e.g. Abagana Ward">
-                        @error('ward')<span style="color:var(--danger);font-size:12px;">{{ $message }}</span>@enderror
+                        <label>Town *</label>
+                        <input wire:model="town" type="text" placeholder="e.g. Abagana Town">
+                        @error('town')<span style="color:var(--danger);font-size:12px;">{{ $message }}</span>@enderror
                     </div>
                     <div class="form-group">
                         <label>Type *</label>

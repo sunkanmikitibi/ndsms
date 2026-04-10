@@ -2,7 +2,7 @@
 <div class="page-header">
     <div>
         <h2><i class="fas fa-road" style="color:var(--accent);margin-right:10px;"></i>Streets</h2>
-        <p>Manage all registered streets across wards</p>
+        <p>Manage all registered streets across towns</p>
     </div>
     @can('manage addresses')
     <div style="display:flex;gap:12px;">
@@ -17,10 +17,10 @@
         <i class="fas fa-search"></i>
         <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search by street name or code…">
     </div>
-    <select wire:model.live="filterWard" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-input);color:var(--text-primary);font-family:'Outfit',sans-serif;font-size:14px;">
-        <option value="">All Wards</option>
-        @foreach($wards as $ward)
-            <option value="{{ $ward }}">{{ $ward }}</option>
+    <select wire:model.live="filterTown" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-input);color:var(--text-primary);font-family:'Outfit',sans-serif;font-size:14px;">
+        <option value="">All Towns</option>
+        @foreach($towns as $town)
+            <option value="{{ $town }}">{{ $town }}</option>
         @endforeach
     </select>
 </div>
@@ -32,7 +32,7 @@
                 <th>Street Code</th>
                 <th>Name</th>
                 <th>Type</th>
-                <th>Ward</th>
+                <th>Town</th>
                 <th>Addresses</th>
                 <th>Status</th>
                 @can('manage addresses')<th>Actions</th>@endcan
@@ -43,8 +43,8 @@
             <tr>
                 <td><span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--accent);">{{ $street->code ?? '—' }}</span></td>
                 <td style="font-weight:600;">{{ $street->name }}</td>
-                <td><span class="ward-badge" style="background:var(--info-light);color:var(--info);">{{ ucfirst($street->type) }}</span></td>
-                <td>{{ $street->ward }}</td>
+                <td><span class="town-badge" style="background:var(--info-light);color:var(--info);">{{ ucfirst($street->type) }}</span></td>
+                <td>{{ $street->town }}</td>
                 <td><span style="font-family:'Space Mono',monospace;font-weight:700;">{{ $street->addresses_count }}</span></td>
                 <td><span class="status-badge {{ $street->status }}">{{ ucfirst($street->status) }}</span></td>
                 @can('manage addresses')
@@ -98,9 +98,9 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Ward</label>
-                    <input wire:model="ward" type="text" placeholder="e.g. Abagana Ward">
-                    @error('ward')<span style="color:var(--danger);font-size:12px;">{{ $message }}</span>@enderror
+                    <label>Town</label>
+                    <input wire:model="town" type="text" placeholder="e.g. Abagana Town">
+                    @error('town')<span style="color:var(--danger);font-size:12px;">{{ $message }}</span>@enderror
                 </div>
                 <div class="form-group">
                     <label>Status</label>
@@ -148,7 +148,7 @@
         
         <div style="background:var(--bg-card);padding:16px;border-radius:var(--radius-md);margin-bottom:20px;border:1px solid var(--border);">
             <h5 style="margin-bottom:8px;font-size:13px;color:var(--text-primary);">CSV Format:</h5>
-            <code style="font-size:12px;display:block;background:var(--bg-input);padding:8px;border-radius:4px;color:var(--accent);">name, ward, type, description, status</code>
+            <code style="font-size:12px;display:block;background:var(--bg-input);padding:8px;border-radius:4px;color:var(--accent);">name, town, type, description, status</code>
             <a href="#" wire:click.prevent="downloadSample" style="display:inline-block;margin-top:12px;font-size:13px;color:var(--accent);text-decoration:none;"><i class="fas fa-download"></i> Download Sample CSV</a>
         </div>
 

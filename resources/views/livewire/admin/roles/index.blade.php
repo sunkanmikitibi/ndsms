@@ -50,7 +50,7 @@
                     </div>
                 </td>
                 <td>
-                    <span class="ward-badge">{{ $role->users->count() }} users</span>
+                    <span class="town-badge">{{ $role->users->count() }} users</span>
                 </td>
                 <td>
                     <div style="display:flex;gap:6px;">

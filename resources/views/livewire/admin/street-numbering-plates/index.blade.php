@@ -61,7 +61,7 @@
         <div class="card-body">
             <div class="filter-grid">
                 <div class="form-group">
-                    <label>Search (Reference, Street, Ward)</label>
+                    <label>Search (Reference, Street, Town)</label>
                     <input type="text" wire:model.live="search" placeholder="e.g., PLATE-ABC123 or Ikeja Road"
                         class="form-control">
                 </div>
@@ -77,8 +77,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Ward</label>
-                    <input type="text" wire:model.live="filterWard" placeholder="e.g., Lagos Island"
+                    <label>Town</label>
+                    <input type="text" wire:model.live="filterTown" placeholder="e.g., Lagos Island"
                         class="form-control">
                 </div>
 
@@ -115,8 +115,13 @@
     <div class="card">
         <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
             <h3>Requests ({{ $requests->total() }})</h3>
-            <span class="text-sm text-gray-500">Page {{ $requests->currentPage() }} of
-                {{ $requests->lastPage() }}</span>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <button wire:click="exportToCsv" class="btn btn-primary btn-sm">
+                    <i class="fas fa-download"></i> Export CSV
+                </button>
+                <span class="text-sm text-gray-500">Page {{ $requests->currentPage() }} of
+                    {{ $requests->lastPage() }}</span>
+            </div>
         </div>
         <div class="card-body">
             @if ($requests->isEmpty())
@@ -167,7 +172,7 @@
                                     <td class="font-mono text-sm font-bold">{{ $req->reference_number }}</td>
                                     <td>
                                         <div class="font-semibold">{{ $req->street_name }}</div>
-                                        <div class="text-xs text-gray-500">{{ $req->ward }}</div>
+                                        <div class="text-xs text-gray-500">{{ $req->town }}</div>
                                     </td>
                                     <td>
                                         <span
@@ -278,8 +283,8 @@
                                 <span class="detail-value">{{ $selectedRequest->street_name }}</span>
                             </div>
                             <div class="detail-item">
-                                <span class="detail-label">Ward</span>
-                                <span class="detail-value">{{ $selectedRequest->ward }}</span>
+                                <span class="detail-label">Town</span>
+                                <span class="detail-value">{{ $selectedRequest->town }}</span>
                             </div>
                         </div>
                     </div>

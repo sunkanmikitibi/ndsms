@@ -390,7 +390,7 @@ tr:last-child td {
 tr:hover td {
     background: var(--accent-light);
 }
-.ward-badge {
+.town-badge {
     display: inline-block;
     padding: 3px 10px;
     border-radius: 20px;

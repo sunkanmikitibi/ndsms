@@ -20,7 +20,7 @@ class RequestNumberingPlates extends Component
     // Step 1: Street Selection
     public $street_id = null;
     public string $street_name = '';
-    public string $ward = '';
+    public string $town = '';
     public array $streets = [];
 
     // Step 2: Plate Specifications
@@ -43,7 +43,7 @@ class RequestNumberingPlates extends Component
     protected $rules = [
         'street_id' => 'nullable|exists:streets,id',
         'street_name' => 'required|string|max:255',
-        'ward' => 'required|string|max:100',
+        'town' => 'required|string|max:100',
         'quantity_requested' => 'required|integer|min:1|max:100',
         'plate_type' => 'required|in:standard,reflective,illuminated,digital',
         'material' => 'required|in:aluminum,steel,stainless,plastic,composite',
@@ -72,7 +72,7 @@ class RequestNumberingPlates extends Component
 
         if ($street) {
             $this->street_name = $street->name;
-            $this->ward = $street->ward;
+            $this->town = $street->town;
         }
     }
 
@@ -80,7 +80,7 @@ class RequestNumberingPlates extends Component
     {
         $this->street_id = null;
         $this->street_name = '';
-        $this->ward = '';
+        $this->town = '';
     }
 
     public function calculateEstimatedCost()
@@ -129,7 +129,7 @@ class RequestNumberingPlates extends Component
         if ($this->step === 1) {
             $this->validate([
                 'street_name' => 'required|string|max:255',
-                'ward' => 'required|string|max:100',
+                'town' => 'required|string|max:100',
             ]);
         } elseif ($this->step === 2) {
             $this->validate([
@@ -162,7 +162,7 @@ class RequestNumberingPlates extends Component
                 'user_id' => auth()->id(),
                 'street_id' => $this->street_id,
                 'street_name' => $this->street_name,
-                'ward' => $this->ward,
+                'town' => $this->town,
                 'quantity_requested' => $this->quantity_requested,
                 'plate_type' => $this->plate_type,
                 'material' => $this->material,

@@ -99,7 +99,7 @@
                     <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:600;">Street Name</div><div style="font-weight:700;margin-top:4px;">{{ $viewItem->street_name }}</div></div>
                     <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:600;">Type</div><div style="font-weight:700;margin-top:4px;">{{ ucfirst($viewItem->type ?? 'street') }}</div></div>
                     <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:600;">Applicant</div><div style="font-weight:700;margin-top:4px;">{{ $viewItem->user?->name }}</div></div>
-                    <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:600;">Ward</div><div style="font-weight:700;margin-top:4px;">{{ $viewItem->ward }}</div></div>
+                    <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:600;">Town</div><div style="font-weight:700;margin-top:4px;">{{ $viewItem->town }}</div></div>
                 </div>
                 <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
                     <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);font-weight:600;">Description</div>

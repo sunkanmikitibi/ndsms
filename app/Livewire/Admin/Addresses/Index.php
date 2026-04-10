@@ -19,7 +19,7 @@ class Index extends Component
     use WithPagination, WithFileUploads;
 
     public string $search = '';
-    public string $filterWard = '';
+    public string $filterTown = '';
     public string $filterStatus = '';
     public bool $showModal = false;
     public bool $showDeleteModal = false;
@@ -34,7 +34,7 @@ class Index extends Component
 
     public string $house_number = '';
     public string $street_id = '';
-    public string $ward = '';
+    public string $town = '';
     public string $owner_name = '';
     public string $owner_phone = '';
     public string $status = 'active';
@@ -44,7 +44,7 @@ class Index extends Component
         return [
             'house_number' => 'required|string|max:50',
             'street_id'    => 'required|exists:streets,id',
-            'ward'         => 'required|string|max:100',
+            'town'         => 'required|string|max:100',
             'owner_name'   => 'required|string|max:255',
             'owner_phone'  => 'nullable|string|max:20',
             'status'       => 'required|in:active,inactive,pending',
@@ -58,7 +58,7 @@ class Index extends Component
 
     public function openCreate(): void
     {
-        $this->reset(['editId', 'house_number', 'street_id', 'ward', 'owner_name', 'owner_phone', 'applicant_name', 'applicant_phone', 'reference_code']);
+        $this->reset(['editId', 'house_number', 'street_id', 'town', 'owner_name', 'owner_phone', 'applicant_name', 'applicant_phone', 'reference_code']);
         $this->status    = 'active';
         $this->showModal = true;
     }
@@ -69,7 +69,7 @@ class Index extends Component
         $this->editId       = $id;
         $this->house_number = $addr->house_number;
         $this->street_id    = (string) $addr->street_id;
-        $this->ward         = $addr->ward;
+        $this->town         = $addr->town;
         $this->owner_name   = $addr->owner_name;
         $this->owner_phone  = $addr->owner_phone ?? '';
         $this->applicant_name  = $addr->applicant_name ?? '';
@@ -85,7 +85,7 @@ class Index extends Component
         $data = [
             'house_number'    => $this->house_number,
             'street_id'       => $this->street_id,
-            'ward'            => $this->ward,
+            'town'            => $this->town,
             'owner_name'      => $this->owner_name,
             'owner_phone'     => $this->owner_phone ?: null,
             'applicant_name'  => $this->applicant_name ?: null,
@@ -125,7 +125,7 @@ class Index extends Component
         $file = fopen($path, 'r');
         $header = fgetcsv($file);
 
-        // Expected header: house_number, street_id, ward, owner_name, owner_phone, applicant_name, applicant_phone, reference_code
+        // Expected header: house_number, street_id, town, owner_name, owner_phone, applicant_name, applicant_phone, reference_code
         // Validate header minimally or just skip it
         
         $count = 0;
@@ -139,7 +139,7 @@ class Index extends Component
             $data = [
                 'house_number'    => $row[0] ?? null,
                 'street_id'       => $row[1] ?? null,
-                'ward'            => $row[2] ?? null,
+                'town'            => $row[2] ?? null,
                 'owner_name'      => $row[3] ?? null,
                 'owner_phone'     => $row[4] ?? null,
                 'applicant_name'  => $row[5] ?? null,
@@ -151,7 +151,7 @@ class Index extends Component
             $validator = Validator::make($data, [
                 'house_number' => 'required|string|max:50',
                 'street_id'    => 'required|exists:streets,id',
-                'ward'         => 'required|string|max:100',
+                'town'         => 'required|string|max:100',
                 'owner_name'   => 'required|string|max:255',
                 'reference_code' => 'nullable|string|max:50|unique:addresses,reference_code',
             ]);
@@ -184,13 +184,13 @@ class Index extends Component
             'Content-Disposition' => 'attachment; filename="address_sample.csv"',
         ];
 
-        $columns = ['house_number', 'street_id', 'ward', 'owner_name', 'owner_phone', 'applicant_name', 'applicant_phone', 'reference_code'];
+        $columns = ['house_number', 'street_id', 'town', 'owner_name', 'owner_phone', 'applicant_name', 'applicant_phone', 'reference_code'];
 
         $callback = function () use ($columns) {
             $file = fopen('php://output', 'w');
             fputcsv($file, $columns);
             // Add a sample row
-            fputcsv($file, ['10A', '1', 'Ward 1', 'John Doe', '0123456789', 'Jane Smith', '0987654321', 'REF001']);
+            fputcsv($file, ['10A', '1', 'Town 1', 'John Doe', '0123456789', 'Jane Smith', '0987654321', 'REF001']);
             fclose($file);
         };
 
@@ -202,14 +202,19 @@ class Index extends Component
         $addresses = Address::with('street')
             ->when($this->search, fn($q) => $q->where('owner_name', 'like', "%{$this->search}%")
                 ->orWhere('house_number', 'like', "%{$this->search}%"))
-            ->when($this->filterWard, fn($q) => $q->where('ward', $this->filterWard))
+            ->when($this->filterTown, fn($q) => $q->where('town', $this->filterTown))
             ->when($this->filterStatus, fn($q) => $q->where('status', $this->filterStatus))
             ->latest()
             ->paginate(20);
 
-        $wards   = Address::distinct()->pluck('ward')->sort()->values();
+        $towns   = Address::distinct()->pluck('town')->sort()->values();
         $streets = Street::orderBy('name')->get();
 
-        return view('livewire.admin.addresses.index', compact('addresses', 'wards', 'streets'));
+        return view('livewire.admin.addresses.index', [
+            'addresses' => $addresses,
+            'towns' => $towns,
+            'streets' => $streets
+        ]);
     }
 }
+

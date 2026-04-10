@@ -61,7 +61,7 @@
                     <th>Applicant</th>
                     <th>Street Name</th>
                     <th>Type</th>
-                    <th>Ward</th>
+                    <th>Town</th>
                     <th>Status</th>
                     <th>Date</th>
                     <th>Action</th>
@@ -75,8 +75,8 @@
                         <div style="font-size:11px;color:var(--text-secondary);">{{ $app->user?->email }}</div>
                     </td>
                     <td style="font-weight:600;">{{ $app->street_name }}</td>
-                    <td><span class="ward-badge">{{ ucfirst($app->type ?? 'street') }}</span></td>
-                    <td>{{ $app->ward }}</td>
+                    <td><span class="town-badge">{{ ucfirst($app->type ?? 'street') }}</span></td>
+                    <td>{{ $app->town }}</td>
                     <td><span class="status-badge {{ $app->status }}">{{ str_replace('_', ' ', $app->status) }}</span></td>
                     <td style="color:var(--text-secondary);font-size:12px;">{{ $app->created_at->format('d M Y') }}</td>
                     <td>

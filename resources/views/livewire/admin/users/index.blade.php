@@ -49,7 +49,7 @@
                 <td style="color:var(--text-secondary);">{{ $user->email }}</td>
                 <td>
                     @forelse($user->roles as $role)
-                        <span class="ward-badge" style="margin-right:4px;background:var(--accent-gold-light);color:var(--accent-gold);">{{ $role->name }}</span>
+                        <span class="town-badge" style="margin-right:4px;background:var(--accent-gold-light);color:var(--accent-gold);">{{ $role->name }}</span>
                     @empty
                         <span style="color:var(--text-secondary);font-size:12px;">No role</span>
                     @endforelse

@@ -2,25 +2,25 @@
     <!-- Page Header -->
     <div class="page-header">
         <div>
-            <h2><i class="fas fa-map" style="color:var(--accent);margin-right:10px;"></i>Ward Map</h2>
-            <p>Geographic distribution of streets and addresses across wards</p>
+            <h2><i class="fas fa-map" style="color:var(--accent);margin-right:10px;"></i>Town Map</h2>
+            <p>Geographic distribution of streets and addresses across towns</p>
         </div>
     </div>
 
     <!-- Filters Card -->
     <div class="card" style="margin-bottom:24px;">
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;">
-            <!-- Ward Select -->
+            <!-- Town Select -->
             <div>
                 <label
                     style="display:block;font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:8px;">Select
-                    Ward</label>
-                <select wire:model.live="selectedWard"
+                    Town</label>
+                <select wire:model.live="selectedTown"
                     style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-input);color:var(--text-primary);font-size:14px;transition:border-color var(--transition);"
                     class="focus:outline-none focus:ring-2" onchange="this.style.borderColor='var(--accent)'">
-                    <option value="">-- All Wards --</option>
-                    @foreach ($wards as $ward)
-                        <option value="{{ $ward }}">{{ $ward }}</option>
+                    <option value="">-- All Towns --</option>
+                    @foreach ($towns as $town)
+                        <option value="{{ $town }}">{{ $town }}</option>
                     @endforeach
                 </select>
             </div>
@@ -42,7 +42,7 @@
 
             <!-- Export Button -->
             <div style="display:flex;align-items:flex-end;">
-                <button wire:click="exportWardData" class="btn btn-primary" style="width:100%;">
+                <button wire:click="exportTownData" class="btn btn-primary" style="width:100%;">
                     <i class="fas fa-download"></i> Export Data
                 </button>
             </div>
@@ -51,13 +51,13 @@
 
     <!-- Coverage Statistics -->
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px;">
-        <!-- Ward Card -->
+        <!-- Town Card -->
         <div class="card">
             <div
                 style="font-size:11px;text-transform:uppercase;color:var(--text-secondary);font-weight:700;letter-spacing:0.5px;margin-bottom:8px;">
-                Selected Ward</div>
+                Selected Town</div>
             <div style="font-size:24px;font-weight:800;color:var(--accent);margin-top:8px;">
-                {{ $selectedWard ?: 'All Wards' }}
+                {{ $selectedTown ?: 'All Towns' }}
             </div>
         </div>
 
@@ -98,9 +98,9 @@
                     style="font-size:48px;color:var(--text-secondary);margin-bottom:16px;display:block;"></i>
                 <p style="color:var(--text-secondary);margin-bottom:12px;">Interactive map view (requires Google Maps
                     API integration)</p>
-                @if ($selectedWard)
-                    <p style="font-size:12px;color:var(--text-secondary);margin-top:8px;">Ward: <span
-                            style="font-weight:700;">{{ $selectedWard }}</span></p>
+                @if ($selectedTown)
+                    <p style="font-size:12px;color:var(--text-secondary);margin-top:8px;">Town: <span
+                            style="font-weight:700;">{{ $selectedTown }}</span></p>
                 @endif
                 <p style="font-size:12px;color:var(--text-secondary);margin-top:8px;">
                     Showing {{ $mapData['street_count'] }} streets and {{ $mapData['address_count'] }} addresses
@@ -129,7 +129,7 @@
                             <span style="display:inline-block;margin-right:12px;"><i class="fas fa-tag"></i>
                                 {{ $street->code }}</span>
                             <span style="display:inline-block;"><i class="fas fa-map-marker"></i>
-                                {{ $street->ward }}</span>
+                                {{ $street->town }}</span>
                         </div>
                         <div style="font-size:11px;margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
                             <span

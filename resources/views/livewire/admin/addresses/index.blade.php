@@ -19,10 +19,10 @@
         <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search by owner or house number…">
     </div>
     <div style="display:flex;gap:8px;">
-        <select wire:model.live="filterWard" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-input);color:var(--text-primary);font-family:'Outfit',sans-serif;font-size:14px;">
-            <option value="">All Wards</option>
-            @foreach($wards as $ward)
-                <option value="{{ $ward }}">{{ $ward }}</option>
+        <select wire:model.live="filterTown" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-input);color:var(--text-primary);font-family:'Outfit',sans-serif;font-size:14px;">
+            <option value="">All Towns</option>
+            @foreach($towns as $town)
+                <option value="{{ $town }}">{{ $town }}</option>
             @endforeach
         </select>
         <select wire:model.live="filterStatus" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-input);color:var(--text-primary);font-family:'Outfit',sans-serif;font-size:14px;">
@@ -41,7 +41,7 @@
             <tr>
                 <th>House No.</th>
                 <th>Street</th>
-                <th>Ward</th>
+                <th>Town</th>
                 <th>Owner</th>
                 <th>Phone</th>
                 <th>Status</th>
@@ -53,7 +53,7 @@
             <tr>
                 <td><span style="font-family:'Space Mono',monospace;font-weight:700;color:var(--accent);">{{ $addr->house_number }}</span></td>
                 <td>{{ $addr->street?->name ?? '—' }}</td>
-                <td><span class="ward-badge">{{ $addr->ward }}</span></td>
+                <td><span class="town-badge">{{ $addr->town }}</span></td>
                 <td style="font-weight:600;">{{ $addr->owner_name }}</td>
                 <td style="color:var(--text-secondary);">{{ $addr->owner_phone ?? '—' }}</td>
                 <td><span class="status-badge {{ $addr->status }}">{{ ucfirst($addr->status) }}</span></td>
@@ -108,9 +108,9 @@
                     @error('street_id')<span style="color:var(--danger);font-size:12px;">{{ $message }}</span>@enderror
                 </div>
                 <div class="form-group">
-                    <label>Ward</label>
-                    <input wire:model="ward" type="text" placeholder="e.g. Abagana Ward">
-                    @error('ward')<span style="color:var(--danger);font-size:12px;">{{ $message }}</span>@enderror
+                    <label>Town</label>
+                    <input wire:model="town" type="text" placeholder="e.g. Abagana Town">
+                    @error('town')<span style="color:var(--danger);font-size:12px;">{{ $message }}</span>@enderror
                 </div>
                 <div class="form-group">
                     <label>Owner Name</label>
@@ -178,7 +178,7 @@
         
         <div style="background:var(--bg-card);padding:16px;border-radius:var(--radius-md);margin-bottom:20px;border:1px solid var(--border);">
             <h5 style="margin-bottom:8px;font-size:13px;color:var(--text-primary);">CSV Format:</h5>
-            <code style="font-size:12px;display:block;background:var(--bg-input);padding:8px;border-radius:4px;color:var(--accent);">house_number, street_id, ward, owner_name, owner_phone, applicant_name, applicant_phone, reference_code</code>
+            <code style="font-size:12px;display:block;background:var(--bg-input);padding:8px;border-radius:4px;color:var(--accent);">house_number, street_id, town, owner_name, owner_phone, applicant_name, applicant_phone, reference_code</code>
             <a href="#" wire:click.prevent="downloadSample" style="display:inline-block;margin-top:12px;font-size:13px;color:var(--accent);text-decoration:none;"><i class="fas fa-download"></i> Download Sample CSV</a>
         </div>
 

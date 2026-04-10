@@ -35,7 +35,7 @@ class StreetNumberingPlateRejectedNotification extends Notification implements S
             ->line("**Request Details:**")
             ->line("Reference: {$this->request->reference_number}")
             ->line("Street: {$this->request->street_name}")
-            ->line("Ward: {$this->request->ward}")
+            ->line("Town: {$this->request->town}")
             ->line("Status: Rejected");
 
         if ($this->reason) {

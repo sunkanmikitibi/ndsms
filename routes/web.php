@@ -18,7 +18,7 @@ use App\Livewire\Admin\Streets\Index as StreetsIndex;
 use App\Livewire\Admin\StreetApplications\Index as StreetApplicationsIndex;
 use App\Livewire\Admin\StreetNumberingPlates\Index as StreetNumberingPlatesIndex;
 use App\Livewire\Admin\Users\Index as UsersIndex;
-use App\Livewire\Admin\WardMap\Index as WardMapIndex;
+use App\Livewire\Admin\TownMap\Index as TownMapIndex;
 use App\Livewire\Portal\Dashboard as PortalDashboard;
 use App\Livewire\Portal\RegisterStreet;
 use App\Livewire\Portal\RegisterAddressIndexing;
@@ -93,6 +93,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // Staff Functions (Street Applications & Field Reports)
     Route::middleware('can:view approvals')->group(function () {
         Route::get('/street-applications', StreetApplicationsIndex::class)->name('street-applications.index');
+        // Route::get('/production-workflow', ProductionWorkflow::class)->name('street-applications.production-workflow');
         Route::get('/field-reports', FieldReportsIndex::class)->name('field-reports.index');
         Route::get('/street-numbering-plates', StreetNumberingPlatesIndex::class)->name('street-numbering-plates.index');
     });
@@ -105,7 +106,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // Reports
     Route::middleware('can:view reports')->group(function () {
         Route::get('/reports', ReportsIndex::class)->name('reports.index');
-        Route::get('/map', WardMapIndex::class)->name('map.index');
+        Route::get('/map', TownMapIndex::class)->name('map.index');
     });
 
     // Fee Management (View for all with permission, or super-admin)

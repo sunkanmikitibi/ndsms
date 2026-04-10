@@ -13,7 +13,7 @@ class StreetApplication extends Model
     protected $fillable = [
         'user_id',
         'street_name',
-        'ward',
+        'town',
         'type',
         'description',
         'status',

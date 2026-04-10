@@ -59,7 +59,7 @@ class AiLookup extends Component
                           ->orWhere('description', 'like', "%{$term}%")
                           ->orWhereHas('street', function ($sq) use ($term) {
                               $sq->where('name', 'like', "%{$term}%")
-                                 ->orWhere('ward', 'like', "%{$term}%");
+                                 ->orWhere('town', 'like', "%{$term}%");
                           });
                     }
                 }
@@ -73,7 +73,7 @@ class AiLookup extends Component
                         'id' => $address->id,
                         'house_number' => $address->house_number,
                         'street_name' => $address->street?->name ?? 'Unknown Street',
-                        'ward' => $address->ward,
+                        'town' => $address->town,
                         'owner_name' => $address->owner_name,
                         'owner_phone' => $address->owner_phone,
                         'status' => $address->status,

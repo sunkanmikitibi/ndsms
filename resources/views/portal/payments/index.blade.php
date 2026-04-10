@@ -66,7 +66,7 @@
                                 {{ $payment->reference }}
                             </td>
                             <td>
-                                <span class="ward-badge">
+                                <span class="town-badge">
                                     {{ ucwords(str_replace(['_', '-'], ' ', $payment->metadata['type'] ?? 'unknown')) }}
                                 </span>
                             </td>

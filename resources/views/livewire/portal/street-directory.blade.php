@@ -10,7 +10,7 @@
     <div class="dir-stats-row">
         <div class="dir-stat-chip"><i class="fas fa-road" style="color:var(--accent);"></i> <strong>{{ $totals['streets'] }}</strong> Streets</div>
         <div class="dir-stat-chip"><i class="fas fa-map-marker-alt" style="color:var(--accent);"></i> <strong>{{ $totals['addresses'] }}</strong> Addresses</div>
-        <div class="dir-stat-chip"><i class="fas fa-map" style="color:var(--accent);"></i> <strong>{{ $totals['wards'] }}</strong> Wards</div>
+        <div class="dir-stat-chip"><i class="fas fa-map" style="color:var(--accent);"></i> <strong>{{ $totals['towns'] }}</strong> Towns</div>
     </div>
 
     <!-- Search Bar -->
@@ -19,10 +19,10 @@
             <i class="fas fa-search"></i>
             <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search by street name or code…">
         </div>
-        <select wire:model.live="filterWard" style="padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-input);color:var(--text-primary);font-family:'Outfit',sans-serif;font-size:14px;">
-            <option value="">All Wards</option>
-            @foreach($wards as $ward)
-                <option value="{{ $ward }}">{{ $ward }}</option>
+        <select wire:model.live="filterTown" style="padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-input);color:var(--text-primary);font-family:'Outfit',sans-serif;font-size:14px;">
+            <option value="">All Towns</option>
+            @foreach($towns as $town)
+                <option value="{{ $town }}">{{ $town }}</option>
             @endforeach
         </select>
         <select wire:model.live="filterType" style="padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-input);color:var(--text-primary);font-family:'Outfit',sans-serif;font-size:14px;">
@@ -52,10 +52,10 @@
                     <div class="dir-card-name">{{ $street->name }}</div>
                     <div class="dir-card-code">{{ $street->code ?? 'No code' }}</div>
                 </div>
-                <span class="ward-badge" style="background:var(--info-light);color:var(--info);">{{ ucfirst($street->type) }}</span>
+                <span class="town-badge" style="background:var(--info-light);color:var(--info);">{{ ucfirst($street->type) }}</span>
             </div>
             <div style="margin-top:12px;font-size:13px;color:var(--text-secondary);">
-                <i class="fas fa-map" style="width:16px;"></i> {{ $street->ward }}
+                <i class="fas fa-map" style="width:16px;"></i> {{ $street->town }}
             </div>
             <div style="margin-top:6px;font-size:13px;color:var(--text-secondary);">
                 <i class="fas fa-home" style="width:16px;"></i>

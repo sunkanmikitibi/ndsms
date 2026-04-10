@@ -23,7 +23,7 @@
                     <div style="margin-bottom:10px;"><span style="color:var(--text-secondary);">Street
                             Name</span><br><strong>{{ $lastRevalidation->street_name }}</strong></div>
                     <div style="margin-bottom:10px;"><span
-                            style="color:var(--text-secondary);">Ward</span><br><strong>{{ $lastRevalidation->ward }}</strong>
+                            style="color:var(--text-secondary);">Town</span><br><strong>{{ $lastRevalidation->town }}</strong>
                     </div>
                     <div><span style="color:var(--text-secondary);">Status</span><br><span
                             style="background:#fff3cd;padding:4px 8px;border-radius:4px;font-size:11px;font-weight:600;">PENDING
@@ -97,7 +97,7 @@
                                             wire:click="selectStreet({{ $street->id }})">
                                             <div style="font-weight:600;font-size:14px;">{{ $street->name }}</div>
                                             <div style="font-size:12px;color:var(--text-secondary);">
-                                                {{ $street->ward }} • {{ ucfirst($street->type) }}</div>
+                                                {{ $street->town }} • {{ ucfirst($street->type) }}</div>
                                         </div>
                                     @empty
                                         <div style="padding:20px;text-align:center;color:var(--text-secondary);">
@@ -115,7 +115,7 @@
                                                 style="color:var(--text-secondary);">Selected
                                                 Street:</span><br><strong>{{ $selectedStreet->name }}</strong></div>
                                         <div><span
-                                                style="color:var(--text-secondary);">Ward:</span><br><strong>{{ $selectedStreet->ward }}</strong>
+                                                style="color:var(--text-secondary);">Town:</span><br><strong>{{ $selectedStreet->town }}</strong>
                                         </div>
                                     </div>
                                 </div>
@@ -137,9 +137,9 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label>Ward *</label>
-                                    <input wire:model.blur="ward" type="text" placeholder="e.g. Abagana Ward">
-                                    @error('ward')
+                                    <label>Town *</label>
+                                    <input wire:model.blur="town" type="text" placeholder="e.g. Abagana Town">
+                                    @error('town')
                                         <span style="color:var(--danger);font-size:12px;">{{ $message }}</span>
                                     @enderror
                                 </div>

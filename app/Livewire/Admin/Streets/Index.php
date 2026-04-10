@@ -18,7 +18,7 @@ class Index extends Component
     use WithPagination, WithFileUploads;
 
     public string $search = '';
-    public string $filterWard = '';
+    public string $filterTown = '';
     public bool $showModal = false;
     public bool $showDeleteModal = false;
     public bool $showImportModal = false;
@@ -27,14 +27,14 @@ class Index extends Component
     public $importFile;
 
     public string $name = '';
-    public string $ward = '';
+    public string $town = '';
     public string $type = 'street';
     public string $description = '';
     public string $status = 'active';
 
     protected $rules = [
         'name'        => 'required|string|max:255',
-        'ward'        => 'required|string|max:100',
+        'town'        => 'required|string|max:100',
         'type'        => 'required|in:street,avenue,road,lane,close,crescent',
         'description' => 'nullable|string',
         'status'      => 'required|in:active,inactive',
@@ -44,7 +44,7 @@ class Index extends Component
 
     public function openCreate(): void
     {
-        $this->reset(['editId', 'name', 'ward', 'description']);
+        $this->reset(['editId', 'name', 'town', 'description']);
         $this->status    = 'active';
         $this->type      = 'street';
         $this->showModal = true;
@@ -55,7 +55,7 @@ class Index extends Component
         $street            = Street::findOrFail($id);
         $this->editId      = $id;
         $this->name        = $street->name;
-        $this->ward        = $street->ward;
+        $this->town        = $street->town;
         $this->type        = $street->type;
         $this->description = $street->description ?? '';
         $this->status      = $street->status;
@@ -67,8 +67,8 @@ class Index extends Component
         $this->validate();
         $data = [
             'name'        => $this->name,
-            'ward'        => $this->ward,
-            'type'        => $this->type,
+            'town'        => $this->town,
+            'type'            => $this->type,
             'description' => $this->description ?: null,
             'status'      => $this->status,
         ];
@@ -108,7 +108,7 @@ class Index extends Component
         $file = fopen($path, 'r');
         $header = fgetcsv($file);
 
-        // Expected header: name, ward, type, description, status
+        // Expected header: name, town, type, description, status
         
         $count = 0;
         $errors = [];
@@ -120,7 +120,7 @@ class Index extends Component
 
             $data = [
                 'name'        => $row[0] ?? null,
-                'ward'        => $row[1] ?? null,
+                'town'        => $row[1] ?? null,
                 'type'        => $row[2] ?? 'street',
                 'description' => $row[3] ?? null,
                 'status'      => $row[4] ?? 'active',
@@ -128,7 +128,7 @@ class Index extends Component
 
             $validator = Validator::make($data, [
                 'name'        => 'required|string|max:255',
-                'ward'        => 'required|string|max:100',
+                'town'        => 'required|string|max:100',
                 'type'        => 'required|in:street,avenue,road,lane,close,crescent',
                 'status'      => 'required|in:active,inactive',
             ]);
@@ -162,12 +162,12 @@ class Index extends Component
             'Content-Disposition' => 'attachment; filename="street_sample.csv"',
         ];
 
-        $columns = ['name', 'ward', 'type', 'description', 'status'];
+        $columns = ['name', 'town', 'type', 'description', 'status'];
 
         $callback = function () use ($columns) {
             $file = fopen('php://output', 'w');
             fputcsv($file, $columns);
-            fputcsv($file, ['Main Street', 'Ward 1', 'street', 'Primary access road', 'active']);
+            fputcsv($file, ['Main Street', 'Town 1', 'street', 'Primary access road', 'active']);
             fclose($file);
         };
 
@@ -179,12 +179,15 @@ class Index extends Component
         $streets = Street::withCount('addresses')
             ->when($this->search, fn($q) => $q->where('name', 'like', "%{$this->search}%")
                 ->orWhere('code', 'like', "%{$this->search}%"))
-            ->when($this->filterWard, fn($q) => $q->where('ward', $this->filterWard))
+            ->when($this->filterTown, fn($q) => $q->where('town', $this->filterTown))
             ->latest()
             ->paginate(20);
 
-        $wards = Street::distinct()->pluck('ward')->sort()->values();
+        $towns = Street::distinct()->pluck('town')->sort()->values();
 
-        return view('livewire.admin.streets.index', compact('streets', 'wards'));
+        return view('livewire.admin.streets.index', [
+            'streets' => $streets,
+            'towns' => $towns,
+        ]);
     }
 }

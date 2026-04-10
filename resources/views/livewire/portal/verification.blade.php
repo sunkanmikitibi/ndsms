@@ -42,8 +42,8 @@
                     <div class="profile-field-value">{{ $result->street?->name ?? '—' }}</div>
                 </div>
                 <div class="profile-field">
-                    <div class="profile-field-label">Ward</div>
-                    <div class="profile-field-value">{{ $result->ward }}</div>
+                    <div class="profile-field-label">Town</div>
+                    <div class="profile-field-value">{{ $result->town }}</div>
                 </div>
                 <div class="profile-field">
                     <div class="profile-field-label">Owner</div>

@@ -14,7 +14,7 @@ class Street extends Model
     protected $fillable = [
         'name',
         'code',
-        'ward',
+        'town',
         'type',
         'description',
         'status',

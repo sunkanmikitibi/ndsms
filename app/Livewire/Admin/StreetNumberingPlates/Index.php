@@ -16,7 +16,7 @@ class Index extends Component
 
     public string $search = '';
     public string $filterStatus = '';
-    public string $filterWard = '';
+    public string $filterTown = '';
     public string $filterType = '';
     public string $sortBy = 'created_at';
     public string $sortDir = 'desc';
@@ -33,7 +33,7 @@ class Index extends Component
     protected $queryString = [
         'search' => ['except' => ''],
         'filterStatus' => ['except' => ''],
-        'filterWard' => ['except' => ''],
+        'filterTown' => ['except' => ''],
         'filterType' => ['except' => ''],
         'sortBy' => ['except' => 'created_at'],
         'sortDir' => ['except' => 'desc'],
@@ -47,7 +47,7 @@ class Index extends Component
             $query->where(function ($q) {
                 $q->where('reference_number', 'ilike', "%{$this->search}%")
                     ->orWhere('street_name', 'ilike', "%{$this->search}%")
-                    ->orWhere('ward', 'ilike', "%{$this->search}%");
+                    ->orWhere('town', 'ilike', "%{$this->search}%");
             });
         }
 
@@ -55,8 +55,8 @@ class Index extends Component
             $query->where('status', $this->filterStatus);
         }
 
-        if ($this->filterWard) {
-            $query->where('ward', 'ilike', "%{$this->filterWard}%");
+        if ($this->filterTown) {
+            $query->where('town', 'ilike', "%{$this->filterTown}%");
         }
 
         if ($this->filterType) {
@@ -171,7 +171,7 @@ class Index extends Component
     {
         $this->search = '';
         $this->filterStatus = '';
-        $this->filterWard = '';
+        $this->filterTown = '';
         $this->filterType = '';
         $this->resetPage();
     }
@@ -186,19 +186,86 @@ class Index extends Component
         }
     }
 
-    public function render()
+    public function exportToCsv()
     {
-        $requests = $this->getRequests();
-        $stats = [
-            'total' => StreetNumberingPlate::count(),
-            'pending' => StreetNumberingPlate::pending()->count(),
-            'approved' => StreetNumberingPlate::approved()->count(),
-            'inProduction' => StreetNumberingPlate::inProduction()->count(),
-            'ready' => StreetNumberingPlate::ready()->count(),
-            'completed' => StreetNumberingPlate::completed()->count(),
+        $filename = 'street_numbering_plates_' . now()->format('Y-m-d_H-i-s') . '.csv';
+        
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
         ];
 
-        $statuses = [
+        $callback = function () {
+            $file = fopen('php://output', 'w');
+
+            // CSV headers
+            fputcsv($file, [
+                'Reference Number',
+                'Street Name',
+                'Town',
+                'Plate Type',
+                'Quantity',
+                'Status',
+                'Total Cost',
+                'Requester',
+                'Phone',
+                'Email',
+                'Submitted Date',
+                'Last Updated'
+            ]);
+
+            // Get all requests (not paginated for export)
+            $query = StreetNumberingPlate::with('user');
+
+            if ($this->search) {
+                $query->where(function ($q) {
+                    $q->where('reference_number', 'ilike', "%{$this->search}%")
+                        ->orWhere('street_name', 'ilike', "%{$this->search}%")
+                        ->orWhere('town', 'ilike', "%{$this->search}%");
+                });
+            }
+
+            if ($this->filterStatus) {
+                $query->where('status', $this->filterStatus);
+            }
+
+            if ($this->filterTown) {
+                $query->where('town', 'ilike', "%{$this->filterTown}%");
+            }
+
+            if ($this->filterType) {
+                $query->where('plate_type', $this->filterType);
+            }
+
+            $requests = $query->orderBy($this->sortBy, $this->sortDir)->get();
+
+            // CSV data rows
+            foreach ($requests as $request) {
+                fputcsv($file, [
+                    $request->reference_number,
+                    $request->street_name,
+                    $request->town,
+                    $request->getPlateTypeLabel(),
+                    $request->quantity_requested,
+                    ucfirst($request->status),
+                    '₦' . number_format($request->getTotalCost(), 2),
+                    $request->user->name ?? 'N/A',
+                    $request->user->phone ?? 'N/A',
+                    $request->user->email ?? 'N/A',
+                    $request->created_at->format('Y-m-d H:i:s'),
+                    $request->updated_at->format('Y-m-d H:i:s'),
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    private function getStatuses(): array
+    {
+        return [
             'pending' => 'Pending Review',
             'approved' => 'Approved',
             'rejected' => 'Rejected',
@@ -208,6 +275,20 @@ class Index extends Component
             'installed' => 'Installed',
             'completed' => 'Completed',
         ];
+    }
+
+    public function render()
+    {
+        $requests = $this->getRequests();
+        
+        $stats = [
+            'total' => StreetNumberingPlate::count(),
+            'pending' => StreetNumberingPlate::where('status', 'pending')->count(),
+            'approved' => StreetNumberingPlate::where('status', 'approved')->count(),
+            'completed' => StreetNumberingPlate::where('status', 'completed')->count(),
+        ];
+
+        $statuses = $this->getStatuses();
 
         $plateTypes = [
             'standard' => 'Standard',
@@ -224,3 +305,4 @@ class Index extends Component
         ]);
     }
 }
+

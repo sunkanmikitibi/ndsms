@@ -118,7 +118,7 @@
                                     class="hover:border-accent">
                                     <p style="font-weight:600;color:var(--text-primary);margin-bottom:2px;">
                                         {{ $street['name'] }}</p>
-                                    <p style="font-size:12px;color:var(--text-secondary);">Ward: {{ $street['ward'] }}
+                                    <p style="font-size:12px;color:var(--text-secondary);">Town: {{ $street['town'] }}
                                     </p>
                                 </button>
                             @endforeach
@@ -152,9 +152,9 @@
                             @enderror
                         </div>
                         <div class="form-group" style="grid-column:1/-1;">
-                            <label>Ward *</label>
-                            <input wire:model="ward" type="text" placeholder="e.g., Lagos Island">
-                            @error('ward')
+                            <label>Town *</label>
+                            <input wire:model="town" type="text" placeholder="e.g., Abagana Town">
+                            @error('town')
                                 <span style="color:var(--danger);font-size:12px;">{{ $message }}</span>
                             @enderror
                         </div>
@@ -295,7 +295,7 @@
                                 <span
                                     style="color:var(--text-secondary);display:block;font-size:11px;text-transform:uppercase;font-weight:700;margin-bottom:2px;">Street</span>
                                 <span style="color:var(--text-primary);font-weight:600;">{{ $street_name }}
-                                    ({{ $ward }})</span>
+                                    ({{ $town }})</span>
                             </div>
                             <div>
                                 <span

@@ -14,7 +14,7 @@ class StreetRevalidation extends Model
         'user_id',
         'street_id',
         'street_name',
-        'ward',
+        'town',
         'reason',
         'supporting_documents',
         'current_status',

@@ -93,9 +93,9 @@
                     </h3>
                     <div class="form-grid">
                         <div class="form-group">
-                            <label>WARD *</label>
-                            <input wire:model="ward" type="text" placeholder="e.g., Abagana Ward 1">
-                            @error('ward')<span style="color:var(--danger);font-size:12px;margin-top:4px;">{{ $message }}</span>@enderror
+                            <label>TOWN *</label>
+                            <input wire:model="town" type="text" placeholder="e.g., Abagana Town 1">
+                            @error('town')<span style="color:var(--danger);font-size:12px;margin-top:4px;">{{ $message }}</span>@enderror
                         </div>
                         @if($registrationType === 'single')
                             <div class="form-group">
@@ -133,7 +133,7 @@
                             <select wire:model="street_id">
                                 <option value="">-- Select a Registered Street --</option>
                                 @foreach($streets as $street)
-                                    <option value="{{ $street->id }}">{{ $street->name }} ({{ $street->ward }})</option>
+                                    <option value="{{ $street->id }}">{{ $street->name }} ({{ $street->town }})</option>
                                 @endforeach
                             </select>
                             @error('street_id')<span style="color:var(--danger);font-size:12px;margin-top:4px;">{{ $message }}</span>@enderror
@@ -326,7 +326,7 @@
                                     Numbers: {{ implode(', ', array_column($bulkAddresses, 'house_number')) }}
                                 </div>
                             @endif
-                            <p style="font-size:12px;color:var(--text-secondary);">{{ $ward }}</p>
+                            <p style="font-size:12px;color:var(--text-secondary);">{{ $town }}</p>
                         </div>
                         <div style="grid-column:1/-1;border-top:1px solid var(--border);padding-top:15px;margin-top:15px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px;">
                             <div>

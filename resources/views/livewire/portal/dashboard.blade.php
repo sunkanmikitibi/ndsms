@@ -146,7 +146,7 @@
                 <thead>
                     <tr>
                         <th>Street Name</th>
-                        <th>Ward</th>
+                        <th>Town</th>
                         <th>Type</th>
                         <th>Status</th>
                         <th>Admin Note</th>
@@ -157,8 +157,8 @@
                     @foreach($myRequests as $req)
                     <tr>
                         <td style="font-weight:600;">{{ $req->street_name }}</td>
-                        <td>{{ $req->ward }}</td>
-                        <td><span class="ward-badge">{{ ucfirst($req->type) }}</span></td>
+                        <td>{{ $req->town }}</td>
+                        <td><span class="town-badge">{{ ucfirst($req->type) }}</span></td>
                         <td><span class="status-badge {{ $req->status }}">{{ str_replace('_', ' ', ucfirst($req->status)) }}</span></td>
                         <td style="color:var(--text-secondary);font-size:13px;">{{ $req->admin_note ?? '—' }}</td>
                         <td style="color:var(--text-secondary);font-size:12px;">{{ $req->created_at->format('d M Y') }}</td>
@@ -195,7 +195,7 @@
                         <div style="font-size:14px;font-weight:700;">{{ $cert->street_name }}</div>
                     </div>
                 </div>
-                <div style="font-size:12px;color:var(--text-secondary);">Ward: <strong style="color:var(--text-primary);">{{ $cert->ward }}</strong></div>
+                <div style="font-size:12px;color:var(--text-secondary);">Town: <strong style="color:var(--text-primary);">{{ $cert->town }}</strong></div>
                 <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">Approved: <strong style="color:var(--text-primary);">{{ $cert->reviewed_at?->format('d M Y') ?? '—' }}</strong></div>
                 <button class="btn btn-outline btn-sm" style="margin-top:14px;width:100%;justify-content:center;" onclick="window.print()">
                     <i class="fas fa-download"></i> Download PDF
@@ -221,14 +221,14 @@
         <div class="table-wrapper">
             <table>
                 <thead>
-                    <tr><th>House No.</th><th>Street</th><th>Ward</th><th>Status</th></tr>
+                    <tr><th>House No.</th><th>Street</th><th>Town</th><th>Status</th></tr>
                 </thead>
                 <tbody>
                     @foreach($myAddresses as $addr)
                     <tr>
                         <td style="font-family:'Space Mono',monospace;color:var(--accent);font-weight:700;">{{ $addr->house_number }}</td>
                         <td>{{ $addr->street?->name ?? '—' }}</td>
-                        <td><span class="ward-badge">{{ $addr->ward }}</span></td>
+                        <td><span class="town-badge">{{ $addr->town }}</span></td>
                         <td><span class="status-badge {{ $addr->status }}">{{ ucfirst($addr->status) }}</span></td>
                     </tr>
                     @endforeach

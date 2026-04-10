@@ -34,7 +34,7 @@
             document.getElementById('ai-thinking').style.display = 'none';
             document.getElementById('ai-result-area').style.display = 'block';
             document.getElementById('ai-result-text').innerHTML =
-                `Based on your description, the closest match in our database is: <strong>14A Nnewi Road, Abagana Ward</strong> — Owner: John Doe, Status: Active.<br><br>
+                `Based on your description, the closest match in our database is: <strong>14A Nnewi Road, Abagana Town</strong> — Owner: John Doe, Status: Active.<br><br>
                 <small style="color:var(--text-secondary);">Confidence: 78% — Please verify using the Verification tool.</small>`;
         }, 2000);
     }

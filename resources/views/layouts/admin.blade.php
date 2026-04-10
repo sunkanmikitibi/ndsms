@@ -81,7 +81,7 @@
             <i class="fas fa-chart-bar"></i> Reports
         </a>
         <a href="{{ route('admin.map.index') }}" class="nav-item {{ request()->routeIs('admin.map.*') ? 'active' : '' }}">
-            <i class="fas fa-map"></i> Ward Map
+            <i class="fas fa-map"></i> Town Map
         </a>
         @endcanany
 

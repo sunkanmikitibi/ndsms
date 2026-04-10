@@ -13,7 +13,7 @@ use Livewire\Component;
 class RegisterStreet extends Component
 {
     public string $street_name = '';
-    public string $ward = '';
+    public string $town = '';
     public string $type = 'street';
     public string $description = '';
     public $start_latitude = null;
@@ -26,7 +26,7 @@ class RegisterStreet extends Component
 
     protected $rules = [
         'street_name'     => 'required|string|max:255',
-        'ward'            => 'required|string|max:100',
+        'town'            => 'required|string|max:100',
         'type'            => 'required|in:street,avenue,road,lane,close,crescent',
         'description'     => 'nullable|string|max:1000',
         'start_latitude'  => 'nullable|numeric',
@@ -53,7 +53,7 @@ class RegisterStreet extends Component
         $this->lastApplication = StreetApplication::create([
             'user_id'         => auth()->id(),
             'street_name'     => $this->street_name,
-            'ward'            => $this->ward,
+            'town'            => $this->town,
             'type'            => $this->type,
             'description'     => $this->description,
             'start_latitude'  => $this->start_latitude,
@@ -64,7 +64,7 @@ class RegisterStreet extends Component
             'status'          => 'pending',
         ]);
 
-        $this->reset(['street_name', 'ward', 'type', 'description', 'start_latitude', 'start_longitude', 'end_latitude', 'end_longitude', 'distance']);
+        $this->reset(['street_name', 'town', 'type', 'description', 'start_latitude', 'start_longitude', 'end_latitude', 'end_longitude', 'distance']);
         $this->submitted = true;
         $this->dispatch('toast', type: 'success', message: 'Street application submitted successfully.');
     }

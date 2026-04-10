@@ -156,11 +156,11 @@ class Index extends Component
 
     private function exportStreets($startDate)
     {
-        $csv = "Name,Code,Ward,Type,Status,Created\n";
+        $csv = "Name,Code,Town,Type,Status,Created\n";
         $streets = Street::where('created_at', '>=', $startDate)->get();
 
         foreach ($streets as $street) {
-            $csv .= "\"{$street->name}\",\"{$street->code}\",\"{$street->ward}\",\"{$street->type}\",\"{$street->status}\",\"{$street->created_at->format('Y-m-d H:i')}\"\n";
+            $csv .= "\"{$street->name}\",\"{$street->code}\",\"{$street->town}\",\"{$street->type}\",\"{$street->status}\",\"{$street->created_at->format('Y-m-d H:i')}\"\n";
         }
 
         return $csv;
@@ -168,11 +168,11 @@ class Index extends Component
 
     private function exportAddresses($startDate)
     {
-        $csv = "House Number,Street,Ward,Owner,Owner Phone,Status,Created\n";
+        $csv = "House Number,Street,Town,Owner,Owner Phone,Status,Created\n";
         $addresses = Address::where('created_at', '>=', $startDate)->with('street')->get();
 
         foreach ($addresses as $address) {
-            $csv .= "\"{$address->house_number}\",\"{$address->street?->name}\",\"{$address->ward}\",\"{$address->owner_name}\",\"{$address->owner_phone}\",\"{$address->status}\",\"{$address->created_at->format('Y-m-d H:i')}\"\n";
+            $csv .= "\"{$address->house_number}\",\"{$address->street?->name}\",\"{$address->town}\",\"{$address->owner_name}\",\"{$address->owner_phone}\",\"{$address->status}\",\"{$address->created_at->format('Y-m-d H:i')}\"\n";
         }
 
         return $csv;
@@ -180,11 +180,11 @@ class Index extends Component
 
     private function exportApplications($startDate)
     {
-        $csv = "Street Name,Ward,Type,Status,Submitted By,Created\n";
+        $csv = "Street Name,Town,Type,Status,Submitted By,Created\n";
         $apps = StreetApplication::where('created_at', '>=', $startDate)->with('user')->get();
 
         foreach ($apps as $app) {
-            $csv .= "\"{$app->street_name}\",\"{$app->ward}\",\"{$app->type}\",\"{$app->status}\",\"{$app->user?->email}\",\"{$app->created_at->format('Y-m-d H:i')}\"\n";
+            $csv .= "\"{$app->street_name}\",\"{$app->town}\",\"{$app->type}\",\"{$app->status}\",\"{$app->user?->email}\",\"{$app->created_at->format('Y-m-d H:i')}\"\n";
         }
 
         return $csv;

@@ -11,7 +11,7 @@
     |------|---------|
     | **Reference Number** | `{{ $numberingPlateRequest->reference_number }}` |
     | **Street Name** | {{ $numberingPlateRequest->street_name }} |
-    | **Ward** | {{ $numberingPlateRequest->ward }} |
+    | **Town** | {{ $numberingPlateRequest->town }} |
     | **Number of Plates** | {{ $numberingPlateRequest->quantity_requested }} |
     | **Plate Type** | {{ $plateTypeLabel }} |
     | **Material** | {{ $materialLabel }} |

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\WardMap;
+namespace App\Livewire\Admin\TownMap;
 
 use App\Models\Street;
 use App\Models\Address;
@@ -9,25 +9,26 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Layout('components.layouts.admin')]
-#[Title('Ward Map')]
+#[Title('Town Map')]
 class Index extends Component
+
 {
-    public string $selectedWard = '';
+    public string $selectedTown = '';
     public string $filterType = 'all';
 
     public function mount()
     {
         // Allow access to super-admin or users with view reports permission
         if (!auth()->user()->hasRole('super-admin') && !auth()->user()->hasPermissionTo('view reports')) {
-            abort(403, 'Unauthorized access to ward map.');
+            abort(403, 'Unauthorized access to town map.');
         }
     }
 
-    public function getWardsProperty()
+    public function getTownsProperty()
     {
-        return Street::select('ward')
+        return Street::select('town')
             ->distinct()
-            ->pluck('ward')
+            ->pluck('town')
             ->sort()
             ->values();
     }
@@ -36,8 +37,8 @@ class Index extends Component
     {
         $query = Street::query();
 
-        if ($this->selectedWard) {
-            $query->where('ward', $this->selectedWard);
+        if ($this->selectedTown) {
+            $query->where('town', $this->selectedTown);
         }
 
         if ($this->filterType !== 'all') {
@@ -51,8 +52,8 @@ class Index extends Component
     {
         $query = Address::query();
 
-        if ($this->selectedWard) {
-            $query->where('ward', $this->selectedWard);
+        if ($this->selectedTown) {
+            $query->where('town', $this->selectedTown);
         }
 
         return $query->with('street')->get();
@@ -75,12 +76,12 @@ class Index extends Component
     public function getStreetTypesProperty()
     {
         return Street::select('type')
-            ->where('ward', $this->selectedWard)
+            ->where('town', $this->selectedTown)
             ->distinct()
             ->pluck('type');
     }
 
-    public function exportWardData()
+    public function exportTownData()
     {
         if (!auth()->user()->hasPermissionTo('export reports')) {
             $this->dispatch('notify', [
@@ -107,15 +108,15 @@ class Index extends Component
 
         return response()->streamDownload(function () use ($csv) {
             echo $csv;
-        }, 'ward-map-' . ($this->selectedWard ?: 'all') . '-' . now()->format('Y-m-d-His') . '.csv', [
+        }, 'town-map-' . ($this->selectedTown ?: 'all') . '-' . now()->format('Y-m-d-His') . '.csv', [
             'Content-Type' => 'text/csv',
         ]);
     }
 
     public function render()
     {
-        return view('livewire.admin.ward-map.index', [
-            'wards' => $this->wards,
+        return view('livewire.admin.town-map.index', [
+            'towns' => $this->towns,
             'streets' => $this->streets,
             'addresses' => $this->addresses,
             'mapData' => $this->mapData,
