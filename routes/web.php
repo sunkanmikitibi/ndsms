@@ -93,7 +93,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // Staff Functions (Street Applications & Field Reports)
     Route::middleware('can:view approvals')->group(function () {
         Route::get('/street-applications', StreetApplicationsIndex::class)->name('street-applications.index');
-        // Route::get('/production-workflow', ProductionWorkflow::class)->name('street-applications.production-workflow');
+        Route::get('/production-workflow', \App\Livewire\Admin\StreetApplications\ProductionWorkflow::class)->name('street-applications.production-workflow');
         Route::get('/field-reports', FieldReportsIndex::class)->name('field-reports.index');
         Route::get('/street-numbering-plates', StreetNumberingPlatesIndex::class)->name('street-numbering-plates.index');
     });
