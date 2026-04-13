@@ -28,11 +28,6 @@ class Index extends Component
     public string $approvalNotes = '';
     public string $rejectionReason = '';
 
-    public function mount()
-    {
-        $this->authorize('view', auth()->user());
-    }
-
     public function updatingSearch()
     {
         $this->resetPage();

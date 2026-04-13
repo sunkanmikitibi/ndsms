@@ -41,6 +41,9 @@ class CreateNewUser implements CreatesNewUsers
         // Automatically assign field-officer role to newly registered users
         $user->assignRole('field-officer');
 
+        // Dispatch Welcome Email and Dashboard Notification
+        $user->notify(new \App\Notifications\WelcomeToNdsmsNotification());
+
         return $user;
     }
 }

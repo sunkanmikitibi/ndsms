@@ -42,6 +42,9 @@ class CreateSuperAdminUser implements CreatesNewUsers
         // Automatically assign super-admin role
         $user->assignRole('super-admin');
 
+        // Dispatch Welcome Email and Dashboard Notification
+        $user->notify(new \App\Notifications\WelcomeToNdsmsNotification());
+
         return $user;
     }
 }

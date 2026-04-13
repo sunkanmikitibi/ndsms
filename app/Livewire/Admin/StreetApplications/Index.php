@@ -29,11 +29,6 @@ class Index extends Component
         'adminNote'        => 'nullable|string|max:500',
     ];
 
-    public function mount()
-    {
-        $this->authorize('view', auth()->user());
-    }
-
     public function updatingSearch()
     {
         $this->resetPage();
