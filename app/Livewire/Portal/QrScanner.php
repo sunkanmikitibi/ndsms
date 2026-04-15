@@ -5,6 +5,7 @@ namespace App\Livewire\Portal;
 use App\Models\Address;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 #[Layout('components.layouts.portal')]
@@ -15,6 +16,7 @@ class QrScanner extends Component
     public ?Address $scannedAddress = null;
     public bool $isScanning = false;
     public string $scanError = '';
+    public ?string $lastScannedCode = null;
 
     protected $rules = [
         'manualCode' => 'required|string|max:255',
@@ -28,25 +30,50 @@ class QrScanner extends Component
         }
     }
 
+    #[On('qr-code-detected')]
+    public function onQrCodeDetected(string $qrData): void
+    {
+        // Prevent duplicate scanning
+        if ($this->lastScannedCode === $qrData) {
+            return;
+        }
+
+        $this->lastScannedCode = $qrData;
+        $this->scanQrCode($qrData);
+    }
+
     public function scanQrCode(string $qrData): void
     {
         $this->scanError = '';
-        
+
         try {
+            $cleanCode = trim($qrData);
+
+            if (empty($cleanCode)) {
+                return;
+            }
+
             // Attempt to find address by QR code data
-            $address = Address::where('qr_code', $qrData)
-                ->orWhere('code', $qrData)
-                ->orWhere('house_number', $qrData)
+            $address = Address::where('qr_code', $cleanCode)
+                ->orWhere('code', $cleanCode)
+                ->orWhere('house_number', $cleanCode)
                 ->first();
 
             if ($address) {
                 $this->scannedAddress = $address->load('street', 'user');
                 $this->manualCode = '';
+                $this->isScanning = false;
+
+                $this->dispatch('notify', [
+                    'type' => 'success',
+                    'message' => 'QR code scanned successfully!',
+                ]);
             } else {
-                $this->scanError = 'Address not found for QR code: ' . $qrData;
+                $this->scanError = 'Address not found for code: ' . substr($cleanCode, 0, 20);
             }
         } catch (\Exception $e) {
             $this->scanError = 'Error scanning QR code: ' . $e->getMessage();
+            logger()->error('QR Scanner error', ['error' => $e->getMessage()]);
         }
     }
 
@@ -64,6 +91,10 @@ class QrScanner extends Component
 
             if ($address) {
                 $this->scannedAddress = $address->load('street', 'user');
+                $this->dispatch('notify', [
+                    'type' => 'success',
+                    'message' => 'Address found successfully!',
+                ]);
             } else {
                 $this->scanError = 'No address found with code: ' . $this->manualCode;
             }
@@ -77,6 +108,21 @@ class QrScanner extends Component
         $this->scannedAddress = null;
         $this->manualCode = '';
         $this->scanError = '';
+        $this->lastScannedCode = null;
+    }
+
+    public function stopScanning(): void
+    {
+        $this->isScanning = false;
+        $this->scanError = '';
+        $this->dispatch('stop-camera');
+    }
+
+    public function startScanning(): void
+    {
+        $this->isScanning = true;
+        $this->clearResult();
+        $this->dispatch('start-camera');
     }
 
     public function verifyAddress(): void
@@ -95,20 +141,13 @@ class QrScanner extends Component
 
             $this->dispatch('notify', [
                 'type' => 'success',
-                'message' => 'Address verified successfully!',
+                'message' => 'Address verified successfully! ✓',
             ]);
 
             $this->clearResult();
+            $this->isScanning = false;
         } catch (\Exception $e) {
             $this->scanError = 'Error verifying address: ' . $e->getMessage();
-        }
-    }
-
-    public function toggleScanning(): void
-    {
-        $this->isScanning = !$this->isScanning;
-        if (!$this->isScanning) {
-            $this->clearResult();
         }
     }
 
