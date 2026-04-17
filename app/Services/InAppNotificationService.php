@@ -6,7 +6,7 @@ use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Support\Collection;
 
-class NotificationService
+class InAppNotificationService
 {
     /**
      * Create a notification for a user

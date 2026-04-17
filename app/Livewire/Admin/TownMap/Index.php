@@ -45,7 +45,7 @@ class Index extends Component
             $query->where('type', $this->filterType);
         }
 
-        return $query->with('addresses')->get();
+        return $query->with('addresses')->withCount('addresses')->get();
     }
 
     public function getAddressesProperty()

@@ -89,24 +89,21 @@
         </div>
     </div>
 
-    <!-- Map Placeholder -->
+    <!-- Map Container -->
     <div class="card" style="margin-bottom:24px;padding:0;overflow:hidden;">
-        <div
-            style="width:100%;height:400px;background:var(--bg-input);display:flex;align-items:center;justify-content:center;">
-            <div style="text-align:center;">
-                <i class="fas fa-map"
-                    style="font-size:48px;color:var(--text-secondary);margin-bottom:16px;display:block;"></i>
-                <p style="color:var(--text-secondary);margin-bottom:12px;">Interactive map view (requires Google Maps
-                    API integration)</p>
-                @if ($selectedTown)
-                    <p style="font-size:12px;color:var(--text-secondary);margin-top:8px;">Town: <span
-                            style="font-weight:700;">{{ $selectedTown }}</span></p>
-                @endif
-                <p style="font-size:12px;color:var(--text-secondary);margin-top:8px;">
-                    Showing {{ $mapData['street_count'] }} streets and {{ $mapData['address_count'] }} addresses
-                </p>
+        <div id="town-map" style="width:100%;height:500px;"></div>
+        @if ($selectedTown)
+            <div style="padding:12px 16px;background:var(--bg-input);border-top:1px solid var(--border);">
+                <p style="font-size:12px;color:var(--text-secondary);margin:0;">Town: <span
+                        style="font-weight:700;">{{ $selectedTown }}</span> | Showing {{ $mapData['street_count'] }}
+                    streets and {{ $mapData['address_count'] }} addresses</p>
             </div>
-        </div>
+        @else
+            <div style="padding:12px 16px;background:var(--bg-input);border-top:1px solid var(--border);">
+                <p style="font-size:12px;color:var(--text-secondary);margin:0;">All Towns | Showing
+                    {{ $mapData['street_count'] }} streets and {{ $mapData['address_count'] }} addresses</p>
+            </div>
+        @endif
     </div>
 
     <!-- Streets & Addresses List -->
@@ -188,3 +185,149 @@
         </div>
     </div>
 </div>
+
+@script
+    <script type="module">
+        import L from 'leaflet';
+        import 'leaflet/dist/leaflet.css';
+
+        // Initialize map when component is ready
+        document.addEventListener('livewire:loaded', function() {
+            initializeMap();
+        });
+
+        // Re-initialize map when Livewire updates
+        document.addEventListener('livewire:updated', function() {
+            if (window.townMap) {
+                window.townMap.remove();
+            }
+            initializeMap();
+        });
+
+        function initializeMap() {
+            const mapElement = document.getElementById('town-map');
+            if (!mapElement) return;
+
+            // Default center (Nigeria coordinates)
+            const defaultCenter = [9.0820, 8.6753];
+            const defaultZoom = 6;
+
+            // Create map
+            window.townMap = L.map('town-map').setView(defaultCenter, defaultZoom);
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19,
+            }).addTo(window.townMap);
+
+            // Get data from Livewire
+            const streets = @js($streets);
+            const addresses = @js($addresses);
+
+            // Create marker groups
+            const streetMarkers = L.layerGroup();
+            const addressMarkers = L.layerGroup();
+
+            // Add street markers
+            streets.forEach(street => {
+                if (street.start_latitude && street.start_longitude) {
+                    const marker = L.marker([street.start_latitude, street.start_longitude], {
+                        icon: L.divIcon({
+                            className: 'street-marker',
+                            html: '<div style="background-color: var(--accent); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">🏛️</div>',
+                            iconSize: [40, 20],
+                            iconAnchor: [20, 20]
+                        })
+                    });
+
+                    marker.bindPopup(`
+                    <div style="font-family: system-ui, sans-serif; max-width: 200px;">
+                        <h4 style="margin: 0 0 8px 0; color: var(--accent); font-size: 14px;">${street.name}</h4>
+                        <p style="margin: 4px 0; font-size: 12px;"><strong>Code:</strong> ${street.code}</p>
+                        <p style="margin: 4px 0; font-size: 12px;"><strong>Town:</strong> ${street.town}</p>
+                        <p style="margin: 4px 0; font-size: 12px;"><strong>Type:</strong> ${street.type}</p>
+                        <p style="margin: 4px 0; font-size: 12px;"><strong>Status:</strong> <span style="color: ${street.status === 'approved' ? 'var(--accent)' : 'var(--text-secondary)'};">${street.status}</span></p>
+                        <p style="margin: 4px 0; font-size: 12px;"><strong>Addresses:</strong> ${street.addresses_count}</p>
+                        ${street.distance ? `<p style="margin: 4px 0; font-size: 12px;"><strong>Distance:</strong> ${street.distance}km</p>` : ''}
+                    </div>
+                `);
+
+                    streetMarkers.addLayer(marker);
+                }
+            });
+
+            // Add address markers
+            addresses.forEach(address => {
+                if (address.latitude && address.longitude) {
+                    const marker = L.marker([address.latitude, address.longitude], {
+                        icon: L.divIcon({
+                            className: 'address-marker',
+                            html: '<div style="background-color: var(--info); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">🏠</div>',
+                            iconSize: [35, 20],
+                            iconAnchor: [17, 20]
+                        })
+                    });
+
+                    marker.bindPopup(`
+                    <div style="font-family: system-ui, sans-serif; max-width: 200px;">
+                        <h4 style="margin: 0 0 8px 0; color: var(--info); font-size: 14px;">${address.house_number}</h4>
+                        <p style="margin: 4px 0; font-size: 12px;"><strong>Street:</strong> ${address.street?.name || 'N/A'}</p>
+                        <p style="margin: 4px 0; font-size: 12px;"><strong>Town:</strong> ${address.town}</p>
+                        <p style="margin: 4px 0; font-size: 12px;"><strong>Owner:</strong> ${address.owner_name}</p>
+                        <p style="margin: 4px 0; font-size: 12px;"><strong>Phone:</strong> ${address.owner_phone}</p>
+                        <p style="margin: 4px 0; font-size: 12px;"><strong>Status:</strong> <span style="color: ${address.status === 'approved' ? 'var(--accent)' : 'var(--text-secondary)'};">${address.status}</span></p>
+                        ${address.last_verified_at ? `<p style="margin: 4px 0; font-size: 12px;"><strong>Verified:</strong> ${new Date(address.last_verified_at).toLocaleDateString()}</p>` : ''}
+                    </div>
+                `);
+
+                    addressMarkers.addLayer(marker);
+                }
+            });
+
+            // Add marker groups to map
+            streetMarkers.addTo(window.townMap);
+            addressMarkers.addTo(window.townMap);
+
+            // Add layer control
+            const overlays = {
+                "Streets": streetMarkers,
+                "Addresses": addressMarkers
+            };
+
+            L.control.layers(null, overlays, {
+                collapsed: false
+            }).addTo(window.townMap);
+
+            // Fit bounds if there are markers
+            const allMarkers = [...streetMarkers.getLayers(), ...addressMarkers.getLayers()];
+            if (allMarkers.length > 0) {
+                const group = new L.featureGroup(allMarkers);
+                window.townMap.fitBounds(group.getBounds().pad(0.1));
+            }
+
+            // Add legend
+            const legend = L.control({
+                position: 'bottomright'
+            });
+            legend.onAdd = function() {
+                const div = L.DomUtil.create('div', 'info legend');
+                div.innerHTML = `
+                <div style="background: white; padding: 8px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); font-family: system-ui, sans-serif; font-size: 12px;">
+                    <h4 style="margin: 0 0 8px 0; font-weight: bold;">Legend</h4>
+                    <div style="display: flex; align-items: center; margin-bottom: 4px;">
+                        <span style="background-color: var(--accent); color: white; padding: 2px 6px; border-radius: 2px; margin-right: 8px; font-size: 10px;">🏛️</span>
+                        <span>Streets</span>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <span style="background-color: var(--info); color: white; padding: 2px 6px; border-radius: 2px; margin-right: 8px; font-size: 10px;">🏠</span>
+                        <span>Addresses</span>
+                    </div>
+                </div>
+            `;
+                return div;
+            };
+            legend.addTo(window.townMap);
+        }
+    </script>
+@endscript

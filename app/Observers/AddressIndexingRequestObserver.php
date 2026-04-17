@@ -5,7 +5,7 @@ namespace App\Observers;
 use App\Models\AddressIndexingRequest;
 use App\Services\SmsNotificationService;
 use App\Services\EmailNotificationService;
-use App\Services\NotificationService as InAppNotificationService;
+use App\Services\InAppNotificationService;
 
 class AddressIndexingRequestObserver
 {
