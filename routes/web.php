@@ -143,6 +143,7 @@ Route::middleware(['auth', 'verified'])->prefix('portal/payments')->name('portal
     Route::get('/{payment}', [PaymentController::class, 'showPayment'])->name('show');
     Route::get('/{payment}/retry', [PaymentController::class, 'showRetry'])->name('retry');
     Route::post('/{payment}/retry', [PaymentController::class, 'processRetry'])->name('retry.process');
+    Route::post('/{payment}/upload-proof', [PaymentController::class, 'uploadProof'])->name('upload');
 });
 
 // Paystack Webhook

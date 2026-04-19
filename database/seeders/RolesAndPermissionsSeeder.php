@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -87,18 +88,28 @@ class RolesAndPermissionsSeeder extends Seeder
             'request street revalidation' => 'Request street revalidation',
         ];
 
+        $hasPermissionDescription = Schema::hasColumn('permissions', 'description');
+
         foreach ($permissions as $name => $description) {
-            Permission::firstOrCreate(
-                ['name' => $name, 'guard_name' => 'web'],
-                ['description' => $description]
-            );
+            $attributes = ['name' => $name, 'guard_name' => 'web'];
+
+            $values = [];
+            if ($hasPermissionDescription) {
+                $values['description'] = $description;
+            }
+
+            Permission::firstOrCreate($attributes, $values);
         }
 
         // Field Officer — can view and register addresses/streets, submit applications
-        $fieldOfficer = Role::firstOrCreate(
-            ['name' => 'field-officer', 'guard_name' => 'web'],
-            ['description' => 'Field officer role. Can submit applications and perform indexing/revalidation requests.']
-        );
+        $hasRoleDescription = Schema::hasColumn('roles', 'description');
+
+        $fieldOfficerAttributes = ['name' => 'field-officer', 'guard_name' => 'web'];
+        $fieldOfficerValues = [];
+        if ($hasRoleDescription) {
+            $fieldOfficerValues['description'] = 'Field officer role. Can submit applications and perform indexing/revalidation requests.';
+        }
+        $fieldOfficer = Role::firstOrCreate($fieldOfficerAttributes, $fieldOfficerValues);
         $fieldOfficer->syncPermissions([
             'view addresses',
             'view streets',
@@ -111,10 +122,12 @@ class RolesAndPermissionsSeeder extends Seeder
         ]);
 
         // Registry Officer — can manage addresses and streets
-        $registryOfficer = Role::firstOrCreate(
-            ['name' => 'registry-officer', 'guard_name' => 'web'],
-            ['description' => 'Registry officer role. Can manage street and address records.']
-        );
+        $registryOfficerAttributes = ['name' => 'registry-officer', 'guard_name' => 'web'];
+        $registryOfficerValues = [];
+        if ($hasRoleDescription) {
+            $registryOfficerValues['description'] = 'Registry officer role. Can manage street and address records.';
+        }
+        $registryOfficer = Role::firstOrCreate($registryOfficerAttributes, $registryOfficerValues);
         $registryOfficer->syncPermissions([
             'view addresses',
             'edit addresses',
@@ -125,10 +138,12 @@ class RolesAndPermissionsSeeder extends Seeder
         ]);
 
         // Approvals Officer — can review and manage applications
-        $approvalsOfficer = Role::firstOrCreate(
-            ['name' => 'approvals-officer', 'guard_name' => 'web'],
-            ['description' => 'Approvals officer role. Can review and approve street and address applications.']
-        );
+        $approvalsOfficerAttributes = ['name' => 'approvals-officer', 'guard_name' => 'web'];
+        $approvalsOfficerValues = [];
+        if ($hasRoleDescription) {
+            $approvalsOfficerValues['description'] = 'Approvals officer role. Can review and approve street and address applications.';
+        }
+        $approvalsOfficer = Role::firstOrCreate($approvalsOfficerAttributes, $approvalsOfficerValues);
         $approvalsOfficer->syncPermissions([
             'view addresses',
             'view streets',
@@ -143,10 +158,12 @@ class RolesAndPermissionsSeeder extends Seeder
         ]);
 
         // Admin — all operational permissions
-        $admin = Role::firstOrCreate(
-            ['name' => 'admin', 'guard_name' => 'web'],
-            ['description' => 'Administrative access. Can manage streets, addresses, approvals, and view reports.']
-        );
+        $adminAttributes = ['name' => 'admin', 'guard_name' => 'web'];
+        $adminValues = [];
+        if ($hasRoleDescription) {
+            $adminValues['description'] = 'Administrative access. Can manage streets, addresses, approvals, and view reports.';
+        }
+        $admin = Role::firstOrCreate($adminAttributes, $adminValues);
         $admin->syncPermissions(Permission::where('name', 'not like', '%users%')
             ->where('name', 'not like', '%roles%')
             ->where('name', 'not like', '%permissions%')
@@ -155,17 +172,21 @@ class RolesAndPermissionsSeeder extends Seeder
             ->get());
 
         // Super Admin — all permissions
-        $superAdmin = Role::firstOrCreate(
-            ['name' => 'super-admin', 'guard_name' => 'web'],
-            ['description' => 'Full system access. Can manage users, roles, permissions, and all resources.']
-        );
+        $superAdminAttributes = ['name' => 'super-admin', 'guard_name' => 'web'];
+        $superAdminValues = [];
+        if ($hasRoleDescription) {
+            $superAdminValues['description'] = 'Full system access. Can manage users, roles, permissions, and all resources.';
+        }
+        $superAdmin = Role::firstOrCreate($superAdminAttributes, $superAdminValues);
         $superAdmin->syncPermissions(Permission::all());
 
         // Citizen role
-        $citizen = Role::firstOrCreate(
-            ['name' => 'citizen', 'guard_name' => 'web'],
-            ['description' => 'Citizen role. Can submit applications and perform indexing/revalidation requests.']
-        );
+        $citizenAttributes = ['name' => 'citizen', 'guard_name' => 'web'];
+        $citizenValues = [];
+        if ($hasRoleDescription) {
+            $citizenValues['description'] = 'Citizen role. Can submit applications and perform indexing/revalidation requests.';
+        }
+        $citizen = Role::firstOrCreate($citizenAttributes, $citizenValues);
         $citizen->syncPermissions([
             'view streets',
             'submit street applications',

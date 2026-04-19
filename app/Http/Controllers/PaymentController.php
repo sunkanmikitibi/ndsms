@@ -425,6 +425,39 @@ class PaymentController extends Controller
     }
 
     /**
+     * Upload a proof of payment (optional offline bank transfer receipts).
+     */
+    public function uploadProof(Payment $payment, Request $request)
+    {
+        if ($payment->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'proof' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120', // 5MB
+        ]);
+
+        $file = $request->file('proof');
+
+        $path = $file->store('payment_proofs', 'public');
+
+        $proofEntry = [
+            'path' => $path,
+            'original_name' => $file->getClientOriginalName(),
+            'uploaded_at' => now()->toDateTimeString(),
+            'uploaded_by' => auth()->id(),
+        ];
+
+        $metadata = $payment->metadata ?? [];
+        $metadata['proofs'] = array_merge($metadata['proofs'] ?? [], [$proofEntry]);
+
+        $payment->update(['metadata' => $metadata]);
+
+        return redirect()->route('portal.payments.show', $payment)
+            ->with('success', 'Proof uploaded successfully. We will verify and update the payment status.');
+    }
+
+    /**
      * Get the payable model instance
      */
     protected function getPayableModel($type, $id)

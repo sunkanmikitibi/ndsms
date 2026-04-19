@@ -18,6 +18,14 @@ pest()->extend(TestCase::class)
     ->beforeEach(function () {
         // Seed roles and permissions for tests
         $this->seed(\Database\Seeders\RolesAndPermissionsSeeder::class);
+
+        // Use a dedicated compiled views directory for tests to avoid
+        // file lock / permission issues on Windows when compiling blade views.
+        $compiledPath = storage_path('framework/views-test');
+        if (! file_exists($compiledPath)) {
+            mkdir($compiledPath, 0777, true);
+        }
+        config(['view.compiled' => $compiledPath]);
     })
     ->in('Feature');
 

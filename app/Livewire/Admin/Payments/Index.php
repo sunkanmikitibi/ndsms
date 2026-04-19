@@ -7,6 +7,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 
 #[Layout('components.layouts.admin')]
 #[Title('Payment Management')]
@@ -70,9 +71,9 @@ class Index extends Component
             $query->where('status', $this->filterStatus);
         }
 
-        // Filter by gateway
+        // Filter by gateway / payment method
         if ($this->filterGateway !== 'all') {
-            $query->where('gateway', $this->filterGateway);
+            $query->where('payment_method', $this->filterGateway);
         }
 
         // Filter by date range
@@ -101,9 +102,9 @@ class Index extends Component
         // Total payments
         $stats['total'] = Payment::count();
         
-        // Successful payments
-        $stats['successful'] = Payment::where('status', 'success')->count();
-        $stats['successful_amount'] = Payment::where('status', 'success')->sum('amount');
+        // Successful / completed payments
+        $stats['successful'] = Payment::where('status', 'completed')->count();
+        $stats['successful_amount'] = Payment::where('status', 'completed')->sum('amount');
         
         // Pending payments
         $stats['pending'] = Payment::where('status', 'pending')->count();
@@ -119,6 +120,7 @@ class Index extends Component
         return [
             'pending' => ['bg-yellow-100', 'text-yellow-800', 'Pending'],
             'success' => ['bg-green-100', 'text-green-800', 'Success'],
+            'completed' => ['bg-green-100', 'text-green-800', 'Completed'],
             'failed' => ['bg-red-100', 'text-red-800', 'Failed'],
             'cancelled' => ['bg-gray-100', 'text-gray-800', 'Cancelled'],
         ];
@@ -157,6 +159,68 @@ class Index extends Component
             $this->dispatch('notify', [
                 'type' => 'error',
                 'message' => 'Refund failed: ' . $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * Verify an uploaded proof and mark payment as completed (bank transfer).
+     */
+    public function verifyProof(string $paymentId)
+    {
+        if (!auth()->user()->hasRole('super-admin') && !auth()->user()->hasPermissionTo('manage payments')) {
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'message' => 'You do not have permission to verify payments.',
+            ]);
+            return;
+        }
+
+        $payment = Payment::findOrFail($paymentId);
+
+        $proofs = $payment->metadata['proofs'] ?? [];
+        if (empty($proofs)) {
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'message' => 'No proof uploaded for this payment.',
+            ]);
+            return;
+        }
+
+        try {
+            DB::transaction(function () use ($payment) {
+                $metadata = $payment->metadata ?? [];
+                $metadata['proof_verified_by'] = auth()->id();
+                $metadata['proof_verified_at'] = now()->toDateTimeString();
+
+                $payment->update([
+                    'status' => 'completed',
+                    'payment_method' => 'bank_transfer',
+                    'paid_at' => now(),
+                    'metadata' => $metadata,
+                ]);
+
+                if ($payment->payable) {
+                    $payment->payable->update(['status' => 'completed']);
+                }
+
+                if ($payment->address) {
+                    $payment->address->update([
+                        'status' => 'approved',
+                        'payment_method' => 'bank_transfer',
+                        'reference_code' => $payment->reference,
+                    ]);
+                }
+            });
+
+            $this->dispatch('notify', [
+                'type' => 'success',
+                'message' => 'Payment verified and marked as completed.',
+            ]);
+        } catch (\Exception $e) {
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'message' => 'Failed to verify payment: ' . $e->getMessage(),
             ]);
         }
     }

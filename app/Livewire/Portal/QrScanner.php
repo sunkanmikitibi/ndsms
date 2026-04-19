@@ -13,7 +13,12 @@ use Livewire\Component;
 class QrScanner extends Component
 {
     public string $manualCode = '';
-    public ?Address $scannedAddress = null;
+    /**
+     * Scanned address instance or ID. Tests may set an integer id, so allow int as well.
+     *
+     * @var Address|int|null
+     */
+    public Address|int|null $scannedAddress = null;
     public bool $isScanning = false;
     public string $scanError = '';
     public ?string $lastScannedCode = null;

@@ -132,12 +132,12 @@ class RegisterAddressIndexing extends Component
             'owner_phone'       => $this->owner_phone,
             'description'       => $this->description,
             'property_images'   => $this->property_images,
-            'status'            => 'pending',
+            'status'            => 'awaiting_payment',
         ]);
 
         // Dispatch payment initialization if amount is configured
         $this->dispatch('initiate-indexing-payment', 
-            addressIndexingRequestId: $this->lastRequest->id,
+            $this->lastRequest->id,
         );
 
         $this->reset();

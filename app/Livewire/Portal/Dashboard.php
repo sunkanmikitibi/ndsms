@@ -32,6 +32,17 @@ class Dashboard extends Component
         $this->activeTab = $tab;
     }
 
+    // Wrapper methods to emit events from Blade without using `$emit` inline
+    public function emitInitiateStreet(int $requestId): void
+    {
+        $this->dispatch('initiate-street-payment', $requestId);
+    }
+
+    public function emitInitiatePaymentAddress(int $addressId): void
+    {
+        $this->dispatch('initiate-payment-address', $addressId);
+    }
+
     public function saveProfile(): void
     {
         $this->validate([

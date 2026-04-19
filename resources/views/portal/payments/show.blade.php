@@ -116,6 +116,59 @@
         </div>
     </div>
 
+    <!-- Bank Transfer (Offline) -->
+    <div class="card" style="margin-top:24px;">
+        <div class="card-header">
+            <h3>Bank Transfer (Offline)</h3>
+        </div>
+        <div class="card-body">
+            <p>Make a bank transfer using the details below. Please include your payment reference in the narration so
+                we can match the payment.</p>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Account Name</label>
+                    <span>Njikoka Digital Street Management System</span>
+                </div>
+                <div class="info-item">
+                    <label>Account Number</label>
+                    <span>1311938644</span>
+                </div>
+                <div class="info-item">
+                    <label>Bank</label>
+                    <span>Zenith Bank</span>
+                </div>
+            </div>
+            <hr style="margin:16px 0;">
+
+            @php $proofs = $payment->metadata['proofs'] ?? []; @endphp
+            @if (!empty($proofs))
+                <div style="margin-bottom:12px;">
+                    <h4>Uploaded Proofs</h4>
+                    <ul>
+                        @foreach ($proofs as $p)
+                            <li>
+                                <a href="{{ route('storage', $p['path']) }}"
+                                    target="_blank">{{ $p['original_name'] ?? $p['path'] }}</a>
+                                <small style="color:var(--text-secondary);">— uploaded {{ $p['uploaded_at'] }}</small>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ route('portal.payments.upload', $payment) }}" method="POST"
+                enctype="multipart/form-data">
+                @csrf
+                <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+                    <input type="file" name="proof" accept="image/*,application/pdf" />
+                    <button type="submit" class="btn btn-primary">Upload Proof</button>
+                </div>
+                <p class="help-text" style="margin-top:8px;color:var(--text-secondary);font-size:13px;">Accepted
+                    formats: JPG, PNG, PDF. Max size: 5MB.</p>
+            </form>
+        </div>
+    </div>
+
     <!-- Retry Section -->
     @if (in_array($payment->status, ['failed', 'pending']))
         <div class="card" style="margin-top:24px;">

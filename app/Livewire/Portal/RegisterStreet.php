@@ -61,12 +61,14 @@ class RegisterStreet extends Component
             'end_latitude'    => $this->end_latitude,
             'end_longitude'   => $this->end_longitude,
             'distance'        => $this->distance,
-            'status'          => 'pending',
+            'status'          => auth()->check() && auth()->user()->hasRole('field-officer') ? 'active' : 'awaiting_payment',
         ]);
 
         $this->reset(['street_name', 'town', 'type', 'description', 'start_latitude', 'start_longitude', 'end_latitude', 'end_longitude', 'distance']);
         $this->submitted = true;
         $this->dispatch('toast', type: 'success', message: 'Street application submitted successfully.');
+        // Initiate payment for street registration
+        $this->dispatch('initiate-street-payment', $this->lastApplication->id);
     }
 
     public function newApplication(): void

@@ -125,13 +125,21 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-gray-900 dark:text-white text-sm capitalize">
-                                {{ $payment->gateway }}
+                                {{ $payment->payment_method }}
                             </td>
                             <td class="px-6 py-4 text-gray-900 dark:text-white text-sm">
                                 {{ $payment->created_at->format('M d, Y H:i') }}
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex gap-2">
+                                    <a href="{{ route('portal.payments.show', $payment) }}"
+                                        class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded transition">View</a>
+
+                                    @if (!empty($payment->metadata['proofs'] ?? []) && $payment->status === 'pending')
+                                        <button wire:click="verifyProof('{{ $payment->id }}')"
+                                            class="px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-xs rounded transition">Verify</button>
+                                    @endif
+
                                     <button wire:click="refundPayment('{{ $payment->id }}')"
                                         @if ($payment->status !== 'success') disabled @endif
                                         class="@if ($payment->status === 'success') px-3 py-1 bg-red-600 hover:bg-red-700 @else px-3 py-1 bg-gray-400 @endif text-white text-xs rounded transition">

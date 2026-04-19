@@ -4,6 +4,7 @@ namespace App\Livewire\Portal;
 
 use App\Models\Address;
 use App\Models\Street;
+use App\Services\FeeService;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -121,16 +122,32 @@ class RegisterAddress extends Component
         ]);
 
         if ($this->registrationType === 'single') {
-            $this->processSingleRegistration();
+            $address = $this->processSingleRegistration();
+
+            // If payment required, set awaiting_payment and initiate payment flow
+            if ($address && $address->status === 'awaiting_payment') {
+                $feeService = app(FeeService::class);
+                $amount = $feeService->getFeeAmount('address_registration') ?? 1000;
+                $this->dispatch('initiate-payment', $address->id, $amount);
+            }
         } else {
-            $this->processBulkRegistration();
+            $addresses = $this->processBulkRegistration();
+
+            if (!empty($addresses)) {
+                $first = $addresses[0];
+                if ($first->status === 'awaiting_payment') {
+                    $feeService = app(FeeService::class);
+                    $amount = $feeService->getFeeAmount('address_registration') ?? 1000;
+                    $this->dispatch('initiate-payment', $first->id, $amount);
+                }
+            }
         }
 
         $this->submitted = true;
         $this->dispatch('toast', type: 'success', message: 'Address registration request(s) submitted.');
     }
 
-    protected function processSingleRegistration(): void
+    protected function processSingleRegistration(): ?Address
     {
         // Check if address already exists on this street
         $exists = Address::where('street_id', $this->street_id)
@@ -140,12 +157,12 @@ class RegisterAddress extends Component
         if ($exists) {
             $this->addError('house_number', 'This house number is already registered on the selected street.');
             $this->step = 2;
-            return;
+            return null;
         }
 
         $this->reference_code = 'REG-' . strtoupper(bin2hex(random_bytes(3)));
 
-        Address::create([
+        $address = Address::create([
             'applicant_name'  => $this->applicant_name,
             'applicant_phone' => $this->applicant_phone,
             'house_number'    => $this->house_number,
@@ -157,20 +174,25 @@ class RegisterAddress extends Component
             'owner_phone'     => $this->owner_phone,
             'payment_method'  => $this->payment_method,
             'reference_code'  => $this->reference_code,
-            'status'          => auth()->check() && auth()->user()->hasRole('field-officer') ? 'active' : 'pending',
+            'status'          => auth()->check() && auth()->user()->hasRole('field-officer') ? 'active' : (
+                in_array($this->payment_method, ['paystack','flutterwave','bank_transfer']) ? 'awaiting_payment' : 'pending'
+            ),
         ]);
+
+        return $address;
     }
 
-    protected function processBulkRegistration(): void
+    protected function processBulkRegistration(): array
     {
         $this->reference_codes = [];
-        
+        $created = [];
+
         foreach ($this->bulkAddresses as $row) {
             $ref = 'REG-' . strtoupper(bin2hex(random_bytes(3)));
             $this->reference_codes[] = $ref;
             if (count($this->reference_codes) === 1) $this->reference_code = $ref; // Display first one
 
-            Address::create([
+            $addr = Address::create([
                 'applicant_name'  => $this->applicant_name,
                 'applicant_phone' => $this->applicant_phone,
                 'house_number'    => $row['house_number'],
@@ -182,9 +204,15 @@ class RegisterAddress extends Component
                 'owner_phone'     => $this->owner_phone,
                 'payment_method'  => $this->payment_method,
                 'reference_code'  => $ref,
-                'status'          => auth()->check() && auth()->user()->hasRole('field-officer') ? 'active' : 'pending',
+                'status'          => auth()->check() && auth()->user()->hasRole('field-officer') ? 'active' : (
+                    in_array($this->payment_method, ['paystack','flutterwave','bank_transfer']) ? 'awaiting_payment' : 'pending'
+                ),
             ]);
+
+            $created[] = $addr;
         }
+
+        return $created;
     }
 
     public function track()

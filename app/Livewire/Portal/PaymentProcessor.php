@@ -19,11 +19,11 @@ class PaymentProcessor extends Component
     public $authorization_url = null;
     public $error_message = null;
 
-    protected PaystackService $paystackService;
+    private ?PaystackService $paystackService = null;
 
-    public function mount(PaystackService $paystackService)
+    protected function getPaystackService(): PaystackService
     {
-        $this->paystackService = $paystackService;
+        return $this->paystackService ??= app(PaystackService::class);
     }
 
     #[On('initiate-payment')]
@@ -54,7 +54,7 @@ class PaymentProcessor extends Component
                 'house_number' => $address->house_number,
             ];
 
-            $paymentData = $this->paystackService->initializeTransaction(
+            $paymentData = $this->getPaystackService()->initializeTransaction(
                 $this->amount,
                 auth()->user()->email,
                 $this->reference,
@@ -101,6 +101,19 @@ class PaymentProcessor extends Component
         $this->initiateGenericPayment('street_numbering_plate', $plateRequestId, 'Street Numbering Plate Request');
     }
 
+    #[On('initiate-street-payment')]
+    public function initiateStreetPayment($streetApplicationId)
+    {
+        $this->initiateGenericPayment('street_registration', $streetApplicationId, 'Street Registration Request');
+    }
+
+    #[On('initiate-payment-address')]
+    public function initiatePaymentForAddress($addressId)
+    {
+        $amount = $this->getFeeAmount('address_registration');
+        $this->initiatePayment($addressId, $amount);
+    }
+
     protected function initiateGenericPayment($type, $requestId, $description)
     {
         $this->loading = true;
@@ -121,7 +134,7 @@ class PaymentProcessor extends Component
                 'description' => $description,
             ];
 
-            $paymentData = $this->paystackService->initializeTransaction(
+            $paymentData = $this->getPaystackService()->initializeTransaction(
                 $amount,
                 auth()->user()->email,
                 $this->reference,
@@ -131,6 +144,10 @@ class PaymentProcessor extends Component
 
             // Create payment record using polymorphic relationship
             $payable = $this->getPayableModel($type, $requestId);
+
+            if (!$payable) {
+                throw new \Exception("The {$description} with ID {$requestId} was not found.");
+            }
 
             Payment::create([
                 'payable_id' => $payable->id,
@@ -178,6 +195,7 @@ class PaymentProcessor extends Component
             'address_indexing' => \App\Models\AddressIndexingRequest::find($id),
             'street_revalidation' => \App\Models\StreetRevalidation::find($id),
             'street_numbering_plate' => \App\Models\StreetNumberingPlate::find($id),
+            'street_registration' => \App\Models\StreetApplication::find($id),
             default => null
         };
     }
@@ -194,7 +212,7 @@ class PaymentProcessor extends Component
                 ->where('user_id', auth()->id())
                 ->firstOrFail();
 
-            $transactionData = $this->paystackService->verifyTransaction($reference);
+            $transactionData = $this->getPaystackService()->verifyTransaction($reference);
 
             DB::transaction(function () use ($payment, $transactionData) {
                 if ($transactionData['status'] === 'success') {

@@ -6,7 +6,7 @@
         </div>
     </div>
 
-    @if ($scannedAddress)
+    @if ($scannedAddress && is_object($scannedAddress))
         <!-- Result Display -->
         <div style="max-width:680px;margin:0 auto;">
             <div class="card"
