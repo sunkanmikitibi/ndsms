@@ -267,7 +267,7 @@
                         <div style="display:flex;justify-content:space-between;align-items:center;">
                             <div>
                                 <span style="font-size:12px;font-weight:700;color:var(--accent-gold);text-transform:uppercase;">Registration Fee</span>
-                                <h4 style="font-size:24px;font-family:'Space Mono',monospace;margin-top:2px;">₦2,000</h4>
+                                <h4 style="font-size:24px;font-family:'Space Mono',monospace;margin-top:2px;">₦{{ number_format($feeAmount, 2) }}</h4>
                             </div>
                             <i class="fas fa-receipt" style="font-size:32px;color:var(--accent-gold);opacity:0.3;"></i>
                         </div>

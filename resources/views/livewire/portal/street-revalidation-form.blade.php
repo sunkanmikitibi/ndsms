@@ -282,6 +282,13 @@
                     </p>
                 </div>
 
+                <div class="card" style="background:var(--accent-gold-light);border:1px solid var(--accent-gold);margin-bottom:16px;">
+                    <h4 style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--accent-gold);"><i
+                            class="fas fa-receipt" style="margin-right:6px;"></i>Processing Fee</h4>
+                    <div style="font-size:22px;font-weight:800;font-family:'Space Mono',monospace;color:var(--accent-gold);">₦{{ number_format($feeAmount, 2) }}</div>
+                    <p style="font-size:12px;color:var(--text-secondary);margin-top:4px;">Revalidation Fee</p>
+                </div>
+
                 <div class="card">
                     <h4 style="font-size:13px;font-weight:700;margin-bottom:12px;"><i class="fas fa-list"
                             style="color:var(--accent);margin-right:6px;"></i>Process</h4>
@@ -292,7 +299,7 @@
                             Provide reason</li>
                         <li><span style="color:{{ $step >= 3 ? 'var(--accent)' : 'var(--text-secondary)' }};">✓</span>
                             Upload docs</li>
-                        <li>Make payment</li>
+                        <li><span style="color:var(--text-secondary);">✓</span> Make payment</li>
                     </ul>
                 </div>
             </div>

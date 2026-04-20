@@ -22,6 +22,7 @@ class Address extends Model
         'reference_code',
         'status',
         'admin_note',
+        'user_note',
         'reviewed_at',
         'latitude',
         'longitude',
@@ -58,5 +59,10 @@ class Address extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function payment()
+    {
+        return $this->morphOne(Payment::class, 'payable');
     }
 }

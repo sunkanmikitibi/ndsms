@@ -32,6 +32,7 @@ use App\Livewire\Portal\InteractiveMap;
 use App\Livewire\Portal\AiLookup;
 use App\Livewire\Portal\RegisterAddress;
 use App\Livewire\Portal\Complaints;
+use App\Http\Controllers\Portal\CertificateController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -65,6 +66,10 @@ Route::middleware(['auth', 'verified'])->prefix('portal')->name('portal.')->grou
     Route::get('/map', InteractiveMap::class)->name('map');
     Route::get('/ai-lookup', AiLookup::class)->name('ai-lookup');
     Route::get('/complaints', Complaints::class)->name('complaints');
+
+    // Certificates
+    Route::get('/certificates/street/{id}', [CertificateController::class, 'streetCertificate'])->name('certificates.street');
+    Route::get('/certificates/address/{id}', [CertificateController::class, 'addressCertificate'])->name('certificates.address');
 
     // Field Officer Data Collection Forms
     Route::middleware(['role:field-officer'])->group(function () {

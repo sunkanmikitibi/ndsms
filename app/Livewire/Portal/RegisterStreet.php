@@ -23,6 +23,12 @@ class RegisterStreet extends Component
     public $distance = null;
     public bool $submitted = false;
     public ?StreetApplication $lastApplication = null;
+    public float $feeAmount = 0;
+
+    public function mount()
+    {
+        $this->feeAmount = \App\Models\FeeSchedule::getFeeAmount('street_registration') ?? 5000;
+    }
 
     protected $rules = [
         'street_name'     => 'required|string|max:255',

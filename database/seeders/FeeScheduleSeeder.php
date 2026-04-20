@@ -62,6 +62,14 @@ class FeeScheduleSeeder extends Seeder
                 'currency' => 'NGN',
                 'status' => 'active',
             ],
+            [
+                'service_type' => 'street_numbering_plate',
+                'service_name' => 'Street Numbering Plates',
+                'description' => 'Request production and installation of street numbering plates',
+                'base_amount' => 2500.00,
+                'currency' => 'NGN',
+                'status' => 'active',
+            ],
         ];
 
         foreach ($fees as $fee) {

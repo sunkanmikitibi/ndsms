@@ -193,7 +193,7 @@
             </div>
             <div class="card" style="background:var(--accent-gold-light);border-color:var(--accent-gold);">
                 <h4 style="font-size:13px;font-weight:700;color:var(--accent-gold);margin-bottom:6px;"><i class="fas fa-receipt" style="margin-right:6px;"></i>Processing Fee</h4>
-                <div style="font-size:22px;font-weight:800;font-family:'Space Mono',monospace;color:var(--accent-gold);">₦5,000</div>
+                <div style="font-size:22px;font-weight:800;font-family:'Space Mono',monospace;color:var(--accent-gold);">₦{{ number_format($feeAmount, 2) }}</div>
                 <p style="font-size:12px;color:var(--text-secondary);margin-top:4px;">Payable after approval</p>
             </div>
         </div>

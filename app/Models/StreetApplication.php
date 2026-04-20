@@ -18,6 +18,7 @@ class StreetApplication extends Model
         'description',
         'status',
         'admin_note',
+        'user_note',
         'reviewed_at',
         'start_latitude',
         'start_longitude',
@@ -33,5 +34,10 @@ class StreetApplication extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function payment()
+    {
+        return $this->morphOne(Payment::class, 'payable');
     }
 }

@@ -325,4 +325,12 @@ class SmsNotificationService
         $message = "Your {$itemType} ({$reference}) is ready for delivery. Please collect at your earliest convenience.";
         return $this->send($phoneNumber, $message, 'delivery');
     }
+    /**
+     * Send notification for a new admin note
+     */
+    public function sendNoteNotification(string $phoneNumber, string $itemType, string $reference): bool
+    {
+        $message = "Registry Note: An official note has been added to your {$itemType} request ({$reference}). Please login to the portal to view and reply.";
+        return $this->send($phoneNumber, $message, 'note_update');
+    }
 }

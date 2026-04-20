@@ -39,6 +39,7 @@ class RegisterAddress extends Component
     public string $reference_code = ''; // Main reference or first reference
     public array $reference_codes = []; // For bulk
     public string $search_code = '';
+    public float $feeAmount = 0;
 
     public function mount()
     {
@@ -53,6 +54,8 @@ class RegisterAddress extends Component
         $this->bulkAddresses = [
             ['house_number' => ''],
         ];
+
+        $this->feeAmount = app(FeeService::class)->getFeeAmount('address_registration') ?? 2000;
     }
 
     public function setRegistrationType($type)
@@ -126,9 +129,7 @@ class RegisterAddress extends Component
 
             // If payment required, set awaiting_payment and initiate payment flow
             if ($address && $address->status === 'awaiting_payment') {
-                $feeService = app(FeeService::class);
-                $amount = $feeService->getFeeAmount('address_registration') ?? 1000;
-                $this->dispatch('initiate-payment', $address->id, $amount);
+                $this->dispatch('initiate-payment', $address->id, $this->feeAmount);
             }
         } else {
             $addresses = $this->processBulkRegistration();
@@ -136,9 +137,7 @@ class RegisterAddress extends Component
             if (!empty($addresses)) {
                 $first = $addresses[0];
                 if ($first->status === 'awaiting_payment') {
-                    $feeService = app(FeeService::class);
-                    $amount = $feeService->getFeeAmount('address_registration') ?? 1000;
-                    $this->dispatch('initiate-payment', $first->id, $amount);
+                    $this->dispatch('initiate-payment', $first->id, $this->feeAmount);
                 }
             }
         }

@@ -20,6 +20,7 @@ class StreetRevalidation extends Model
         'current_status',
         'status',
         'admin_note',
+        'user_note',
         'reviewed_at',
     ];
 

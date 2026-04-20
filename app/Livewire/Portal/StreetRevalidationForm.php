@@ -37,6 +37,7 @@ class StreetRevalidationForm extends Component
     public int $step = 1;
     public bool $submitted = false;
     public ?StreetRevalidation $lastRevalidation = null;
+    public float $feeAmount = 0;
 
     protected $rules = [
         'street_name'      => 'required|string|max:255',
@@ -50,6 +51,7 @@ class StreetRevalidationForm extends Component
     public function mount()
     {
         $this->streets = Street::where('status', 'active')->get()->toArray();
+        $this->feeAmount = \App\Models\FeeSchedule::getFeeAmount('street_revalidation') ?? 2500;
     }
 
     public function setTab($tabName)

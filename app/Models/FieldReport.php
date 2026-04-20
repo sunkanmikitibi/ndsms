@@ -19,6 +19,7 @@ class FieldReport extends Model
         'data',
         'status',
         'admin_note',
+        'user_note',
         'reviewed_at',
     ];
 
@@ -30,5 +31,10 @@ class FieldReport extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function payment()
+    {
+        return $this->morphOne(Payment::class, 'payable');
     }
 }

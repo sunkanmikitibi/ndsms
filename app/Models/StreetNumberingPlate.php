@@ -27,6 +27,7 @@ class StreetNumberingPlate extends Model
         'reference_number',
         'status',
         'admin_notes',
+        'user_note',
         'rejection_reason',
     ];
 
@@ -160,7 +161,30 @@ class StreetNumberingPlate extends Model
      */
     public function getTotalCost(): float
     {
-        return (float) $this->approx_cost * $this->quantity_requested;
+        // Base cost per plate
+        $baseCost = 2500;
+
+        // Type surcharge
+        $typeSurcharge = match($this->plate_type) {
+            'standard' => 0,
+            'reflective' => 1500,
+            'illuminated' => 8000,
+            'digital' => 15000,
+            default => 0,
+        };
+
+        // Material surcharge
+        $materialSurcharge = match($this->material) {
+            'aluminum' => 0,
+            'steel' => 1000,
+            'stainless' => 3000,
+            'plastic' => -500,
+            'composite' => 2000,
+            default => 0,
+        };
+
+        $costPerPlate = $baseCost + $typeSurcharge + $materialSurcharge;
+        return $costPerPlate * $this->quantity_requested;
     }
 
     /**

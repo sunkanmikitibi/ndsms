@@ -38,6 +38,75 @@
                 <a href="{{ route('portal.dashboard') }}" class="btn btn-primary">View My Requests</a>
             </div>
         </div>
+    @elseif ($reviewing)
+        <div class="card" style="max-width:700px;margin:0 auto;padding:32px;">
+            <h3 style="font-size:18px;font-weight:700;margin-bottom:16px;"><i class="fas fa-credit-card"
+                    style="color:var(--accent);margin-right:8px;"></i>Review & Payment</h3>
+            <p style="color:var(--text-secondary);margin-bottom:24px;line-height:1.7;">Please review your address
+                indexing request details below. Payment is required before your request is submitted to the admin for
+                processing.</p>
+
+            <!-- Request Summary -->
+            <div style="background:var(--bg-input);border-radius:var(--radius-sm);padding:20px;margin-bottom:20px;">
+                <h4 style="font-size:14px;font-weight:700;margin-bottom:16px;color:var(--text-primary);">Request Details
+                </h4>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div>
+                        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">Full Address</div>
+                        <div style="font-size:14px;font-weight:600;">{{ $address_line }}</div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">House Number</div>
+                        <div style="font-size:14px;font-weight:600;">{{ $house_number }}</div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">Coordinates</div>
+                        <div style="font-size:14px;font-weight:600;">{{ $latitude }}, {{ $longitude }}</div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">Property Owner</div>
+                        <div style="font-size:14px;font-weight:600;">{{ $owner_name }}</div>
+                    </div>
+                    <div style="grid-column:1/-1;">
+                        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">Description</div>
+                        <div style="font-size:14px;font-weight:600;">{{ $description ?: 'No description provided' }}
+                        </div>
+                    </div>
+                    @if (count($property_images) > 0)
+                        <div style="grid-column:1/-1;">
+                            <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">Property Images
+                            </div>
+                            <div style="font-size:14px;font-weight:600;">{{ count($property_images) }} image(s) uploaded
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Payment Summary -->
+            <div style="background:var(--bg-input);border-radius:var(--radius-sm);padding:20px;margin-bottom:20px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;">
+                    <div>
+                        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:6px;">Service Fee</div>
+                        <div style="font-size:24px;font-weight:700;color:var(--accent);">
+                            ₦{{ number_format($feeAmount, 2) }}</div>
+                        <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">Address Indexing (Google
+                            Maps)</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:6px;">Payment Method</div>
+                        <div style="font-size:14px;font-weight:700;">Paystack (Secure Online Payment)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                <button type="button" wire:click="goBackToForm" class="btn btn-outline">Edit Details</button>
+                <button type="button" wire:click="payAndSubmit" class="btn btn-primary" style="margin-left:auto;">
+                    <i class="fas fa-credit-card"></i> Pay & Submit Request
+                </button>
+            </div>
+        </div>
     @else
         <!-- Multi-step Form -->
         <div style="display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start;">
@@ -154,7 +223,8 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <small style="color:var(--text-secondary);display:block;margin-top:8px;">Use Google Maps
+                                <small style="color:var(--text-secondary);display:block;margin-top:8px;">Use Google
+                                    Maps
                                     to find coordinates (right-click → coordinates)</small>
                             </div>
                         </div>
@@ -256,13 +326,32 @@
                             </div>
                         @endif
 
+                        @if ($feeAmount > 0)
+                            <div
+                                style="background:var(--bg-input);border-radius:var(--radius-sm);padding:16px;margin-bottom:20px;">
+                                <div
+                                    style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+                                    <div>
+                                        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:6px;">
+                                            Scheduled Fee</div>
+                                        <div style="font-size:20px;font-weight:700;color:var(--accent);">
+                                            ₦{{ number_format($feeAmount, 2) }}</div>
+                                    </div>
+                                    <div style="text-align:right;">
+                                        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:6px;">Paid
+                                            before admin processing</div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
                         <div style="display:flex;gap:10px;margin-top:24px;">
                             <button type="button" wire:click="previousStep"
                                 class="btn btn-outline">Previous</button>
                             <button type="button" wire:click="submit" wire:loading.attr="disabled"
                                 class="btn btn-primary" style="margin-left:auto;">
-                                <span wire:loading.remove><i class="fas fa-check"></i> Submit Request</span>
-                                <span wire:loading><i class="fas fa-spinner fa-spin"></i> Submitting...</span>
+                                <span wire:loading.remove><i class="fas fa-check"></i> Continue to Payment</span>
+                                <span wire:loading><i class="fas fa-spinner fa-spin"></i> Processing...</span>
                             </button>
                         </div>
                     </div>

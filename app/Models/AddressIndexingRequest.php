@@ -24,6 +24,7 @@ class AddressIndexingRequest extends Model
         'description',
         'status',
         'admin_note',
+        'user_note',
         'reviewed_at',
     ];
 

@@ -98,7 +98,66 @@ class PaymentProcessor extends Component
     #[On('initiate-plate-payment')]
     public function initiatePlatePayment($plateRequestId)
     {
-        $this->initiateGenericPayment('street_numbering_plate', $plateRequestId, 'Street Numbering Plate Request');
+        $this->loading = true;
+        $this->error_message = null;
+
+        try {
+            $plateRequest = \App\Models\StreetNumberingPlate::findOrFail($plateRequestId);
+
+            // Verify ownership
+            if ($plateRequest->user_id !== auth()->id()) {
+                $this->error_message = 'Unauthorized access to this request.';
+                $this->loading = false;
+                return;
+            }
+
+            // Use the calculated total cost from the model
+            $amount = $plateRequest->getTotalCost();
+
+            // Create reference
+            $this->reference = 'PLATE-'.auth()->id().'-'.time();
+
+            // Initialize Paystack transaction
+            $metadata = [
+                'type' => 'street_numbering_plate',
+                'request_id' => $plateRequestId,
+                'user_id' => auth()->id(),
+                'description' => 'Street Numbering Plate Request',
+                'quantity' => $plateRequest->quantity_requested,
+                'plate_type' => $plateRequest->plate_type,
+                'material' => $plateRequest->material,
+            ];
+
+            $paymentData = $this->getPaystackService()->initializeTransaction(
+                $amount,
+                auth()->user()->email,
+                $this->reference,
+                $metadata,
+                route('payment.callback', [], true)
+            );
+
+            // Create payment record using polymorphic relationship
+            Payment::create([
+                'payable_id' => $plateRequest->id,
+                'payable_type' => get_class($plateRequest),
+                'user_id' => auth()->id(),
+                'amount' => $amount,
+                'currency' => 'NGN',
+                'payment_method' => 'paystack',
+                'status' => 'pending',
+                'reference' => $this->reference,
+                'transaction_id' => $paymentData['reference'] ?? null,
+                'metadata' => $metadata,
+            ]);
+
+            $this->authorization_url = $paymentData['authorization_url'];
+            $this->dispatch('payment-initialized', reference: $this->reference);
+
+        } catch (\Exception $e) {
+            $this->error_message = 'Failed to initialize payment: '.$e->getMessage();
+        } finally {
+            $this->loading = false;
+        }
     }
 
     #[On('initiate-street-payment')]
@@ -184,6 +243,8 @@ class PaymentProcessor extends Component
             'address_indexing' => 3000,
             'street_revalidation' => 2500,
             'street_numbering_plate' => 500,
+            'address_registration' => 2000,
+            'street_registration' => 5000,
             default => 1000
         };
     }
@@ -222,11 +283,19 @@ class PaymentProcessor extends Component
                         'metadata' => array_merge($payment->metadata ?? [], ['paystack_response' => $transactionData]),
                     ]);
 
-                    if ($payment->address) {
-                        $payment->address->update([
-                            'status' => 'approved',
-                            'payment_method' => 'paystack',
-                            'reference_code' => $reference,
+                    // Update the payable model status
+                    $payable = $payment->payable;
+                    if ($payable) {
+                        $newStatus = match(get_class($payable)) {
+                            \App\Models\Address::class => 'approved',
+                            \App\Models\AddressIndexingRequest::class => 'pending',
+                            \App\Models\StreetApplication::class => 'pending',
+                            \App\Models\StreetRevalidation::class => 'pending',
+                            default => 'pending'
+                        };
+
+                        $payable->update([
+                            'status' => $newStatus,
                         ]);
                     }
 

@@ -77,6 +77,12 @@
             </div>
         </div>
     @else
+        <!-- Debug Info -->
+        <div
+            style="background: #f0f0f0; padding: 10px; margin-bottom: 20px; border-radius: 5px; font-family: monospace; font-size: 12px;">
+            DEBUG: Current Step = {{ $step }} | Submitted = {{ $submitted ? 'true' : 'false' }}
+        </div>
+
         <!-- Step Indicator -->
         <div class="step-indicator">
             <div class="step-line"></div>
@@ -341,7 +347,7 @@
                         Next <i class="fas fa-chevron-right"></i>
                     </button>
                 @else
-                    <button type="button" wire:click="submit" class="btn btn-accent" style="flex:1;">
+                    <button type="button" wire:click="submit" class="btn btn-primary" style="flex:1;">
                         <i class="fas fa-check"></i> Submit Request
                     </button>
                 @endif

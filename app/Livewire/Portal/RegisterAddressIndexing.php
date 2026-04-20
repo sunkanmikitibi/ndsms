@@ -3,6 +3,7 @@
 namespace App\Livewire\Portal;
 
 use App\Models\AddressIndexingRequest;
+use App\Models\FeeSchedule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -36,6 +37,8 @@ class RegisterAddressIndexing extends Component
     // UI States
     public int $step = 1;
     public bool $submitted = false;
+    public bool $reviewing = false;
+    public ?float $feeAmount = null;
     public ?AddressIndexingRequest $lastRequest = null;
 
     protected $rules = [
@@ -60,6 +63,8 @@ class RegisterAddressIndexing extends Component
             $this->owner_name = $this->applicant_name;
             $this->owner_phone = $this->applicant_phone;
         }
+
+        $this->feeAmount = FeeSchedule::getFeeAmount('address_indexing') ?? 3000;
     }
 
     public function addPropertyImage()
@@ -120,6 +125,27 @@ class RegisterAddressIndexing extends Component
     {
         $this->validate();
 
+        if ($this->feeAmount > 0) {
+            $this->reviewing = true;
+            return;
+        }
+
+        $this->finalizeRequest();
+    }
+
+    public function payAndSubmit()
+    {
+        $this->validate();
+        $this->finalizeRequest();
+    }
+
+    public function goBackToForm()
+    {
+        $this->reviewing = false;
+    }
+
+    protected function finalizeRequest(): void
+    {
         $this->lastRequest = AddressIndexingRequest::create([
             'user_id'           => auth()->id(),
             'applicant_name'    => $this->applicant_name,
@@ -132,24 +158,62 @@ class RegisterAddressIndexing extends Component
             'owner_phone'       => $this->owner_phone,
             'description'       => $this->description,
             'property_images'   => $this->property_images,
-            'status'            => 'awaiting_payment',
+            'status'            => $this->feeAmount > 0 ? 'awaiting_payment' : 'pending',
         ]);
 
-        // Dispatch payment initialization if amount is configured
-        $this->dispatch('initiate-indexing-payment', 
-            $this->lastRequest->id,
-        );
+        if ($this->feeAmount > 0) {
+            $this->dispatch('initiate-indexing-payment', $this->lastRequest->id);
+        }
 
-        $this->reset();
+        $this->clearForm();
+
         $this->submitted = true;
+        $this->reviewing = false;
         $this->dispatch('toast', type: 'success', message: 'Address indexing request submitted. Proceed to payment.');
+    }
+
+    protected function clearForm(): void
+    {
+        $this->step = 1;
+        $this->address_line = '';
+        $this->house_number = '';
+        $this->latitude = null;
+        $this->longitude = null;
+        $this->description = '';
+        $this->property_images = [];
+        $this->uploadedImages = [];
+        $this->reviewing = false;
+
+        if (auth()->check()) {
+            $this->applicant_name = auth()->user()->name;
+            $this->applicant_phone = auth()->user()->phone ?? '';
+            $this->owner_name = $this->applicant_name;
+            $this->owner_phone = $this->applicant_phone;
+        }
     }
 
     public function newApplication()
     {
-        $this->reset();
+        $this->step = 1;
+        $this->reviewing = false;
         $this->submitted = false;
         $this->lastRequest = null;
+        $this->address_line = '';
+        $this->house_number = '';
+        $this->latitude = null;
+        $this->longitude = null;
+        $this->description = '';
+        $this->property_images = [];
+        $this->uploadedImages = [];
+
+        if (auth()->check()) {
+            $this->applicant_name = auth()->user()->name;
+            $this->applicant_phone = auth()->user()->phone ?? '';
+            $this->owner_name = $this->applicant_name;
+            $this->owner_phone = $this->applicant_phone;
+        }
+
+        $this->feeAmount = FeeSchedule::getFeeAmount('address_indexing') ?? 0;
     }
 
     public function render()

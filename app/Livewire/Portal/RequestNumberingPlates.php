@@ -126,21 +126,39 @@ class RequestNumberingPlates extends Component
 
     public function nextStep()
     {
-        if ($this->step === 1) {
-            $this->validate([
-                'street_name' => 'required|string|max:255',
-                'town' => 'required|string|max:100',
-            ]);
-        } elseif ($this->step === 2) {
-            $this->validate([
-                'quantity_requested' => 'required|integer|min:1|max:100',
-                'plate_type' => 'required|in:standard,reflective,illuminated,digital',
-                'material' => 'required|in:aluminum,steel,stainless,plastic,composite',
-            ]);
-        }
+        logger()->info('Next step called', [
+            'current_step' => $this->step,
+            'street_name' => $this->street_name,
+            'town' => $this->town,
+            'quantity_requested' => $this->quantity_requested,
+            'plate_type' => $this->plate_type,
+            'material' => $this->material,
+        ]);
 
-        if ($this->step < 3) {
-            $this->step++;
+        try {
+            if ($this->step === 1) {
+                $this->validate([
+                    'street_name' => 'required|string|max:255',
+                    'town' => 'required|string|max:100',
+                ]);
+            } elseif ($this->step === 2) {
+                $this->validate([
+                    'quantity_requested' => 'required|integer|min:1|max:100',
+                    'plate_type' => 'required|in:standard,reflective,illuminated,digital',
+                    'material' => 'required|in:aluminum,steel,stainless,plastic,composite',
+                ]);
+            }
+
+            if ($this->step < 3) {
+                $this->step++;
+                logger()->info('Step incremented', ['new_step' => $this->step]);
+            }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            logger()->error('Next step validation failed', [
+                'step' => $this->step,
+                'errors' => $e->errors(),
+            ]);
+            throw $e;
         }
     }
 
@@ -153,7 +171,28 @@ class RequestNumberingPlates extends Component
 
     public function submit()
     {
-        $this->validate();
+        // Debug logging
+        logger()->info('Submit method called', [
+            'step' => $this->step,
+            'user_id' => auth()->id(),
+            'street_name' => $this->street_name,
+            'town' => $this->town,
+            'quantity_requested' => $this->quantity_requested,
+            'plate_type' => $this->plate_type,
+            'material' => $this->material,
+            'delivery_address' => $this->delivery_address,
+            'contact_phone' => $this->contact_phone,
+        ]);
+
+        try {
+            $this->validate();
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            logger()->error('Validation failed', [
+                'errors' => $e->errors(),
+                'step' => $this->step,
+            ]);
+            throw $e;
+        }
 
         try {
             $referenceNumber = 'PLATE-' . strtoupper(bin2hex(random_bytes(4))) . '-' . now()->format('ymd');
@@ -179,25 +218,23 @@ class RequestNumberingPlates extends Component
             Mail::to(auth()->user()->email)->send(new StreetNumberingPlateRequest($this->lastRequest));
 
             // Dispatch payment initialization
-            $this->dispatch('initiate-plate-payment', 
-                numberingPlateRequestId: $this->lastRequest->id,
-            );
+            $this->dispatch('initiate-plate-payment', [
+                'request_id' => $this->lastRequest->id,
+                'amount' => $this->estimatedCost,
+                'reference' => $referenceNumber,
+            ]);
 
-            $this->reset();
             $this->submitted = true;
-            $this->dispatch('notify', [
-                'type' => 'success',
-                'message' => 'Street numbering plate request submitted successfully! Reference: ' . $referenceNumber,
-            ]);
         } catch (\Exception $e) {
-            $this->dispatch('notify', [
-                'type' => 'error',
-                'message' => 'Error submitting request: ' . $e->getMessage(),
-            ]);
-
             logger()->error('Numbering plate request error', [
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'message' => 'Error submitting request: ' . $e->getMessage(),
             ]);
         }
     }
