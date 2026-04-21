@@ -39,8 +39,8 @@ class AiLookup extends Component
         $foundStreets = Street::where('status', 'active')
             ->where(function($q) use ($keywords) {
                 foreach ($keywords as $word) {
-                    $q->orWhere('name', 'ilike', "%{$word}%")
-                      ->orWhere('town', 'ilike', "%{$word}%");
+                    $q->orWhere('name', 'like', "%{$word}%")
+                      ->orWhere('town', 'like', "%{$word}%");
                 }
             })
             ->get();
@@ -49,9 +49,9 @@ class AiLookup extends Component
             ->with('street')
             ->where(function($q) use ($keywords) {
                 foreach ($keywords as $word) {
-                    $q->orWhere('owner_name', 'ilike', "%{$word}%")
-                      ->orWhere('house_number', 'ilike', "%{$word}%")
-                      ->orWhere('town', 'ilike', "%{$word}%");
+                    $q->orWhere('owner_name', 'like', "%{$word}%")
+                      ->orWhere('house_number', 'like', "%{$word}%")
+                      ->orWhere('town', 'like', "%{$word}%");
                 }
             })
             ->get();
