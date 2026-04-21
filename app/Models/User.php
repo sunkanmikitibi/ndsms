@@ -90,4 +90,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Complaint::class);
     }
+
+    /**
+     * Get user's street numbering plate requests
+     */
+    public function streetNumberingPlateRequests()
+    {
+        return $this->hasMany(StreetNumberingPlate::class);
+    }
 }
