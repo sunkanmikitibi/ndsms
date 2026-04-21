@@ -84,8 +84,10 @@
             <!-- Footer -->
             @if (count($allNotifications) > 0)
                 <div
-                    style="background:var(--bg-input);border-top:1px solid var(--border);padding:10px;text-align:center;">
+                    style="background:var(--bg-input);border-top:1px solid var(--border);padding:10px;text-align:center;display:flex;justify-content:center;gap:12px;align-items:center;">
+                    <a href="{{ route('portal.notifications') }}" style="font-size:12px;font-weight:700;color:var(--accent);text-decoration:none;">View All</a>
                     @if (count(array_filter($allNotifications, fn($n) => $n['read_at'])) > 0)
+                        <span style="color:var(--border);">|</span>
                         <button wire:click="deleteAllRead"
                             style="background:none;border:none;color:var(--text-secondary);font-size:11px;cursor:pointer;text-decoration:underline;font-weight:600;transition:color var(--transition);"
                             onmouseover="this.style.color='var(--danger)'"

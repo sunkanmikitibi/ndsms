@@ -66,6 +66,7 @@ Route::middleware(['auth', 'verified'])->prefix('portal')->name('portal.')->grou
     Route::get('/map', InteractiveMap::class)->name('map');
     Route::get('/ai-lookup', AiLookup::class)->name('ai-lookup');
     Route::get('/complaints', Complaints::class)->name('complaints');
+    Route::get('/notifications', \App\Livewire\Portal\Notifications\Index::class)->name('notifications');
 
     // Certificates
     Route::get('/certificates/street/{id}', [CertificateController::class, 'streetCertificate'])->name('certificates.street');

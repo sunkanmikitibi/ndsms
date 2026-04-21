@@ -1,4 +1,4 @@
-<div>
+<x-layouts.portal title="Payment Details">
     <!-- Page Header -->
     <div class="page-header">
         <div>
@@ -195,4 +195,4 @@
             </div>
         </div>
     @endif
-</div>
+</x-layouts.portal>

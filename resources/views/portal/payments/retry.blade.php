@@ -1,4 +1,4 @@
-<div>
+<x-layouts.portal title="Retry Payment">
     <!-- Page Header -->
     <div class="page-header">
         <div>
@@ -86,20 +86,22 @@
             </form>
         </div>
     </div>
-</div>
 
-<script>
-    document.getElementById('retryForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+    @push('scripts')
+    <script>
+        document.getElementById('retryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
 
-        const btn = document.getElementById('retryBtn');
-        const originalText = btn.innerHTML;
+            const btn = document.getElementById('retryBtn');
+            const originalText = btn.innerHTML;
 
-        // Disable button and show loading
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            // Disable button and show loading
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
-        // Submit form
-        this.submit();
-    });
-</script>
+            // Submit form
+            this.submit();
+        });
+    </script>
+    @endpush
+</x-layouts.portal>

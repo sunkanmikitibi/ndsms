@@ -145,6 +145,31 @@
             </div>
         </div>
 
+        <!-- Revenue by Service Type -->
+        <div class="card">
+            <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;color:var(--text-primary);">
+                <i class="fas fa-hand-holding-dollar" style="margin-right:8px;color:var(--accent);"></i>Revenue by Service
+            </h3>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:1px solid var(--border);">
+                    <span style="color:var(--text-secondary);font-size:13px;">Street Registration</span>
+                    <span style="font-weight:700;color:var(--text-primary);">₦{{ number_format($revenueByService['street_registration'], 0) }}</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:1px solid var(--border);">
+                    <span style="color:var(--text-secondary);font-size:13px;">Address Indexing</span>
+                    <span style="font-weight:700;color:var(--text-primary);">₦{{ number_format($revenueByService['address_indexing'], 0) }}</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:1px solid var(--border);">
+                    <span style="color:var(--text-secondary);font-size:13px;">Numbering Plates</span>
+                    <span style="font-weight:700;color:var(--text-primary);">₦{{ number_format($revenueByService['numbering_plates'], 0) }}</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span style="color:var(--text-secondary);font-size:13px;">Other / Misc</span>
+                    <span style="font-weight:700;color:var(--text-primary);">₦{{ number_format($revenueByService['other'], 0) }}</span>
+                </div>
+            </div>
+        </div>
+
         <!-- Export Reports -->
         <div class="card">
             <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;color:var(--text-primary);">
@@ -162,6 +187,9 @@
                 </button>
                 <button wire:click="exportReport('payments')" class="btn btn-primary" style="font-size:13px;">
                     <i class="fas fa-credit-card"></i> Payments
+                </button>
+                <button wire:click="exportReport('production')" class="btn btn-primary" style="font-size:13px;">
+                    <i class="fas fa-industry"></i> Production
                 </button>
             </div>
         </div>
@@ -210,6 +238,28 @@
                 </div>
             @else
                 <p style="color:var(--text-secondary);text-align:center;padding:20px 0;">No address data available</p>
+            @endif
+        </div>
+
+        <!-- Production Status -->
+        <div class="card">
+            <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;color:var(--text-primary);">
+                <i class="fas fa-industry" style="margin-right:8px;color:var(--accent);"></i>Plate Production Status
+            </h3>
+            @if ($productionData['by_status']->count() > 0)
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                    @foreach ($productionData['by_status'] as $item)
+                        <div
+                            style="display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:1px solid var(--border);">
+                            <span
+                                style="color:var(--text-secondary);font-size:14px;text-transform:capitalize;">{{ str_replace('_', ' ', $item->status) }}</span>
+                            <span
+                                style="font-weight:700;background:var(--accent-light);color:var(--accent);padding:4px 12px;border-radius:var(--radius-sm);font-size:13px;">{{ $item->count }}</span>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <p style="color:var(--text-secondary);text-align:center;padding:20px 0;">No production data available</p>
             @endif
         </div>
     </div>

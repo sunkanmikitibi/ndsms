@@ -1,4 +1,4 @@
-<div>
+<x-layouts.portal title="My Payments">
     <!-- Page Header -->
     <div class="page-header">
         <div>
@@ -104,4 +104,4 @@
         <!-- Pagination -->
         {{ $payments->links() }}
     @endif
-</div>
+</x-layouts.portal>

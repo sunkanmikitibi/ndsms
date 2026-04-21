@@ -126,6 +126,52 @@ class Index extends Component
         ];
     }
 
+    public function getProductionDataProperty()
+    {
+        $startDate = $this->dateRange;
+
+        return [
+            'total' => \App\Models\StreetNumberingPlate::count(),
+            'by_status' => \App\Models\StreetNumberingPlate::selectRaw('status, COUNT(*) as count')
+                ->groupBy('status')
+                ->get(),
+            'recent' => \App\Models\StreetNumberingPlate::where('created_at', '>=', $startDate)
+                ->orderByDesc('created_at')
+                ->limit(10)
+                ->get(),
+        ];
+    }
+
+    public function getRevenueByServiceProperty()
+    {
+        $startDate = $this->dateRange;
+
+        // Approximate revenue by analyzing metadata or description if available
+        // For this demo, we'll group by the 'type' if recorded in payments, 
+        // or just show a breakdown based on the models associated.
+        
+        return [
+            'street_registration' => Payment::where('status', 'success')
+                ->where('created_at', '>=', $startDate)
+                ->where('description', 'like', '%Street Registration%')
+                ->sum('amount'),
+            'address_indexing' => Payment::where('status', 'success')
+                ->where('created_at', '>=', $startDate)
+                ->where('description', 'like', '%Address Indexing%')
+                ->sum('amount'),
+            'numbering_plates' => Payment::where('status', 'success')
+                ->where('created_at', '>=', $startDate)
+                ->where('description', 'like', '%Plate%')
+                ->sum('amount'),
+            'other' => Payment::where('status', 'success')
+                ->where('created_at', '>=', $startDate)
+                ->where('description', 'not like', '%Street Registration%')
+                ->where('description', 'not like', '%Address Indexing%')
+                ->where('description', 'not like', '%Plate%')
+                ->sum('amount'),
+        ];
+    }
+
     public function exportReport(string $type)
     {
         if (!auth()->user()->hasPermissionTo('export reports')) {
@@ -145,6 +191,7 @@ class Index extends Component
             'addresses' => $csv = $this->exportAddresses($startDate),
             'applications' => $csv = $this->exportApplications($startDate),
             'payments' => $csv = $this->exportPayments($startDate),
+            'production' => $csv = $this->exportProduction($startDate),
         };
 
         return response()->streamDownload(function () use ($csv) {
@@ -202,6 +249,18 @@ class Index extends Component
         return $csv;
     }
 
+    private function exportProduction($startDate)
+    {
+        $csv = "Plate Type,Address,Status,Requested By,Created\n";
+        $plates = \App\Models\StreetNumberingPlate::where('created_at', '>=', $startDate)->with('user')->get();
+
+        foreach ($plates as $plate) {
+            $csv .= "\"{$plate->plate_type}\",\"{$plate->house_number} {$plate->street_name}\",\"{$plate->status}\",\"{$plate->user?->email}\",\"{$plate->created_at->format('Y-m-d H:i')}\"\n";
+        }
+
+        return $csv;
+    }
+
     public function render()
     {
         return view('livewire.admin.reports.index', [
@@ -210,6 +269,8 @@ class Index extends Component
             'addressData' => $this->addressData,
             'applicationData' => $this->applicationData,
             'paymentData' => $this->paymentData,
+            'productionData' => $this->productionData,
+            'revenueByService' => $this->revenueByService,
         ]);
     }
 }

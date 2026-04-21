@@ -15,116 +15,108 @@ class AiLookup extends Component
     public string $query = '';
     public array $results = [];
     public bool $isSearching = false;
-    public string $errorMessage = '';
-    public ?Address $selectedAddress = null;
 
-    protected $rules = [
-        'query' => 'required|string|min:5|max:500',
-    ];
-
-    public function mount()
+    public function updatedQuery()
     {
-        // Verify user is authenticated
-        if (!auth()->check()) {
-            abort(401, 'Unauthorized');
+        if (strlen($this->query) < 3) {
+            $this->results = [];
+            return;
         }
+
+        $this->performSearch();
     }
 
-    public function searchAddresses(): void
+    public function performSearch()
     {
-        $this->validate();
         $this->isSearching = true;
-        $this->errorMessage = '';
+        
+        // Simulate "AI" processing time for better UX
+        // usleep(300000); 
+
+        $keywords = explode(' ', strtolower($this->query));
+        $keywords = array_filter($keywords, fn($k) => strlen($k) > 2);
+
+        $foundStreets = Street::where('status', 'active')
+            ->where(function($q) use ($keywords) {
+                foreach ($keywords as $word) {
+                    $q->orWhere('name', 'ilike', "%{$word}%")
+                      ->orWhere('town', 'ilike', "%{$word}%");
+                }
+            })
+            ->get();
+
+        $foundAddresses = Address::where('status', 'approved')
+            ->with('street')
+            ->where(function($q) use ($keywords) {
+                foreach ($keywords as $word) {
+                    $q->orWhere('owner_name', 'ilike', "%{$word}%")
+                      ->orWhere('house_number', 'ilike', "%{$word}%")
+                      ->orWhere('town', 'ilike', "%{$word}%");
+                }
+            })
+            ->get();
+
         $this->results = [];
 
-        try {
-            $searchTerms = array_filter(array_unique(preg_split('/[\s,]+/', strtolower($this->query))));
-
-            if (empty($searchTerms)) {
-                $this->errorMessage = 'Please enter a valid search query.';
-                $this->isSearching = false;
-                return;
-            }
-
-            // Build query for fuzzy matching
-            $query = Address::with('street')
-                ->where('status', 'approved');
-
-            // Search across multiple fields
-            $query->where(function ($q) use ($searchTerms) {
-                foreach ($searchTerms as $term) {
-                    if (strlen($term) >= 2) {
-                        $q->orWhere('house_number', 'like', "%{$term}%")
-                          ->orWhere('owner_name', 'like', "%{$term}%")
-                          ->orWhere('description', 'like', "%{$term}%")
-                          ->orWhereHas('street', function ($sq) use ($term) {
-                              $sq->where('name', 'like', "%{$term}%")
-                                 ->orWhere('town', 'like', "%{$term}%");
-                          });
-                    }
-                }
-            });
-
-            $foundAddresses = $query
-                ->limit(10)
-                ->get()
-                ->map(function ($address) {
-                    return [
-                        'id' => $address->id,
-                        'house_number' => $address->house_number,
-                        'street_name' => $address->street?->name ?? 'Unknown Street',
-                        'town' => $address->town,
-                        'owner_name' => $address->owner_name,
-                        'owner_phone' => $address->owner_phone,
-                        'status' => $address->status,
-                        'coordinates' => $address->latitude && $address->longitude 
-                            ? "{$address->latitude}, {$address->longitude}" 
-                            : null,
-                    ];
-                })->toArray();
-
-            if (!empty($foundAddresses)) {
-                $this->results = $foundAddresses;
-            } else {
-                $this->errorMessage = 'No addresses found matching your search. Try a more specific search term.';
-            }
-        } catch (\Exception $e) {
-            $this->errorMessage = 'Search failed: ' . $e->getMessage();
-            logger()->error('AI Lookup search error', ['error' => $e->getMessage(), 'query' => $this->query]);
+        // Score and Merge Results
+        foreach ($foundStreets as $street) {
+            $score = $this->calculateScore($street->name . ' ' . $street->town, $keywords);
+            $this->results[] = [
+                'type' => 'street',
+                'title' => $street->name,
+                'subtitle' => $street->town . ' · ' . $street->code,
+                'score' => $score,
+                'id' => $street->id,
+                'metadata' => [
+                    'town' => $street->town,
+                    'code' => $street->code,
+                    'type' => $street->type,
+                ]
+            ];
         }
+
+        foreach ($foundAddresses as $address) {
+            $score = $this->calculateScore($address->owner_name . ' ' . $address->house_number . ' ' . $address->town, $keywords);
+            $this->results[] = [
+                'type' => 'address',
+                'title' => $address->house_number . ', ' . ($address->street->name ?? 'Unknown Street'),
+                'subtitle' => $address->owner_name . ' · ' . $address->town,
+                'score' => $score,
+                'id' => $address->id,
+                'metadata' => [
+                    'owner' => $address->owner_name,
+                    'house_number' => $address->house_number,
+                    'town' => $address->town,
+                ]
+            ];
+        }
+
+        // Sort by score
+        usort($this->results, fn($a, $b) => $b['score'] <=> $a['score']);
+        
+        // Take top 8
+        $this->results = array_slice($this->results, 0, 8);
 
         $this->isSearching = false;
     }
 
-    public function selectResult(int $addressId): void
+    private function calculateScore(string $text, array $keywords): int
     {
-        try {
-            $this->selectedAddress = Address::with('street')->findOrFail($addressId);
-        } catch (\Exception $e) {
-            $this->errorMessage = 'Error loading address details: ' . $e->getMessage();
+        $text = strtolower($text);
+        if (empty($keywords)) return 0;
+        
+        $matches = 0;
+        foreach ($keywords as $word) {
+            if (str_contains($text, $word)) {
+                $matches++;
+            }
         }
-    }
-
-    public function clearSearch(): void
-    {
-        $this->query = '';
-        $this->results = [];
-        $this->selectedAddress = null;
-        $this->errorMessage = '';
-    }
-
-    public function clearResult(): void
-    {
-        $this->selectedAddress = null;
+        
+        return (int)(($matches / count($keywords)) * 100);
     }
 
     public function render()
     {
-        return view('livewire.portal.ai-lookup', [
-            'results' => $this->results,
-            'isSearching' => $this->isSearching,
-            'errorMessage' => $this->errorMessage,
-            'selectedAddress' => $this->selectedAddress,
-        ]);
+        return view('livewire.portal.ai-lookup');
     }
 }
