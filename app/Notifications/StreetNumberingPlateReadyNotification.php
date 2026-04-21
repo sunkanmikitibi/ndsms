@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Models\StreetNumberingPlateRequest;
+use App\Models\StreetNumberingPlate;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -12,16 +12,18 @@ class StreetNumberingPlateReadyNotification extends Notification implements Shou
 {
     use Queueable;
 
-    protected StreetNumberingPlateRequest $request;
+    protected StreetNumberingPlate $request;
 
-    public function __construct(StreetNumberingPlateRequest $request)
+    public function __construct(StreetNumberingPlate $request)
     {
         $this->request = $request;
     }
 
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        // In-app notifications use the custom Notification model/table.
+        // Keep this notification mail-only to avoid writing to Laravel's database notification channel.
+        return ['mail'];
     }
 
     public function toMail(object $notifiable): MailMessage
@@ -41,15 +43,5 @@ class StreetNumberingPlateReadyNotification extends Notification implements Shou
             ->markdown('mail.markdown');
     }
 
-    public function toDatabase(object $notifiable): array
-    {
-        return [
-            'type' => 'street_numbering_plate_ready',
-            'title' => 'Your Plates Are Ready!',
-            'message' => "Your {$this->request->quantity_requested} street numbering plates for {$this->request->street_name} are ready for collection.",
-            'request_id' => $this->request->id,
-            'reference' => $this->request->reference_number,
-            'url' => route('portal.request-numbering-plates', ['ref' => $this->request->reference_number]),
-        ];
-    }
+    // Database channel intentionally not used (see via()).
 }

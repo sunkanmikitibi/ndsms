@@ -59,9 +59,14 @@
         @endforelse
     </div>
 
-    <div style="margin-top:20px;">
-        {{ $notifications->links() }}
-    </div>
+    @if($notifications->total() > 0)
+        <div class="pagination-wrapper" style="margin-top:16px;">
+            <p>Showing {{ $notifications->firstItem() }}–{{ $notifications->lastItem() }} of {{ $notifications->total() }} notifications</p>
+            <div class="pagination-links">
+                {{ $notifications->onEachSide(1)->links('pagination.portal') }}
+            </div>
+        </div>
+    @endif
 
     <style>
         :root {

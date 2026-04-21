@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Models\StreetNumberingPlateRequest;
+use App\Models\StreetNumberingPlate;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -12,10 +12,10 @@ class StreetNumberingPlateRejectedNotification extends Notification implements S
 {
     use Queueable;
 
-    protected StreetNumberingPlateRequest $request;
+    protected StreetNumberingPlate $request;
     protected string $reason;
 
-    public function __construct(StreetNumberingPlateRequest $request, string $reason = '')
+    public function __construct(StreetNumberingPlate $request, string $reason = '')
     {
         $this->request = $request;
         $this->reason = $reason;
@@ -23,7 +23,9 @@ class StreetNumberingPlateRejectedNotification extends Notification implements S
 
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        // In-app notifications use the custom Notification model/table.
+        // Keep this notification mail-only to avoid writing to Laravel's database notification channel.
+        return ['mail'];
     }
 
     public function toMail(object $notifiable): MailMessage
@@ -49,16 +51,5 @@ class StreetNumberingPlateRejectedNotification extends Notification implements S
             ->markdown('mail.markdown');
     }
 
-    public function toDatabase(object $notifiable): array
-    {
-        return [
-            'type' => 'street_numbering_plate_rejected',
-            'title' => 'Street Numbering Plate Request Rejected',
-            'message' => "Your request {$this->request->reference_number} for {$this->request->street_name} has been rejected." . ($this->reason ? " Reason: {$this->reason}" : ''),
-            'request_id' => $this->request->id,
-            'reference' => $this->request->reference_number,
-            'reason' => $this->reason,
-            'url' => route('portal.request-numbering-plates', ['ref' => $this->request->reference_number]),
-        ];
-    }
+    // Database channel intentionally not used (see via()).
 }

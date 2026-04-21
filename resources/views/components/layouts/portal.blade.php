@@ -64,6 +64,16 @@ document.documentElement.classList.toggle('dark', darkMode);"
                 class="nav-item {{ request()->routeIs('portal.dashboard') ? 'active' : '' }}">
                 <i class="fas fa-tachometer-alt"></i> Dashboard &amp; Certificates
             </a>
+            <a href="{{ route('portal.notifications') }}"
+                class="nav-item {{ request()->routeIs('portal.notifications') ? 'active' : '' }}">
+                <i class="fas fa-bell"></i> Notifications
+                @auth
+                    @php $notifCount = \App\Models\Notification::unreadCountForUser(auth()->id()); @endphp
+                    @if ($notifCount > 0)
+                        <span class="badge">{{ $notifCount > 99 ? '99+' : $notifCount }}</span>
+                    @endif
+                @endauth
+            </a>
 
             <div class="nav-section-title">Public Services</div>
             <a href="{{ route('portal.register-address') }}"

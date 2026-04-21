@@ -147,6 +147,7 @@ class StreetNumberingPlate extends Model
             'pending' => 'Pending Review',
             'approved' => 'Approved',
             'rejected' => 'Rejected',
+            'awaiting_payment' => 'Awaiting Payment',
             'in_production' => 'In Production',
             'ready' => 'Ready for Delivery',
             'delivered' => 'Delivered',

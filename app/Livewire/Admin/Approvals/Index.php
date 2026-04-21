@@ -15,6 +15,8 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Collection;
 use App\Services\SmsNotificationService;
+use App\Services\InAppNotificationService;
+use Illuminate\Support\Facades\Auth;
 
 #[Layout('components.layouts.admin')]
 #[Title('Approvals')]
@@ -30,6 +32,144 @@ class Index extends Component
     public ?int $viewId = null;
     public string $viewType = 'application'; // 'application', 'field_report', or 'address'
     public string $adminNote = '';
+
+    protected function notifyCitizenStatusChange(object $model, string $type, string $newStatus, ?string $note = null): void
+    {
+        // Best-effort; never block admin workflow on notifications.
+        try {
+            $userId = $model->user_id ?? null;
+            if (!$userId) {
+                return;
+            }
+
+            $service = app(InAppNotificationService::class);
+
+            $ref = match ($type) {
+                'address' => $model->reference_code ?? ('#' . $model->id),
+                'plate' => $model->reference_number ?? ('#' . $model->id),
+                default => '#' . $model->id,
+            };
+
+            $titlePrefix = match ($type) {
+                'application' => 'Street Application',
+                'field_report' => 'Field Report',
+                'address' => 'Address Registration',
+                'indexing' => 'Address Indexing',
+                'revalidation' => 'Street Revalidation',
+                'plate' => 'Plate Request',
+                'complaint' => 'Complaint',
+                default => ucfirst(str_replace('_', ' ', $type)),
+            };
+
+            $actionUrl = match ($type) {
+                'application' => route('portal.register-street'),
+                'field_report' => route('portal.dashboard'),
+                'address' => route('portal.register-address'),
+                'indexing' => route('portal.register-address-indexing'),
+                'revalidation' => route('portal.street-revalidation'),
+                'plate' => route('portal.request-numbering-plates', ['ref' => $model->reference_number ?? null]),
+                'complaint' => route('portal.complaints'),
+                default => route('portal.dashboard'),
+            };
+
+            $meta = ['type' => $type, 'id' => $model->id, 'status' => $newStatus, 'reference' => $ref];
+
+            if ($newStatus === 'approved') {
+                $service->notifyApproval(
+                    $userId,
+                    "{$titlePrefix} Approved",
+                    "Your {$titlePrefix} ({$ref}) has been approved.",
+                    $actionUrl,
+                    $meta
+                );
+            } elseif ($newStatus === 'rejected') {
+                $service->notifyRejection(
+                    $userId,
+                    "{$titlePrefix} Rejected",
+                    "Your {$titlePrefix} ({$ref}) was rejected." . ($note ? " Reason: {$note}" : ''),
+                    $actionUrl,
+                    array_merge($meta, $note ? ['reason' => $note] : [])
+                );
+            } elseif ($newStatus === 'awaiting_payment') {
+                $service->notifyPayment(
+                    $userId,
+                    'Payment Required',
+                    "Your {$titlePrefix} ({$ref}) is awaiting payment to proceed.",
+                    route('portal.payments.index'),
+                    $meta
+                );
+            } elseif ($type === 'complaint' && $newStatus === 'resolved') {
+                $service->notifySuccess(
+                    $userId,
+                    'Complaint Resolved',
+                    "Your complaint ({$ref}) has been resolved. A response has been provided.",
+                    $actionUrl,
+                    $meta
+                );
+            } else {
+                $service->notifyInfo(
+                    $userId,
+                    "{$titlePrefix} Updated",
+                    "Your {$titlePrefix} ({$ref}) status is now: " . str_replace('_', ' ', $newStatus) . ".",
+                    $actionUrl,
+                    $meta
+                );
+            }
+
+            $this->dispatch('notification-created');
+        } catch (\Throwable) {
+            // swallow
+        }
+    }
+
+    protected function notifyCitizenNote(object $model, string $type, string $note): void
+    {
+        try {
+            $userId = $model->user_id ?? null;
+            if (!$userId) return;
+
+            $service = app(InAppNotificationService::class);
+
+            $ref = match ($type) {
+                'address' => $model->reference_code ?? ('#' . $model->id),
+                'plate' => $model->reference_number ?? ('#' . $model->id),
+                default => '#' . $model->id,
+            };
+
+            $titlePrefix = match ($type) {
+                'application' => 'Street Application',
+                'field_report' => 'Field Report',
+                'address' => 'Address Registration',
+                'indexing' => 'Address Indexing',
+                'revalidation' => 'Street Revalidation',
+                'plate' => 'Plate Request',
+                'complaint' => 'Complaint',
+                default => ucfirst(str_replace('_', ' ', $type)),
+            };
+
+            $actionUrl = match ($type) {
+                'application' => route('portal.register-street'),
+                'address' => route('portal.register-address'),
+                'indexing' => route('portal.register-address-indexing'),
+                'revalidation' => route('portal.street-revalidation'),
+                'plate' => route('portal.request-numbering-plates', ['ref' => $model->reference_number ?? null]),
+                'complaint' => route('portal.complaints'),
+                default => route('portal.dashboard'),
+            };
+
+            $service->notifyInfo(
+                $userId,
+                'New Admin Note',
+                "An official note was added to your {$titlePrefix} ({$ref}). Please log in to view it.",
+                $actionUrl,
+                ['type' => $type, 'id' => $model->id, 'reference' => $ref]
+            );
+
+            $this->dispatch('notification-created');
+        } catch (\Throwable) {
+            // swallow
+        }
+    }
 
     public function updatingSearch(): void { $this->resetPage(); }
     public function updatingFilterStatus(): void { $this->resetPage(); }
@@ -77,9 +217,10 @@ class Index extends Component
             $model->update([
                 'status'         => 'resolved',
                 'admin_response' => $this->adminNote,
-                'admin_id'       => auth()->id(),
+                'admin_id'       => Auth::id(),
                 'responded_at'   => now(),
             ]);
+            $this->notifyCitizenStatusChange($model, $type, 'resolved', $this->adminNote);
         } else {
             $model->update([
                 'status'      => 'approved',
@@ -87,6 +228,7 @@ class Index extends Component
                 'admin_notes' => $this->adminNote, // Handle plate's naming convention
                 'reviewed_at' => now(),
             ]);
+            $this->notifyCitizenStatusChange($model, $type, 'approved', $this->adminNote);
         }
         
         $this->showModal = false;
@@ -114,6 +256,8 @@ class Index extends Component
             'admin_notes' => $this->adminNote,
             'reviewed_at' => now(),
         ]);
+
+        $this->notifyCitizenStatusChange($model, $type, $status, $this->adminNote);
         
         $this->showModal = false;
         $this->dispatch('toast', type: 'error', message: ucfirst(str_replace('_', ' ', $type)) . ' ' . $status . '.');
@@ -136,6 +280,8 @@ class Index extends Component
             'admin_notes' => $this->adminNote,
             'user_note'   => null, // Clear user note when moving to payment
         ]);
+
+        $this->notifyCitizenStatusChange($model, $type, 'awaiting_payment', $this->adminNote);
         
         $this->showModal = false;
         $this->dispatch('toast', type: 'info', message: 'Marked as awaiting payment.');
@@ -162,6 +308,10 @@ class Index extends Component
             $model->update(['admin_notes' => $this->adminNote]);
         } else {
             $model->update(['admin_note' => $this->adminNote]);
+        }
+
+        if (trim($this->adminNote) !== '') {
+            $this->notifyCitizenNote($model, $this->viewType, $this->adminNote);
         }
 
         // Trigger Notification

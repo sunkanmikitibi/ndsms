@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Models\StreetNumberingPlateRequest;
+use App\Models\StreetNumberingPlate;
 use App\Services\EmailNotificationService;
 
 class StreetNumberingPlateRequestEmailObserver
@@ -14,7 +14,7 @@ class StreetNumberingPlateRequestEmailObserver
         $this->emailService = $emailService;
     }
 
-    public function updated(StreetNumberingPlateRequest $request): void
+    public function updated(StreetNumberingPlate $request): void
     {
         // Send approval email
         if ($request->isDirty('status') && $request->status === 'approved') {

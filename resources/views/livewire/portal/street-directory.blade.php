@@ -69,7 +69,7 @@
     </div>
     <div class="pagination-wrapper" style="margin-top:16px;">
         <p>Showing {{ $streets->firstItem() }}–{{ $streets->lastItem() }} of {{ $streets->total() }} streets</p>
-        <div class="pagination-links">{{ $streets->links() }}</div>
+        <div class="pagination-links">{{ $streets->onEachSide(1)->links('pagination.portal') }}</div>
     </div>
     @endif
 </div>

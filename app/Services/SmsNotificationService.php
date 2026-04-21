@@ -14,9 +14,9 @@ class SmsNotificationService
 
     public function __construct()
     {
-        $this->apiProvider = config('services.sms.provider', 'twilio');
-        $this->apiKey = config('services.sms.api_key');
-        $this->senderId = config('services.sms.sender_id', 'NDSMS');
+        $this->apiProvider = (string) config('services.sms.provider', 'twilio');
+        $this->apiKey = (string) config('services.sms.api_key', '');
+        $this->senderId = (string) config('services.sms.sender_id', 'NDSMS');
     }
 
     /**

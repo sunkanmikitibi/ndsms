@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\AddressIndexingRequest;
 use App\Models\StreetApplication;
-use App\Models\StreetNumberingPlateRequest;
+use App\Models\StreetNumberingPlate;
 use App\Notifications\StreetNumberingPlateApprovedNotification;
 use App\Notifications\StreetNumberingPlateRejectedNotification;
 use App\Notifications\StreetNumberingPlateReadyNotification;
@@ -16,7 +16,7 @@ class EmailNotificationService
     /**
      * Send approval notification for street numbering plate
      */
-    public function sendStreetNumberingPlateApprovalEmail(StreetNumberingPlateRequest $request): bool
+    public function sendStreetNumberingPlateApprovalEmail(StreetNumberingPlate $request): bool
     {
         try {
             if (!$request->user || !$request->user->email) {
@@ -36,7 +36,7 @@ class EmailNotificationService
     /**
      * Send rejection notification for street numbering plate
      */
-    public function sendStreetNumberingPlateRejectionEmail(StreetNumberingPlateRequest $request, string $reason = ''): bool
+    public function sendStreetNumberingPlateRejectionEmail(StreetNumberingPlate $request, string $reason = ''): bool
     {
         try {
             if (!$request->user || !$request->user->email) {
@@ -56,7 +56,7 @@ class EmailNotificationService
     /**
      * Send ready notification for street numbering plate
      */
-    public function sendStreetNumberingPlateReadyEmail(StreetNumberingPlateRequest $request): bool
+    public function sendStreetNumberingPlateReadyEmail(StreetNumberingPlate $request): bool
     {
         try {
             if (!$request->user || !$request->user->email) {

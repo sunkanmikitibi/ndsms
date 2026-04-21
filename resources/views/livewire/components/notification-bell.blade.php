@@ -1,4 +1,4 @@
-<div class="notification-bell-wrapper" @click.away="$wire.showPanel = false" x-data="{ showPanel: @entangle('showPanel') }">
+<div class="notification-bell-wrapper" wire:poll.30s="loadNotifications" @click.away="$wire.showPanel = false" x-data="{ showPanel: @entangle('showPanel') }">
     <!-- Bell Icon Button -->
     <button @click="showPanel = !showPanel"
         style="background:none;border:none;color:var(--text-sidebar);font-size:20px;cursor:pointer;position:relative;padding:8px;border-radius:var(--radius-sm);transition:background-color var(--transition);"

@@ -102,6 +102,11 @@
         </div>
 
         <!-- Pagination -->
-        {{ $payments->links() }}
+        <div class="pagination-wrapper" style="margin-top:16px;">
+            <p>Showing {{ $payments->firstItem() }}–{{ $payments->lastItem() }} of {{ $payments->total() }} payments</p>
+            <div class="pagination-links">
+                {{ $payments->onEachSide(1)->links('pagination.portal') }}
+            </div>
+        </div>
     @endif
 </x-layouts.portal>
