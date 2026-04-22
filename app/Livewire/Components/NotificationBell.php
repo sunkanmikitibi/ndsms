@@ -27,21 +27,17 @@ class NotificationBell extends Component
     public function loadNotifications()
     {
         if (auth()->check()) {
-            $this->unreadNotifications = Notification::where('user_id', auth()->id())
-                ->whereNull('read_at')
-                ->orderByDesc('created_at')
-                ->limit(10)
-                ->get()
-                ->toArray();
-
+            $service = app(\App\Services\InAppNotificationService::class);
+            
+            $this->unreadNotifications = $service->getUnreadForUser(auth()->id(), 10)->toArray();
+            
             $this->allNotifications = Notification::where('user_id', auth()->id())
-                ->where('created_at', '>=', now()->subDays(10))
                 ->orderByDesc('created_at')
                 ->limit(50)
                 ->get()
                 ->toArray();
 
-            $this->unreadCount = count($this->unreadNotifications);
+            $this->unreadCount = $service->getUnreadCountForUser(auth()->id());
         }
     }
 
@@ -50,13 +46,20 @@ class NotificationBell extends Component
         $this->showPanel = !$this->showPanel;
     }
 
-    public function markAsRead($notificationId)
+    public function markAsRead($notificationId, $redirect = false)
     {
         $notification = Notification::find($notificationId);
+        
         if ($notification && $notification->user_id === auth()->id()) {
-            $notification->markAsRead();
-            $this->loadNotifications();
-            $this->dispatch('notification-read', notificationId: $notificationId);
+            if (!$notification->read_at) {
+                $notification->markAsRead();
+                $this->loadNotifications();
+                $this->dispatch('notification-read', notificationId: $notificationId);
+            }
+
+            if ($redirect && $notification->action_url) {
+                return redirect($notification->action_url);
+            }
         }
     }
 

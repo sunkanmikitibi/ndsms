@@ -29,12 +29,20 @@ class StreetNumberingPlate extends Model
         'admin_notes',
         'user_note',
         'rejection_reason',
+        'assigned_to',
+        'production_started_at',
+        'production_completed_at',
+        'estimated_completion_date',
+        'production_notes',
     ];
 
     protected $casts = [
         'installation_date_requested' => 'date',
         'approx_cost' => 'decimal:2',
         'quantity_requested' => 'integer',
+        'production_started_at' => 'datetime',
+        'production_completed_at' => 'datetime',
+        'estimated_completion_date' => 'date',
     ];
 
     /**
@@ -51,6 +59,14 @@ class StreetNumberingPlate extends Model
     public function street(): BelongsTo
     {
         return $this->belongsTo(Street::class);
+    }
+
+    /**
+     * Get the production team member assigned to this request
+     */
+    public function assignedUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
     }
 
     /**
@@ -200,17 +216,40 @@ class StreetNumberingPlate extends Model
     }
 
     /**
-     * Mark request as in production
+     * Assign to production team member
+     */
+    public function assignToProduction(int $userId, string $estimatedCompletionDate = null, string $notes = null): void
+    {
+        $this->update([
+            'assigned_to' => $userId,
+            'estimated_completion_date' => $estimatedCompletionDate,
+            'production_notes' => $notes,
+        ]);
+    }
+
+    /**
+     * Start production
      */
     public function startProduction(): void
     {
         $this->update([
             'status' => 'in_production',
+            'production_started_at' => now(),
         ]);
     }
 
     /**
-     * Mark request as ready
+     * Mark production as completed
+     */
+    public function completeProduction(): void
+    {
+        $this->update([
+            'production_completed_at' => now(),
+        ]);
+    }
+
+    /**
+     * Mark request as ready for delivery
      */
     public function markReady(): void
     {

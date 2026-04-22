@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\StreetNumberingPlates;
 
 use App\Models\StreetNumberingPlate;
+use App\Models\User;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -26,9 +27,15 @@ class Index extends Component
     public bool $showDetail = false;
     public bool $showApproveModal = false;
     public bool $showRejectModal = false;
+    public bool $showAssignModal = false;
+    public bool $showStatusModal = false;
 
     public string $approvalNotes = '';
     public string $rejectionReason = '';
+    public int $assignedUserId = 0;
+    public string $estimatedCompletionDate = '';
+    public string $productionNotes = '';
+    public string $newStatus = '';
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -150,15 +157,101 @@ class Index extends Component
         }
     }
 
-    public function updateStatus(StreetNumberingPlate $request, string $newStatus)
+    public function openAssignModal(StreetNumberingPlate $request)
     {
+        $this->selectedRequest = $request;
+        $this->assignedUserId = $request->assigned_to ?? 0;
+        $this->estimatedCompletionDate = $request->estimated_completion_date?->format('Y-m-d') ?? '';
+        $this->productionNotes = $request->production_notes ?? '';
+        $this->showAssignModal = true;
+    }
+
+    public function openStatusModal(StreetNumberingPlate $request)
+    {
+        $this->selectedRequest = $request;
+        $this->newStatus = $request->status;
+        $this->showStatusModal = true;
+    }
+
+    public function assignToProduction()
+    {
+        if (!$this->selectedRequest || !$this->assignedUserId) {
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'message' => 'Please select a production team member',
+            ]);
+            return;
+        }
+
         try {
-            $request->update(['status' => $newStatus]);
+            $this->selectedRequest->assignToProduction(
+                $this->assignedUserId,
+                $this->estimatedCompletionDate ?: null,
+                $this->productionNotes
+            );
 
             $this->dispatch('notify', [
                 'type' => 'success',
-                'message' => "Status updated to {$newStatus}",
+                'message' => "Request assigned to production team successfully",
             ]);
+
+            $this->showAssignModal = false;
+            $this->assignedUserId = 0;
+            $this->estimatedCompletionDate = '';
+            $this->productionNotes = '';
+            $this->selectedRequest = null;
+        } catch (\Exception $e) {
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'message' => 'Error assigning to production: ' . $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function updateStatus()
+    {
+        if (!$this->selectedRequest) {
+            return;
+        }
+
+        try {
+            // Handle status-specific logic
+            switch ($this->newStatus) {
+                case 'in_production':
+                    if (!$this->selectedRequest->production_started_at) {
+                        $this->selectedRequest->startProduction();
+                    } else {
+                        $this->selectedRequest->update(['status' => $this->newStatus]);
+                    }
+                    break;
+                case 'ready':
+                    $this->selectedRequest->markReady();
+                    if (!$this->selectedRequest->production_completed_at) {
+                        $this->selectedRequest->completeProduction();
+                    }
+                    break;
+                case 'delivered':
+                    $this->selectedRequest->markDelivered();
+                    break;
+                case 'installed':
+                    $this->selectedRequest->markInstalled();
+                    break;
+                case 'completed':
+                    $this->selectedRequest->complete();
+                    break;
+                default:
+                    $this->selectedRequest->update(['status' => $this->newStatus]);
+            }
+
+            $this->dispatch('notify', [
+                'type' => 'success',
+                'message' => "Status updated to {$this->getStatuses()[$this->newStatus]}",
+            ]);
+
+            $this->showStatusModal = false;
+            $this->newStatus = '';
+            $this->selectedRequest = null;
+            $this->resetPage();
         } catch (\Exception $e) {
             $this->dispatch('notify', [
                 'type' => 'error',
@@ -286,7 +379,9 @@ class Index extends Component
             'total' => StreetNumberingPlate::count(),
             'pending' => StreetNumberingPlate::where('status', 'pending')->count(),
             'approved' => StreetNumberingPlate::where('status', 'approved')->count(),
-            'completed' => StreetNumberingPlate::where('status', 'completed')->count(),
+            'inProduction' => StreetNumberingPlate::where('status', 'in_production')->count(),
+            'ready' => StreetNumberingPlate::where('status', 'ready')->count(),
+            'completed' => StreetNumberingPlate::whereIn('status', ['installed', 'completed'])->count(),
         ];
 
         $statuses = $this->getStatuses();
@@ -298,11 +393,17 @@ class Index extends Component
             'digital' => 'Digital',
         ];
 
+        // Get production team members (admins and field officers)
+        $productionTeam = User::whereHas('roles', function ($query) {
+            $query->whereIn('name', ['admin', 'field-officer']);
+        })->orderBy('name')->get();
+
         return view('livewire.admin.street-numbering-plates.index', [
             'requests' => $requests,
             'stats' => $stats,
             'statuses' => $statuses,
             'plateTypes' => $plateTypes,
+            'productionTeam' => $productionTeam,
         ]);
     }
 }
